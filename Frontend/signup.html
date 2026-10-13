@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join | Zivo</title>
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="x-page">
+  <div class="mx-auto flex min-h-svh w-full max-w-[600px] flex-col px-8 py-6 sm:px-16">
+    <a href="homepage.html" class="mb-8 inline-flex w-fit rounded-xl p-1 hover:bg-black/5" aria-label="Zivo">
+      <img src="./assets/logo.svg" alt="" class="h-8 w-auto">
+    </a>
+    <h1 class="text-[31px] leading-9 font-extrabold">Create your account</h1>
+    <form id="signupForm" class="mt-8 space-y-5">
+      <label class="block">
+        <span class="mb-1.5 block text-[15px] font-medium">Name</span>
+        <input id="name" type="text" placeholder="Name" autocomplete="name" minlength="2" required class="x-input">
+      </label>
+      <label class="block">
+        <span class="mb-1.5 block text-[15px] font-medium">Email</span>
+        <input id="email" type="email" placeholder="Email" autocomplete="email" required class="x-input">
+      </label>
+      <label class="block">
+        <span class="mb-1.5 block text-[15px] font-medium">Username</span>
+        <input id="username" type="text" placeholder="Username" autocomplete="username" minlength="3" pattern="[A-Za-z0-9_]+" title="Use letters, numbers, and underscores only" required class="x-input">
+      </label>
+      <label class="block">
+        <span class="mb-1.5 block text-[15px] font-medium">Password</span>
+        <input id="password" type="password" placeholder="8 characters or more" autocomplete="new-password" minlength="8" required class="x-input">
+      </label>
+      <label class="flex gap-3 text-[13px] leading-5 text-x-muted">
+        <input type="checkbox" required class="mt-0.5 size-4 accent-x-blue">
+        <span>I agree to the <a href="#terms" class="x-link">Terms of Service</a> and <a href="#privacy" class="x-link">Privacy Policy</a>.</span>
+      </label>
+      <button type="submit" class="x-btn">Sign up</button>
+      <div id="notice" class="hidden text-[15px] leading-5 text-x-danger" role="status"></div>
+    </form>
+    <p class="mt-10 text-[15px] text-x-muted">Have an account already? <a href="loginpage.html" class="x-link">Sign in</a></p>
+  </div>
+  <script src="./api.js"></script>
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const notice = document.getElementById('notice');
+      const body = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value,
+      };
+
+      apiFetch('/signup', {
+        method: 'POST',
+        body: JSON.stringify(body),
+      })
+        .then(function (result) {
+          if (result.ok && result.data.token) {
+            saveToken(result.data);
+            window.location.href = 'feed.html';
+            return;
+          }
+          notice.classList.remove('hidden');
+          notice.textContent = result.data.message || 'Could not create that account.';
+        })
+        .catch(function () {
+          notice.classList.remove('hidden');
+          notice.textContent = 'Cannot reach the server. Start it with python app.py in the Backend folder.';
+        });
+    });
+  </script>
+</body>
+</html>

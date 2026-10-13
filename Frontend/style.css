@@ -1,0 +1,253 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --color-x-bg: #ffffff;
+  --color-x-ink: #0f1419;
+  --color-x-muted: #536471;
+  --color-x-line: #eff3f4;
+  --color-x-border: #cfd9de;
+  --color-x-hover: #f7f9f9;
+  --color-x-chip: #eff3f4;
+  --color-x-blue: #1d9bf0;
+  --color-x-blue-hover: #1a8cd8;
+  --color-x-danger: #f4212e;
+  --color-x-like: #f91880;
+  --color-x-repost: #00ba7c;
+}
+
+html {
+  color-scheme: light;
+}
+
+html:has(.app-lock) {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.app-lock {
+  height: 100svh;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+}
+
+@utility x-page {
+  @apply min-h-svh bg-x-bg font-sans text-x-ink antialiased;
+}
+
+@utility x-input {
+  @apply h-14 w-full rounded-[4px] border border-x-border bg-transparent px-3 text-[17px] text-x-ink outline-none placeholder:text-x-muted focus:border-x-blue focus:ring-1 focus:ring-x-blue;
+}
+
+@utility x-btn {
+  @apply inline-flex h-[52px] w-full cursor-pointer items-center justify-center rounded-full bg-x-ink text-[17px] font-bold text-white hover:bg-[#272c30] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-x-blue;
+}
+
+@utility x-btn-blue {
+  @apply inline-flex cursor-pointer items-center justify-center rounded-full bg-x-blue font-bold text-white hover:bg-x-blue-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-x-blue;
+}
+
+@utility x-btn-outline {
+  @apply inline-flex cursor-pointer items-center justify-center rounded-full border border-x-border font-bold text-x-blue hover:bg-x-blue/10;
+}
+
+@utility x-link {
+  @apply text-x-blue hover:underline;
+}
+
+@utility x-nav {
+  @apply flex w-fit items-center gap-3 rounded-full px-3 py-2 text-[15px] transition-colors hover:bg-black/10;
+}
+
+@utility x-card {
+  @apply overflow-hidden rounded-2xl bg-x-hover;
+}
+
+.btn-follow,
+.btn-following {
+  flex-shrink: 0;
+  white-space: nowrap;
+  cursor: pointer;
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.25rem;
+}
+
+.btn-follow {
+  border: 1px solid #0f1419;
+  background: #0f1419;
+  color: #fff;
+}
+
+.btn-follow:hover {
+  background: #272c30;
+}
+
+.btn-following {
+  border: 1px solid #cfd9de;
+  background: #fff;
+  color: #0f1419;
+}
+
+.btn-following .label-unfollow {
+  display: none;
+}
+
+.btn-following:hover {
+  border-color: #f4212e;
+  background: rgb(244 33 46 / 0.1);
+  color: #f4212e;
+}
+
+.btn-following:hover .label-follow {
+  display: none;
+}
+
+.btn-following:hover .label-unfollow {
+  display: inline;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  height: 2.15rem;
+  min-width: 2.15rem;
+  padding: 0 0.35rem;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  color: #536471;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.action .count:empty {
+  display: none;
+}
+
+.action.reply:hover,
+.action.reply.is-open {
+  color: #1d9bf0;
+  background: rgb(29 155 240 / 0.1);
+}
+
+.action.repost:hover {
+  color: #00ba7c;
+  background: rgb(0 186 124 / 0.1);
+}
+
+.action.like:hover {
+  color: #f91880;
+  background: rgb(249 24 128 / 0.1);
+}
+
+.action.like.is-liked,
+.action.like.is-liked:hover {
+  color: #f91880;
+}
+
+.action.like.is-liked svg {
+  fill: #f91880;
+}
+
+.action.share:hover {
+  color: #1d9bf0;
+  background: rgb(29 155 240 / 0.1);
+}
+
+.menu-pop {
+  box-shadow:
+    rgb(101 119 134 / 0.2) 0 0 15px,
+    rgb(101 119 134 / 0.15) 0 0 3px 1px;
+}
+
+.zivo-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgb(0 0 0 / 0.4);
+}
+
+.zivo-modal-card {
+  width: 100%;
+  max-width: 280px;
+  border-radius: 1rem;
+  background: #fff;
+  padding: 2rem 2rem 1.5rem;
+}
+
+.zivo-modal-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.5rem;
+}
+
+.zivo-modal-body {
+  margin-top: 0.5rem;
+  font-size: 15px;
+  line-height: 1.25rem;
+  color: #536471;
+}
+
+.zivo-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.zivo-modal-danger,
+.zivo-modal-ok,
+.zivo-modal-cancel {
+  height: 2.75rem;
+  width: 100%;
+  border-radius: 9999px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.zivo-modal-danger {
+  border: 0;
+  background: #f4212e;
+  color: #fff;
+}
+
+.zivo-modal-danger:hover {
+  background: #dc1e28;
+}
+
+.zivo-modal-ok {
+  border: 0;
+  background: #1d9bf0;
+  color: #fff;
+}
+
+.zivo-modal-ok:hover {
+  background: #1a8cd8;
+}
+
+.zivo-modal-cancel {
+  border: 1px solid #cfd9de;
+  background: #fff;
+  color: #0f1419;
+}
+
+.zivo-modal-cancel:hover {
+  background: #f7f9f9;
+}

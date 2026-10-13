@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log in | Zivo</title>
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="x-page">
+  <div class="mx-auto flex min-h-svh w-full max-w-[600px] flex-col px-8 py-6 sm:px-16">
+    <a href="homepage.html" class="mb-8 inline-flex w-fit rounded-xl p-1 hover:bg-black/5" aria-label="Zivo">
+      <img src="./assets/logo.svg" alt="" class="h-8 w-auto">
+    </a>
+    <h1 class="text-[31px] leading-9 font-extrabold">Sign in to Zivo</h1>
+    <form id="loginForm" class="mt-8 space-y-5">
+      <label class="block">
+        <span class="mb-1.5 block text-[15px] font-medium">Email</span>
+        <input id="login-email" type="email" placeholder="Email" autocomplete="email" required class="x-input">
+      </label>
+      <label class="block">
+        <span class="mb-1.5 block text-[15px] font-medium">Password</span>
+        <input id="login-password" type="password" placeholder="Password" autocomplete="current-password" required class="x-input">
+      </label>
+      <p class="text-[15px]"><a href="forgetpassword.html" class="x-link">Forgot password?</a></p>
+      <button type="submit" class="x-btn">Sign in</button>
+      <div id="notice" class="hidden text-[15px] leading-5 text-x-danger" role="status"></div>
+    </form>
+    <p class="mt-10 text-[15px] text-x-muted">Don't have an account? <a href="signup.html" class="x-link">Sign up</a></p>
+  </div>
+  <script src="./api.js"></script>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const notice = document.getElementById('notice');
+      const body = {
+        email: document.getElementById('login-email').value,
+        password: document.getElementById('login-password').value,
+      };
+
+      apiFetch('/login', {
+        method: 'POST',
+        body: JSON.stringify(body),
+      })
+        .then(function (result) {
+          if (result.ok && result.data.token) {
+            saveToken(result.data);
+            window.location.href = 'feed.html';
+            return;
+          }
+          notice.classList.remove('hidden');
+          notice.textContent = result.data.message || 'Email or password is wrong.';
+        })
+        .catch(function () {
+          notice.classList.remove('hidden');
+          notice.textContent = 'Cannot reach the server. Start it with python app.py in the Backend folder.';
+        });
+    });
+  </script>
+</body>
+</html>
