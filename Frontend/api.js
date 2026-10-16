@@ -61,3 +61,12 @@ function saveToken(data) {
 function clearToken() {
   localStorage.removeItem("zivo_token");
 }
+
+function premiumMark() {
+  var mark = document.createElement("span");
+  mark.className = "inline-flex shrink-0 text-x-blue";
+  mark.title = "Zivo Premium";
+  mark.setAttribute("aria-label", "Premium");
+  mark.innerHTML = '<svg viewBox="0 0 24 24" class="size-4" aria-hidden="true"><path fill="currentColor" d="M12 2.4 9.6 8.2 3.3 8.8l4.8 4.1-1.4 6.3L12 16.2l5.3 3 1.4-6.3 4.8-4.1-6.3-.6z"/></svg>';
+  return mark;
+}

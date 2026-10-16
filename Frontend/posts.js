@@ -432,6 +432,7 @@ function mountPostActions(parent, post, helpers) {
       name.className = 'truncate font-bold hover:underline';
       name.textContent = comment.name;
       who.appendChild(name);
+      if (comment.premium) who.appendChild(premiumMark());
       if (comment.username) {
         var handle = document.createElement('a');
         handle.href = href;
