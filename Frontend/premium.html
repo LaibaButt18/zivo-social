@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premium | Zivo</title>
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="x-page app-lock">
+  <div class="flex h-svh w-full min-w-0 max-w-full overflow-hidden">
+    <header class="sticky top-0 hidden h-svh w-[64px] min-w-0 shrink-0 flex-col overflow-x-hidden px-1 sm:flex lg:w-[220px] lg:px-2">
+      <div class="flex flex-col items-start">
+        <a href="feed.html" class="inline-flex rounded-xl p-2 hover:bg-black/10" aria-label="Zivo">
+          <img src="./assets/logo-mark.svg" alt="" class="size-7 lg:hidden">
+          <img src="./assets/logo.svg" alt="" class="hidden h-7 w-auto lg:block">
+        </a>
+        <nav class="mt-1 flex flex-col gap-1">
+          <a href="feed.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linejoin="round" d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Home</span>
+          </a>
+          <a href="profile.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path stroke-linecap="round" d="M5.2 19.4c1.5-2.8 3.9-4.2 6.8-4.2s5.3 1.4 6.8 4.2"/></svg>
+            <span class="hidden text-[15px] lg:inline">Profile</span>
+          </a>
+          <a href="premium.html" class="x-nav font-bold" aria-current="page">
+            <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path fill="currentColor" d="M12 2.4 9.6 8.2 3.3 8.8l4.8 4.1-1.4 6.3L12 16.2l5.3 3 1.4-6.3 4.8-4.1-6.3-.6z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Premium</span>
+          </a>
+        </nav>
+        <a href="feed.html#compose" class="x-btn-blue mt-2 size-11 lg:h-9 lg:w-[156px]" aria-label="Post">
+          <svg viewBox="0 0 24 24" class="size-6 lg:hidden" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+          <span class="hidden text-[15px] lg:inline">Post</span>
+        </a>
+      </div>
+
+      <div class="relative mt-auto mb-3">
+        <button id="accountToggle" type="button" class="flex w-full items-center gap-2 rounded-full p-2 text-left hover:bg-black/10">
+          <div id="navPhoto" class="size-10 shrink-0"></div>
+          <span class="hidden min-w-0 flex-1 lg:block">
+            <span id="navName" class="block truncate text-[15px] font-bold">Account</span>
+            <span id="navHandle" class="block truncate text-[15px] text-x-muted"></span>
+          </span>
+          <svg viewBox="0 0 24 24" class="hidden size-5 shrink-0 lg:block" aria-hidden="true"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></svg>
+        </button>
+        <div id="accountPopover" class="menu-pop absolute bottom-full left-0 z-30 mb-2 hidden w-[260px] overflow-hidden rounded-2xl bg-white py-2">
+          <a href="profile.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">View profile</a>
+          <a href="premium.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">Premium</a>
+          <button id="logout" type="button" class="w-full px-4 py-3 text-left text-[15px] font-bold hover:bg-x-hover">Log out</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="h-svh min-w-0 flex-1 overflow-y-auto overscroll-none border-x-line pb-20 sm:border-x sm:pb-12">
+      <div class="sticky top-0 z-20 flex items-center gap-6 border-b border-x-line bg-white/85 px-3 py-2 backdrop-blur-md">
+        <a href="feed.html" class="rounded-full p-2 hover:bg-black/10" aria-label="Back">
+          <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </a>
+        <h1 class="text-xl font-bold">Premium</h1>
+      </div>
+
+      <div class="px-6 py-10">
+        <p class="text-[13px] font-bold tracking-wide text-x-blue uppercase">Zivo Premium</p>
+        <h2 id="headline" class="mt-2 max-w-[16ch] text-[31px] leading-9 font-extrabold">A star next to your name.</h2>
+        <p id="copy" class="mt-4 max-w-md text-[15px] leading-5 text-x-muted">Pay once with Stripe. Your profile, posts, and replies get a Premium badge.</p>
+        <ul class="mt-6 space-y-3 text-[15px]">
+          <li class="flex gap-3"><span class="text-x-blue">★</span> Verified star on your profile</li>
+          <li class="flex gap-3"><span class="text-x-blue">★</span> Badge on posts and comments</li>
+          <li class="flex gap-3"><span class="text-x-blue">★</span> One-time $4.99 test payment</li>
+        </ul>
+        <button id="checkout" type="button" class="x-btn-blue mt-8 h-11 w-full max-w-xs px-6 text-[15px]">Subscribe for $4.99</button>
+        <p id="notice" class="mt-4 hidden text-[15px] text-x-danger" role="status"></p>
+      </div>
+    </main>
+  </div>
+
+  <nav class="fixed inset-x-0 bottom-0 z-30 flex h-14 items-center justify-around border-t border-x-line bg-white sm:hidden">
+    <a href="feed.html" class="rounded-full p-3" aria-label="Home">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linejoin="round" d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg>
+    </a>
+    <a href="profile.html" class="rounded-full p-3" aria-label="Profile">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path stroke-linecap="round" d="M5.2 19.4c1.5-2.8 3.9-4.2 6.8-4.2s5.3 1.4 6.8 4.2"/></svg>
+    </a>
+    <a href="premium.html" class="rounded-full p-3" aria-label="Premium" aria-current="page">
+      <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path fill="currentColor" d="M12 2.4 9.6 8.2 3.3 8.8l4.8 4.1-1.4 6.3L12 16.2l5.3 3 1.4-6.3 4.8-4.1-6.3-.6z"/></svg>
+    </a>
+  </nav>
+
+  <script src="./api.js"></script>
+  <script>
+    function picture(src, letter, sizeClass) {
+      if (src) {
+        const img = document.createElement('img');
+        img.src = API + src;
+        img.alt = '';
+        img.className = 'shrink-0 rounded-full object-cover ' + sizeClass;
+        return img;
+      }
+      const fallback = document.createElement('span');
+      fallback.className = 'flex shrink-0 items-center justify-center rounded-full bg-x-blue text-sm font-bold text-white ' + sizeClass;
+      fallback.textContent = (letter || '?').toUpperCase();
+      return fallback;
+    }
+
+    function showNotice(text) {
+      const notice = document.getElementById('notice');
+      notice.classList.remove('hidden');
+      notice.textContent = text;
+    }
+
+    function showPremium() {
+      document.getElementById('headline').textContent = 'You are Premium.';
+      document.getElementById('copy').textContent = 'Your blue star shows on your profile, posts, and replies.';
+      const button = document.getElementById('checkout');
+      button.disabled = true;
+      button.textContent = 'Premium active';
+      button.className = 'mt-8 h-11 w-full max-w-xs cursor-not-allowed rounded-full bg-x-blue/50 px-6 text-[15px] font-bold text-white';
+    }
+
+    if (!localStorage.getItem('zivo_token')) {
+      window.location.href = 'loginpage.html';
+    } else {
+      apiFetch('/me')
+        .then(function (result) {
+          if (!result.ok) {
+            clearToken();
+            window.location.href = 'loginpage.html';
+            return;
+          }
+          document.getElementById('navName').textContent = result.data.name;
+          document.getElementById('navPhoto').appendChild(picture(result.data.photo, result.data.name.charAt(0), 'size-10'));
+          if (result.data.username) {
+            document.getElementById('navHandle').textContent = '@' + result.data.username;
+          }
+          if (result.data.premium) showPremium();
+        })
+        .catch(function () {
+          window.location.href = 'loginpage.html';
+        });
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('canceled') === '1') {
+      showNotice('Checkout was canceled. You have not been charged.');
+    }
+    if (params.get('success') === '1' && params.get('session_id')) {
+      showNotice('Confirming your payment with Stripe...');
+      document.getElementById('notice').classList.remove('text-x-danger');
+      apiFetch('/premium/confirm', {
+        method: 'POST',
+        body: JSON.stringify({ session_id: params.get('session_id') }),
+      }).then(function (result) {
+        if (result.ok && result.data.premium) {
+          showPremium();
+          const noticeEl = document.getElementById('notice');
+          noticeEl.className = 'mt-4 text-[15px] font-semibold text-[#00ba7c]';
+          noticeEl.textContent = '🎉 Payment confirmed! Premium is now active on your account.';
+          history.replaceState({}, '', window.location.pathname);
+          return;
+        }
+        const noticeEl = document.getElementById('notice');
+        noticeEl.className = 'mt-4 text-[15px] text-x-danger';
+        noticeEl.textContent = result.data.message || 'Could not confirm that payment.';
+      }).catch(function () {
+        const noticeEl = document.getElementById('notice');
+        noticeEl.className = 'mt-4 text-[15px] text-x-danger';
+        noticeEl.textContent = 'Could not verify payment with server. Please refresh this page.';
+      });
+    }
+
+    document.getElementById('checkout').addEventListener('click', function () {
+      const button = document.getElementById('checkout');
+      button.disabled = true;
+      button.textContent = 'Redirecting to Stripe...';
+      apiFetch('/premium/checkout', { method: 'POST', body: '{}' })
+        .then(function (result) {
+          if (result.data && result.data.already) {
+            showPremium();
+            return;
+          }
+          if (result.ok && result.data.url) {
+            window.location.href = result.data.url;
+            return;
+          }
+          button.disabled = false;
+          button.textContent = 'Subscribe for $4.99';
+          showNotice(result.data.message || 'Could not start checkout.');
+        })
+        .catch(function () {
+          button.disabled = false;
+          button.textContent = 'Subscribe for $4.99';
+          showNotice('Cannot reach the server.');
+        });
+    });
+
+    document.addEventListener('click', function (e) {
+      const pop = document.getElementById('accountPopover');
+      const toggle = document.getElementById('accountToggle');
+      if (toggle.contains(e.target)) {
+        pop.classList.toggle('hidden');
+        return;
+      }
+      if (!pop.contains(e.target)) pop.classList.add('hidden');
+    });
+
+    document.getElementById('logout').addEventListener('click', function () {
+      apiFetch('/logout', { method: 'POST', body: '{}' })
+        .finally(function () {
+          clearToken();
+          window.location.href = 'loginpage.html';
+        });
+    });
+  </script>
+</body>
+</html>

@@ -28,6 +28,10 @@
             <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path stroke-linecap="round" d="M5.2 19.4c1.5-2.8 3.9-4.2 6.8-4.2s5.3 1.4 6.8 4.2"/></svg>
             <span class="hidden text-[15px] lg:inline">Profile</span>
           </a>
+          <a href="premium.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path fill="currentColor" d="M12 2.4 9.6 8.2 3.3 8.8l4.8 4.1-1.4 6.3L12 16.2l5.3 3 1.4-6.3 4.8-4.1-6.3-.6z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Premium</span>
+          </a>
         </nav>
         <a href="#compose" data-compose class="x-btn-blue mt-2 size-11 lg:h-9 lg:w-[156px]" aria-label="Post">
           <svg viewBox="0 0 24 24" class="size-6 lg:hidden" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
@@ -47,6 +51,7 @@
         <p id="bio" class="hidden"></p>
         <div id="accountPopover" class="menu-pop absolute bottom-full left-0 z-30 mb-2 hidden w-[260px] overflow-hidden rounded-2xl bg-white py-2">
           <a href="profile.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">View profile</a>
+          <a href="premium.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">Premium</a>
           <button id="logout" type="button" class="w-full px-4 py-3 text-left text-[15px] font-bold hover:bg-x-hover">Log out</button>
         </div>
       </div>
@@ -106,6 +111,12 @@
         </label>
       </div>
 
+      <section id="premiumPromoCard" class="x-card mt-3 px-4 py-4">
+        <h2 class="text-xl font-extrabold">Get Premium</h2>
+        <p class="mt-1 text-[15px] leading-5 text-x-muted">A blue star on your profile and posts.</p>
+        <a href="premium.html" class="x-btn-blue mt-3 h-9 w-full text-[15px]">Subscribe</a>
+      </section>
+
       <section class="x-card mt-3" aria-labelledby="people-heading">
         <h2 id="people-heading" class="px-4 pt-3 pb-1 text-base font-extrabold">Who to follow</h2>
         <div id="people"></div>
@@ -121,6 +132,9 @@
     </a>
     <a href="profile.html" class="rounded-full p-3" aria-label="Profile">
       <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path stroke-linecap="round" d="M5.2 19.4c1.5-2.8 3.9-4.2 6.8-4.2s5.3 1.4 6.8 4.2"/></svg>
+    </a>
+    <a href="premium.html" class="rounded-full p-3" aria-label="Premium">
+      <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path fill="currentColor" d="M12 2.4 9.6 8.2 3.3 8.8l4.8 4.1-1.4 6.3L12 16.2l5.3 3 1.4-6.3 4.8-4.1-6.3-.6z"/></svg>
     </a>
   </nav>
   <a href="#compose" data-compose class="x-btn-blue fixed right-4 bottom-20 z-30 size-14 shadow-lg sm:hidden" aria-label="Post">
@@ -269,6 +283,7 @@
         name.className = 'truncate font-bold hover:underline';
         name.textContent = post.name;
         who.appendChild(name);
+        if (post.premium) who.appendChild(premiumMark());
         if (post.username) {
           const handle = document.createElement('a');
           handle.href = href;
@@ -331,8 +346,17 @@
         copy.className = 'min-w-0 flex-1';
         const name = document.createElement('p');
         name.className = 'text-[15px] leading-5 font-bold break-words';
-        name.textContent = person.name;
-        copy.appendChild(name);
+        if (person.premium) {
+          const nameRow = document.createElement('span');
+          nameRow.className = 'flex min-w-0 items-center gap-1';
+          name.textContent = person.name;
+          nameRow.appendChild(name);
+          nameRow.appendChild(premiumMark());
+          copy.appendChild(nameRow);
+        } else {
+          name.textContent = person.name;
+          copy.appendChild(name);
+        }
         const meta = document.createElement('p');
         meta.className = 'text-[15px] leading-5 break-words text-x-muted';
         meta.textContent = person.username ? '@' + person.username : (person.bio || '');
@@ -442,7 +466,15 @@
           }
           meUsername = result.data.username || '';
           meEmail = result.data.email || '';
-          document.getElementById('greeting').textContent = result.data.name;
+          const greetingEl = document.getElementById('greeting');
+          greetingEl.textContent = result.data.name;
+          if (result.data.premium) {
+            greetingEl.appendChild(premiumMark());
+            const promo = document.getElementById('premiumPromoCard');
+            if (promo) {
+              promo.innerHTML = '<div class="flex items-center gap-1.5"><span class="text-x-blue">★</span><h2 class="text-base font-extrabold">Premium Active</h2></div><p class="mt-1 text-[13px] leading-4 text-x-muted">Your blue star is active across your profile and posts.</p>';
+            }
+          }
           const avatar = picture(result.data.photo, result.data.name.charAt(0), 'size-10');
           document.getElementById('mePhoto').appendChild(avatar);
           document.getElementById('composerPhoto').appendChild(picture(result.data.photo, result.data.name.charAt(0), 'size-10'));

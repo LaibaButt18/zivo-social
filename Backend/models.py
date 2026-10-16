@@ -52,4 +52,5 @@ class User:
         self.bio = bio
         self.photo = photo
         self.cover = cover
+        self.premium = False
         self.notifications = Queue()
