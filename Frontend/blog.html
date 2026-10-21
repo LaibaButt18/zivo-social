@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | Zivo</title>
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="x-page app-lock">
+  <div class="flex h-svh w-full min-w-0 max-w-full overflow-hidden">
+    <header class="sticky top-0 z-40 hidden h-svh w-[72px] min-w-0 shrink-0 flex-col px-2 sm:flex lg:w-[244px] lg:px-3">
+      <div class="flex w-full flex-col">
+        <a href="feed.html" class="mb-3 inline-flex items-center gap-2.5 px-2.5 pt-12 lg:px-3" aria-label="Zivo">
+          <img src="./assets/logo-mark.svg" alt="" class="size-8 shrink-0">
+          <span class="hidden text-[22px] font-extrabold leading-none tracking-[-0.03em] lg:inline">Zivo</span>
+        </a>
+        <nav class="app-menu">
+          <a href="feed.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.4 12 4.2l7.5 6.2V19a1.5 1.5 0 0 1-1.5 1.5H15v-5.2H9V20.5H6A1.5 1.5 0 0 1 4.5 19z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Home</span>
+          </a>
+          <a href="groups.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" d="M15.2 19.2v-1c0-1.8-1.8-3.2-4-3.2s-4 1.4-4 3.2v1"/><circle cx="11.2" cy="8.3" r="2.6"/><path stroke-linecap="round" d="M18.8 19.2v-.8c0-1.3-1-2.4-2.3-2.8"/><circle cx="16.6" cy="9.2" r="2"/></svg>
+            <span class="hidden text-[15px] lg:inline">Groups</span>
+          </a>
+          <a href="chats.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.2 7.2h11.6A1.6 1.6 0 0 1 19.4 8.8v6a1.6 1.6 0 0 1-1.6 1.6H9.4L6.2 19.2v-2.8A1.6 1.6 0 0 1 4.6 14.8v-6a1.6 1.6 0 0 1 1.6-1.6z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Chats</span>
+          </a>
+          <a href="webinars.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="3.4" y="6.6" width="11.2" height="8.2" rx="1.8"/><path stroke-linecap="round" stroke-linejoin="round" d="m14.6 9.8 5.2-2.3v6.4l-5.2-2.3"/></svg>
+            <span class="hidden text-[15px] lg:inline">Webinars</span>
+          </a>
+          <a href="blogs.html" class="x-nav" aria-current="page">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5.2 5.2h4.4A2.4 2.4 0 0 1 12 7.6v11.2a2 2 0 0 0-2-2H5.2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M18.8 5.2h-4.4A2.4 2.4 0 0 0 12 7.6v11.2a2 2 0 0 1 2-2h4.8z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Blogs</span>
+          </a>
+          <a href="notifications.html" class="x-nav" data-nav="notifications">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.4 9.2a5.6 5.6 0 0 1 11.2 0c0 4.2 1.3 5.6 1.3 5.6H5.1s1.3-1.4 1.3-5.6z"/><path stroke-linecap="round" d="M10 18.2a2 2 0 0 0 4 0"/></svg>
+            <span class="hidden text-[15px] lg:inline">Notifications</span>
+          </a>
+          <div class="nav-divider" role="separator"></div>
+          <a href="profile.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="12" cy="8.4" r="2.8"/><path stroke-linecap="round" d="M6.2 19.1c1.2-2.5 3.3-3.8 5.8-3.8s4.6 1.3 5.8 3.8"/></svg>
+            <span class="hidden text-[15px] lg:inline">Profile</span>
+          </a>
+          <a href="premium.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linejoin="round" d="m12 3.4 2.05 4.9 5.25.45-4.05 3.4 1.25 5.15L12 14.7 7.5 17.3l1.25-5.15-4.05-3.4 5.25-.45z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Premium</span>
+          </a>
+        </nav>
+        <a href="feed.html#compose" class="x-btn-blue mt-3 size-11 self-center text-[15px] lg:h-11 lg:w-full lg:self-auto" aria-label="Post">
+          <svg viewBox="0 0 24 24" class="size-6 lg:hidden" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+          <span class="hidden text-[15px] lg:inline">Post</span>
+        </a>
+      </div>
+      <div class="relative mt-auto mb-3">
+        <button id="accountToggle" type="button" class="flex w-full items-center gap-2 rounded-full p-2 text-left hover:bg-black/10">
+          <div id="mePhoto" class="size-10 shrink-0"></div>
+          <span class="hidden min-w-0 flex-1 lg:block">
+            <span id="greeting" class="block truncate text-[15px] font-bold">Account</span>
+            <span id="handle" class="block truncate text-[15px] text-x-muted"></span>
+          </span>
+          <svg viewBox="0 0 24 24" class="hidden size-5 shrink-0 lg:block" aria-hidden="true"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></svg>
+        </button>
+        <div id="accountPopover" class="menu-pop absolute bottom-full left-0 z-50 mb-2 hidden w-[220px] overflow-hidden rounded-2xl bg-white py-2 lg:w-full">
+          <a href="profile.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">View profile</a>
+          <a href="premium.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">Premium</a>
+          <button id="logout" type="button" class="w-full px-4 py-3 text-left text-[15px] font-bold hover:bg-x-hover">Log out</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="h-svh min-w-0 flex-1 overflow-y-auto overscroll-none border-x-line pb-20 sm:border-x sm:pb-12">
+      <div class="sticky top-0 z-20 flex items-center gap-2 border-b border-x-line bg-white/85 px-3 py-2.5 backdrop-blur-md sm:px-4">
+        <a href="blogs.html" class="inline-flex size-9 items-center justify-center rounded-full hover:bg-x-hover" aria-label="Back to blogs">
+          <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5 8 12l7 7"/></svg>
+        </a>
+        <p id="pageTitle" class="min-w-0 flex-1 truncate text-[15px] font-bold">Blog</p>
+        <div id="ownerActions" class="flex shrink-0 items-center gap-1"></div>
+      </div>
+      <article id="article" class="mx-auto w-full max-w-[680px] px-5 pt-8 pb-16 sm:px-8"></article>
+      <p id="missing" class="mx-auto hidden max-w-[680px] px-5 py-16 text-center text-[15px] text-x-muted">That blog is not available.</p>
+    </main>
+  </div>
+
+  <nav class="fixed inset-x-0 bottom-0 z-30 flex h-14 items-center justify-around overflow-x-auto border-t border-x-line bg-white sm:hidden">
+    <a href="feed.html" class="shrink-0 rounded-full p-3" aria-label="Home">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linejoin="round" d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg>
+    </a>
+    <a href="groups.html" class="shrink-0 rounded-full p-3" aria-label="Groups">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" d="M8.5 19v-1.2c0-1.7-1.6-3-3.5-3s-3.5 1.3-3.5 3V19"/><circle cx="5" cy="8.5" r="2.2"/><path stroke-linecap="round" d="M22.5 19v-1.2c0-1.7-1.6-3-3.5-3-1.1 0-2.1.4-2.7 1.1"/><circle cx="19" cy="8.5" r="2.2"/><path stroke-linecap="round" d="M16.2 19v-1.4c0-2.2-2.1-4-4.7-4s-4.7 1.8-4.7 4V19"/><circle cx="11.5" cy="7.6" r="2.6"/></svg>
+    </a>
+    <a href="chats.html" class="shrink-0 rounded-full p-3" aria-label="Chats">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 6.8h14a1.5 1.5 0 0 1 1.5 1.5v7a1.5 1.5 0 0 1-1.5 1.5H9.2L5 20.2v-3.4H5A1.5 1.5 0 0 1 3.5 15.3v-7A1.5 1.5 0 0 1 5 6.8z"/></svg>
+    </a>
+    <a href="webinars.html" class="shrink-0 rounded-full p-3" aria-label="Webinars">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="6" width="12" height="9" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m15 9.5 6-2.5v7l-6-2.5"/><path stroke-linecap="round" d="M6 19h8"/></svg>
+    </a>
+        <a href="blogs.html" class="shrink-0 rounded-full p-3" aria-label="Blogs" aria-current="page">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5.2 5.2h4.4A2.4 2.4 0 0 1 12 7.6v11.2a2 2 0 0 0-2-2H5.2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M18.8 5.2h-4.4A2.4 2.4 0 0 0 12 7.6v11.2a2 2 0 0 1 2-2h4.8z"/></svg>
+    </a>
+    <a href="notifications.html" class="relative shrink-0 rounded-full p-3" data-nav="notifications" aria-label="Notifications">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.4 9.2a5.6 5.6 0 0 1 11.2 0c0 4.2 1.3 5.6 1.3 5.6H5.1s1.3-1.4 1.3-5.6z"/><path stroke-linecap="round" d="M10 18.2a2 2 0 0 0 4 0"/></svg>
+    </a>
+    <a href="profile.html" class="shrink-0 rounded-full p-3" aria-label="Profile">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path stroke-linecap="round" d="M5.2 19.4c1.5-2.8 3.9-4.2 6.8-4.2s5.3 1.4 6.8 4.2"/></svg>
+    </a>
+    <a href="premium.html" class="shrink-0 rounded-full p-3" aria-label="Premium">
+      <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path fill="currentColor" d="M12 2.4 9.6 8.2 3.3 8.8l4.8 4.1-1.4 6.3L12 16.2l5.3 3 1.4-6.3 4.8-4.1-6.3-.6z"/></svg>
+    </a>
+  </nav>
+
+  <script src="./api.js"></script>
+  <script src="./posts.js"></script>
+  <script>
+    var blog = null;
+    var meEmail = "";
+    var editing = false;
+    var blogId = new URLSearchParams(window.location.search).get("id");
+
+    function picture(src, letter, sizeClass) {
+      var size = sizeClass || "size-11";
+      if (src) {
+        var img = document.createElement("img");
+        img.src = API + src;
+        img.alt = "";
+        img.className = size + " shrink-0 rounded-full object-cover";
+        return img;
+      }
+      var fallback = document.createElement("span");
+      fallback.className = "flex " + size + " shrink-0 items-center justify-center rounded-full bg-x-blue text-sm font-bold text-white";
+      fallback.textContent = (letter || "?").toUpperCase();
+      return fallback;
+    }
+
+    function when(seconds) {
+      if (!seconds) return "";
+      return new Date(seconds * 1000).toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" });
+    }
+
+    function readLabel(text) {
+      var words = String(text || "").trim().split(/\s+/).filter(Boolean).length;
+      var minutes = Math.max(1, Math.ceil(words / 200));
+      return minutes === 1 ? "1 min read" : minutes + " min read";
+    }
+
+    function imageProblem(file) {
+      if (!file) return "";
+      var types = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+      if (types.indexOf(file.type) === -1 || file.size === 0 || file.size > 2 * 1024 * 1024) {
+        return "Use a jpg, png, gif, or webp under 2 MB.";
+      }
+      return "";
+    }
+
+    function showMissing() {
+      document.getElementById("article").classList.add("hidden");
+      document.getElementById("missing").classList.remove("hidden");
+      document.getElementById("pageTitle").textContent = "Blog";
+      document.getElementById("ownerActions").innerHTML = "";
+    }
+
+    function paintOwnerActions() {
+      var box = document.getElementById("ownerActions");
+      box.innerHTML = "";
+      if (!blog || blog.email !== meEmail) return;
+      var edit = document.createElement("button");
+      edit.type = "button";
+      edit.className = "rounded-full px-3 py-1.5 text-[14px] font-bold hover:bg-x-hover";
+      edit.textContent = editing ? "Close" : "Edit";
+      edit.addEventListener("click", function () {
+        editing = !editing;
+        paint();
+      });
+      var remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "rounded-full px-3 py-1.5 text-[14px] font-bold text-x-danger hover:bg-x-hover";
+      remove.textContent = "Delete";
+      remove.addEventListener("click", function () {
+        openDialog({
+          title: "Delete blog?",
+          body: "This removes the blog and its comments.",
+          confirmLabel: "Delete",
+        }).then(function (ok) {
+          if (!ok) return;
+          apiFetch("/blogs/" + encodeURIComponent(blog.id) + "/delete", { method: "POST", body: "{}" }).then(function (result) {
+            if (!result.ok) return;
+            window.location.href = "blogs.html";
+          });
+        });
+      });
+      box.appendChild(edit);
+      box.appendChild(remove);
+    }
+
+    function paint() {
+      var root = document.getElementById("article");
+      root.innerHTML = "";
+      root.classList.remove("hidden");
+      document.getElementById("missing").classList.add("hidden");
+      document.getElementById("pageTitle").textContent = "Blog";
+      document.title = blog.title + " | Zivo";
+      paintOwnerActions();
+
+      if (editing) {
+        paintEditor(root);
+        return;
+      }
+
+      var kicker = document.createElement("p");
+      kicker.className = "text-[15px] text-x-muted";
+      kicker.textContent = [when(blog.created_at), readLabel(blog.body)].filter(Boolean).join(" · ");
+      root.appendChild(kicker);
+
+      var title = document.createElement("h1");
+      title.className = "mt-3 text-[32px] font-extrabold leading-[1.15] tracking-[-0.03em] text-balance sm:text-[40px]";
+      title.textContent = blog.title;
+      root.appendChild(title);
+
+      var profile = document.createElement("a");
+      profile.href = "profile.html?user=" + encodeURIComponent(blog.username || blog.email);
+      profile.className = "mt-6 flex w-fit max-w-full items-center gap-3";
+      profile.appendChild(picture(blog.photo, (blog.name || "?").charAt(0)));
+      var copy = document.createElement("span");
+      copy.className = "min-w-0";
+      var name = document.createElement("span");
+      name.className = "block truncate text-[15px] font-bold";
+      name.textContent = blog.name;
+      copy.appendChild(name);
+      if (blog.username) {
+        var handle = document.createElement("span");
+        handle.className = "block truncate text-[14px] text-x-muted";
+        handle.textContent = "@" + blog.username;
+        copy.appendChild(handle);
+      }
+      profile.appendChild(copy);
+      root.appendChild(profile);
+
+      if (blog.cover) {
+        var cover = document.createElement("img");
+        cover.src = API + blog.cover;
+        cover.alt = "";
+        cover.className = "mt-8 aspect-[16/9] w-full rounded-2xl object-cover";
+        root.appendChild(cover);
+      }
+
+      var body = document.createElement("p");
+      body.className = "mt-8 whitespace-pre-wrap text-[19px] leading-[1.75]";
+      body.textContent = blog.body || "";
+      root.appendChild(body);
+
+      var actions = document.createElement("div");
+      actions.className = "mt-10 flex items-center gap-6 border-t border-x-line py-4";
+      var like = document.createElement("button");
+      like.type = "button";
+      like.className = "inline-flex items-center gap-2 text-[15px] font-bold " + (blog.liked ? "text-x-like" : "text-x-muted hover:text-x-like");
+      like.setAttribute("aria-label", blog.liked ? "Liked" : "Like");
+      like.innerHTML = '<svg viewBox="0 0 24 24" class="size-5" aria-hidden="true" fill="' + (blog.liked ? "currentColor" : "none") + '" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+      var likeCount = document.createElement("span");
+      likeCount.textContent = String(blog.like_count || 0);
+      like.appendChild(likeCount);
+      like.addEventListener("click", function () {
+        if (blog.liked) return;
+        apiFetch("/blogs/" + encodeURIComponent(blog.id) + "/like", { method: "POST", body: "{}" }).then(function (result) {
+          if (!result.ok) return;
+          blog = result.data;
+          paint();
+        });
+      });
+      var commentsLabel = document.createElement("p");
+      commentsLabel.className = "text-[15px] text-x-muted";
+      var count = blog.comment_count || 0;
+      commentsLabel.textContent = count === 1 ? "1 comment" : count + " comments";
+      actions.appendChild(like);
+      actions.appendChild(commentsLabel);
+      root.appendChild(actions);
+
+      var heading = document.createElement("h2");
+      heading.className = "mt-8 text-[22px] font-extrabold";
+      heading.textContent = "Comments";
+      root.appendChild(heading);
+
+      if (!(blog.comments || []).length) {
+        var empty = document.createElement("p");
+        empty.className = "mt-3 text-[15px] text-x-muted";
+        empty.textContent = "No comments yet.";
+        root.appendChild(empty);
+      }
+
+      (blog.comments || []).forEach(function (comment) {
+        var row = document.createElement("div");
+        row.className = "mt-5 flex gap-3";
+        row.appendChild(picture(comment.photo, (comment.name || "?").charAt(0), "size-10"));
+        var card = document.createElement("div");
+        card.className = "min-w-0 flex-1 rounded-2xl bg-x-hover px-4 py-3";
+        var line = document.createElement("p");
+        line.className = "text-[15px] font-bold";
+        line.textContent = comment.name;
+        var text = document.createElement("p");
+        text.className = "mt-1 whitespace-pre-wrap text-[15px] leading-6";
+        text.textContent = comment.text;
+        card.appendChild(line);
+        card.appendChild(text);
+        if (comment.email === meEmail || blog.email === meEmail) {
+          var del = document.createElement("button");
+          del.type = "button";
+          del.className = "mt-2 text-[13px] font-bold text-x-muted hover:text-x-danger";
+          del.textContent = "Delete";
+          del.addEventListener("click", function () {
+            apiFetch("/blogs/" + encodeURIComponent(blog.id) + "/comments/" + encodeURIComponent(comment.id) + "/delete", {
+              method: "POST",
+              body: "{}",
+            }).then(function (result) {
+              if (!result.ok) return;
+              blog = result.data;
+              paint();
+            });
+          });
+          card.appendChild(del);
+        }
+        row.appendChild(card);
+        root.appendChild(row);
+      });
+
+      var form = document.createElement("form");
+      form.className = "mt-6 rounded-2xl border border-x-line p-3";
+      var input = document.createElement("textarea");
+      input.maxLength = 500;
+      input.rows = 3;
+      input.placeholder = "Write a comment";
+      input.className = "w-full resize-none bg-transparent text-[15px] leading-6 outline-none placeholder:text-x-muted";
+      var row = document.createElement("div");
+      row.className = "mt-2 flex items-center justify-end";
+      var send = document.createElement("button");
+      send.type = "submit";
+      send.className = "x-btn-blue h-9 px-4 text-[15px]";
+      send.textContent = "Comment";
+      var error = document.createElement("p");
+      error.className = "mt-2 hidden text-[13px] text-x-danger";
+      row.appendChild(send);
+      form.appendChild(input);
+      form.appendChild(row);
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var text = input.value.trim();
+        if (!text) {
+          error.textContent = "Write a comment.";
+          error.classList.remove("hidden");
+          return;
+        }
+        send.disabled = true;
+        apiFetch("/blogs/" + encodeURIComponent(blog.id) + "/comments", {
+          method: "POST",
+          body: JSON.stringify({ text: text }),
+        }).then(function (result) {
+          send.disabled = false;
+          if (!result.ok) {
+            error.textContent = result.data.message || "Could not post that comment.";
+            error.classList.remove("hidden");
+            return;
+          }
+          blog = result.data;
+          paint();
+        }).catch(function () {
+          send.disabled = false;
+          error.textContent = "Cannot reach the server.";
+          error.classList.remove("hidden");
+        });
+      });
+      root.appendChild(form);
+      root.appendChild(error);
+    }
+
+    function paintEditor(root) {
+      var form = document.createElement("form");
+      var label = document.createElement("p");
+      label.className = "text-[15px] text-x-muted";
+      label.textContent = "Editing";
+      var title = document.createElement("input");
+      title.maxLength = 80;
+      title.value = blog.title;
+      title.setAttribute("aria-label", "Title");
+      title.className = "mt-3 w-full bg-transparent text-[32px] font-extrabold leading-[1.15] tracking-[-0.03em] outline-none sm:text-[40px]";
+      var body = document.createElement("textarea");
+      body.maxLength = 4000;
+      body.rows = 10;
+      body.value = blog.body || "";
+      body.setAttribute("aria-label", "Blog");
+      body.className = "mt-8 min-h-48 w-full resize-none bg-transparent text-[19px] leading-[1.75] outline-none";
+      var coverRow = document.createElement("div");
+      coverRow.className = "mt-6 flex flex-wrap items-center gap-4";
+      var file = document.createElement("input");
+      file.type = "file";
+      file.accept = "image/jpeg,image/png,image/gif,image/webp";
+      file.id = "editCover";
+      file.className = "sr-only";
+      var fileLabel = document.createElement("label");
+      fileLabel.htmlFor = "editCover";
+      fileLabel.className = "inline-flex h-9 cursor-pointer items-center rounded-full border border-x-border px-4 text-[14px] font-bold hover:bg-x-hover";
+      fileLabel.textContent = blog.cover ? "Change cover" : "Add cover";
+      var removeCover = document.createElement("label");
+      removeCover.className = "inline-flex items-center gap-2 text-[14px] text-x-muted";
+      var box = document.createElement("input");
+      box.type = "checkbox";
+      removeCover.appendChild(box);
+      removeCover.appendChild(document.createTextNode("Remove cover"));
+      if (!blog.cover) removeCover.classList.add("hidden");
+      coverRow.appendChild(file);
+      coverRow.appendChild(fileLabel);
+      coverRow.appendChild(removeCover);
+      var error = document.createElement("p");
+      error.className = "mt-3 hidden text-[13px] text-x-danger";
+      var save = document.createElement("button");
+      save.type = "submit";
+      save.className = "x-btn-blue mt-5 h-10 px-5 text-[15px]";
+      save.textContent = "Save";
+      form.appendChild(label);
+      form.appendChild(title);
+      form.appendChild(body);
+      if (blog.cover) {
+        var current = document.createElement("img");
+        current.src = API + blog.cover;
+        current.alt = "";
+        current.className = "mt-6 aspect-[16/9] w-full rounded-2xl object-cover";
+        form.appendChild(current);
+      }
+      form.appendChild(coverRow);
+      form.appendChild(error);
+      form.appendChild(save);
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var problem = imageProblem(file.files[0]);
+        if (problem) {
+          error.textContent = problem;
+          error.classList.remove("hidden");
+          return;
+        }
+        var data = new FormData();
+        data.append("title", title.value.trim());
+        data.append("body", body.value.trim());
+        if (box.checked) data.append("remove_cover", "1");
+        if (file.files[0]) data.append("cover", file.files[0]);
+        save.disabled = true;
+        apiForm("/blogs/" + encodeURIComponent(blog.id) + "/edit", data).then(function (result) {
+          save.disabled = false;
+          if (!result.ok) {
+            error.textContent = result.data.message || "Could not save that blog.";
+            error.classList.remove("hidden");
+            return;
+          }
+          blog = result.data;
+          editing = false;
+          paint();
+        }).catch(function () {
+          save.disabled = false;
+          error.textContent = "Cannot reach the server.";
+          error.classList.remove("hidden");
+        });
+      });
+      root.appendChild(form);
+    }
+
+    function loadBlog() {
+      if (!blogId) {
+        showMissing();
+        return;
+      }
+      apiFetch("/blogs/" + encodeURIComponent(blogId)).then(function (result) {
+        if (result.status === 401) {
+          clearToken();
+          window.location.href = "loginpage.html";
+          return;
+        }
+        if (!result.ok) {
+          showMissing();
+          return;
+        }
+        blog = result.data;
+        paint();
+      }).catch(function () {
+        showMissing();
+      });
+    }
+
+    if (!localStorage.getItem("zivo_token")) {
+      window.location.href = "loginpage.html";
+    } else {
+      apiFetch("/me").then(function (result) {
+        if (!result.ok) {
+          clearToken();
+          window.location.href = "loginpage.html";
+          return;
+        }
+        meEmail = result.data.email || "";
+        document.getElementById("greeting").textContent = result.data.name;
+        if (result.data.premium) document.getElementById("greeting").appendChild(premiumMark());
+        document.getElementById("mePhoto").appendChild(picture(result.data.photo, (result.data.name || "?").charAt(0), "size-10"));
+        if (result.data.username) document.getElementById("handle").textContent = "@" + result.data.username;
+        loadBlog();
+      }).catch(function () {
+        window.location.href = "loginpage.html";
+      });
+    }
+
+    document.addEventListener("click", function (event) {
+      var pop = document.getElementById("accountPopover");
+      var toggle = document.getElementById("accountToggle");
+      if (toggle.contains(event.target)) {
+        pop.classList.toggle("hidden");
+        return;
+      }
+      if (!pop.contains(event.target)) pop.classList.add("hidden");
+    });
+    document.getElementById("logout").addEventListener("click", function () {
+      apiFetch("/logout", { method: "POST", body: "{}" }).finally(function () {
+        clearToken();
+        window.location.href = "loginpage.html";
+      });
+    });
+  </script>
+</body>
+</html>

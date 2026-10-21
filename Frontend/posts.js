@@ -82,7 +82,9 @@ function applyPostUpdate(post, updated) {
 }
 
 function mountPostMenu(header, post, helpers) {
-  if (!helpers || helpers.meEmail !== post.email) return;
+  var isAuthor = !!(helpers && helpers.meEmail === post.email);
+  var canModerate = !!(helpers && helpers.canModerate);
+  if (!isAuthor && !canModerate) return;
 
   var textEl = helpers.textEl;
   var wrap = document.createElement('div');
@@ -112,7 +114,7 @@ function mountPostMenu(header, post, helpers) {
 
   var editItem = menuItem('Edit');
   var deleteItem = menuItem('Delete', true);
-  menu.appendChild(editItem);
+  if (isAuthor) menu.appendChild(editItem);
   menu.appendChild(deleteItem);
 
   var editor = document.createElement('form');
@@ -137,7 +139,7 @@ function mountPostMenu(header, post, helpers) {
   editor.appendChild(area);
   editor.appendChild(actions);
   editor.appendChild(error);
-  if (textEl) textEl.insertAdjacentElement('afterend', editor);
+  if (isAuthor && textEl) textEl.insertAdjacentElement('afterend', editor);
 
   function closeMenu() {
     menu.classList.add('hidden');
@@ -244,7 +246,7 @@ document.addEventListener('click', function () {
   });
 });
 
-function mountCommentTools(copy, text, post, comment, paint, showError) {
+function mountCommentTools(copy, text, post, comment, paint, showError, allowEdit) {
   var tools = document.createElement('div');
   tools.className = 'mt-1 flex gap-3 text-[13px]';
   var editBtn = document.createElement('button');
@@ -255,7 +257,7 @@ function mountCommentTools(copy, text, post, comment, paint, showError) {
   deleteBtn.type = 'button';
   deleteBtn.className = 'font-bold text-x-muted hover:text-x-danger';
   deleteBtn.textContent = 'Delete';
-  tools.appendChild(editBtn);
+  if (allowEdit !== false) tools.appendChild(editBtn);
   tools.appendChild(deleteBtn);
 
   var editor = document.createElement('form');
@@ -403,8 +405,16 @@ function mountPostActions(parent, post, helpers) {
   notice.className = 'mt-2 hidden text-[13px] text-x-danger';
   form.appendChild(input);
   form.appendChild(submit);
+  var allowComment = !helpers || helpers.canComment !== false;
   panel.appendChild(list);
-  panel.appendChild(form);
+  if (allowComment) {
+    panel.appendChild(form);
+  } else {
+    var locked = document.createElement('p');
+    locked.className = 'border-t border-x-line pt-3 text-[13px] text-x-muted';
+    locked.textContent = 'Only admins can comment in this group.';
+    panel.appendChild(locked);
+  }
   panel.appendChild(notice);
   parent.appendChild(panel);
 
@@ -445,8 +455,9 @@ function mountPostActions(parent, post, helpers) {
       text.textContent = comment.text;
       copy.appendChild(who);
       copy.appendChild(text);
-      if (helpers.meEmail && comment.email === helpers.meEmail) {
-        mountCommentTools(copy, text, post, comment, paint, showError);
+      var ownsComment = !!(helpers.meEmail && comment.email === helpers.meEmail);
+      if (ownsComment || helpers.canModerate) {
+        mountCommentTools(copy, text, post, comment, paint, showError, ownsComment);
       }
       item.appendChild(avatar);
       item.appendChild(copy);
@@ -517,4 +528,321 @@ function mountPostActions(parent, post, helpers) {
   });
 
   paint();
+}
+
+var POST_EMOJIS = ['😀', '😁', '😂', '😊', '😍', '😎', '🤔', '😭', '👍', '👏', '🙏', '🔥', '✨', '❤️', '🎉', '💯'];
+
+function postImageProblem(file) {
+  var types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+  if (!file || types.indexOf(file.type) === -1 || file.size === 0 || file.size > 2 * 1024 * 1024) {
+    return 'Use a jpg, png, gif, or webp under 2 MB.';
+  }
+  return '';
+}
+
+function mountPostMedia(parent, post, onVote) {
+  var images = Array.isArray(post.images) && post.images.length ? post.images : [];
+  if (!images.length && post.image) images = [post.image];
+  if (images.length) {
+    var grid = document.createElement('div');
+    grid.className = 'mt-3 grid gap-0.5 overflow-hidden rounded-2xl border border-x-line ' + (images.length === 1 ? 'grid-cols-1' : 'grid-cols-2');
+    images.forEach(function (src, index) {
+      var img = document.createElement('img');
+      img.src = API + src;
+      img.alt = '';
+      img.className = 'w-full object-cover';
+      if (images.length === 1) img.className += ' max-h-[510px]';
+      else if (images.length === 3 && index === 0) img.className += ' col-span-2 max-h-80';
+      else img.className += ' h-40 sm:h-56';
+      grid.appendChild(img);
+    });
+    parent.appendChild(grid);
+  }
+
+  if (!post.poll || !Array.isArray(post.poll.options) || !post.poll.options.length) return;
+  var voted = typeof post.poll.choice === 'number';
+  var box = document.createElement('div');
+  box.className = 'mt-3 overflow-hidden rounded-2xl border border-x-line';
+  post.poll.options.forEach(function (option, index) {
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'relative block w-full px-3 py-2.5 text-left text-[15px] hover:bg-x-hover';
+    if (voted) {
+      var bar = document.createElement('span');
+      bar.className = 'absolute inset-y-0 left-0 ' + (index === post.poll.choice ? 'bg-x-blue/20' : 'bg-x-hover');
+      bar.style.width = (option.percent || 0) + '%';
+      var label = document.createElement('span');
+      label.className = 'relative flex items-center justify-between gap-3';
+      var name = document.createElement('span');
+      if (index === post.poll.choice) name.className = 'font-bold';
+      name.textContent = option.text;
+      var pct = document.createElement('span');
+      pct.className = 'text-[13px] text-x-muted';
+      pct.textContent = (option.percent || 0) + '%';
+      label.appendChild(name);
+      label.appendChild(pct);
+      button.appendChild(bar);
+      button.appendChild(label);
+    } else {
+      button.textContent = option.text;
+    }
+    button.addEventListener('click', function () {
+      if (typeof onVote !== 'function') return;
+      button.disabled = true;
+      apiFetch('/posts/' + post.id + '/vote', {
+        method: 'POST',
+        body: JSON.stringify({ choice: index }),
+      }).then(function (result) {
+        button.disabled = false;
+        if (result.ok) onVote(result.data);
+      }).catch(function () {
+        button.disabled = false;
+      });
+    });
+    box.appendChild(button);
+  });
+  var total = document.createElement('p');
+  total.className = 'border-t border-x-line px-3 py-2 text-[13px] text-x-muted';
+  var count = post.poll.total || 0;
+  total.textContent = count === 1 ? '1 vote' : count + ' votes';
+  box.appendChild(total);
+  parent.appendChild(box);
+}
+
+function bindPostComposer(preview, tools, textarea, hooks) {
+  hooks = hooks || {};
+  var files = [];
+  var pollOpen = false;
+  var choiceValues = ['', ''];
+  var urls = [];
+
+  var fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/jpeg,image/png,image/gif,image/webp';
+  fileInput.multiple = true;
+  fileInput.className = 'sr-only';
+
+  function iconButton(label, svg) {
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'inline-flex size-9 items-center justify-center rounded-full text-x-blue hover:bg-x-blue/10';
+    button.setAttribute('aria-label', label);
+    button.title = label;
+    button.innerHTML = svg;
+    return button;
+  }
+
+  var photoButton = iconButton('Add photos', '<svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.3"/><path stroke-linecap="round" stroke-linejoin="round" d="m21 15.5-4.2-4.2L8 19"/></svg>');
+  var emojiButton = iconButton('Add emoji', '<svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path stroke-linecap="round" d="M8.5 14.2c.9 1.1 2.1 1.6 3.5 1.6s2.6-.5 3.5-1.6"/><path stroke-linecap="round" d="M9 10h.01M15 10h.01"/></svg>');
+  var pollButton = iconButton('Add poll', '<svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 19V10"/><path d="M12 19V5"/><path d="M19 19v-7"/></svg>');
+
+  var emojiPop = document.createElement('div');
+  emojiPop.className = 'absolute bottom-12 left-10 z-20 hidden w-56 rounded-2xl border border-x-line bg-white p-2 shadow-xl';
+  var emojiGrid = document.createElement('div');
+  emojiGrid.className = 'grid grid-cols-8 gap-1';
+  POST_EMOJIS.forEach(function (symbol) {
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'inline-flex size-7 items-center justify-center rounded-lg text-lg hover:bg-x-hover';
+    button.textContent = symbol;
+    button.addEventListener('click', function () {
+      var start = textarea.selectionStart || textarea.value.length;
+      var end = textarea.selectionEnd || textarea.value.length;
+      textarea.value = textarea.value.slice(0, start) + symbol + textarea.value.slice(end);
+      var next = start + symbol.length;
+      textarea.focus();
+      if (textarea.setSelectionRange) textarea.setSelectionRange(next, next);
+      emojiPop.classList.add('hidden');
+      textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    emojiGrid.appendChild(button);
+  });
+  emojiPop.appendChild(emojiGrid);
+
+  tools.classList.add('relative');
+  tools.appendChild(fileInput);
+  tools.appendChild(photoButton);
+  tools.appendChild(emojiButton);
+  tools.appendChild(pollButton);
+  tools.appendChild(emojiPop);
+
+  function filledChoices() {
+    return choiceValues.map(function (value) { return value.trim(); }).filter(Boolean);
+  }
+
+  function notify() {
+    if (typeof hooks.onChange === 'function') hooks.onChange();
+  }
+
+  function notice(text) {
+    if (text && typeof hooks.onNotice === 'function') hooks.onNotice(text);
+  }
+
+  function dropUrls() {
+    urls.forEach(function (url) { URL.revokeObjectURL(url); });
+    urls = [];
+  }
+
+  function paint() {
+    dropUrls();
+    preview.innerHTML = '';
+    if (files.length) {
+      var grid = document.createElement('div');
+      grid.className = 'mt-2 grid gap-1 ' + (files.length === 1 ? 'grid-cols-1' : 'grid-cols-2');
+      files.forEach(function (file, index) {
+        var url = URL.createObjectURL(file);
+        urls.push(url);
+        var tile = document.createElement('div');
+        tile.className = 'relative overflow-hidden rounded-2xl border border-x-line';
+        var img = document.createElement('img');
+        img.src = url;
+        img.alt = '';
+        img.className = files.length === 1 ? 'max-h-80 w-full object-cover' : 'h-32 w-full object-cover sm:h-40';
+        var remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'absolute right-2 top-2 inline-flex size-7 items-center justify-center rounded-full bg-black/70 text-sm font-bold text-white';
+        remove.setAttribute('aria-label', 'Remove photo');
+        remove.textContent = '×';
+        remove.addEventListener('click', function () {
+          files.splice(index, 1);
+          paint();
+          notify();
+        });
+        tile.appendChild(img);
+        tile.appendChild(remove);
+        grid.appendChild(tile);
+      });
+      preview.appendChild(grid);
+    }
+
+    if (!pollOpen) return;
+    var panel = document.createElement('div');
+    panel.className = 'mt-2 rounded-2xl border border-x-line p-3';
+    choiceValues.forEach(function (value, index) {
+      var row = document.createElement('div');
+      row.className = 'mb-2 flex items-center gap-2';
+      var input = document.createElement('input');
+      input.type = 'text';
+      input.maxLength = 40;
+      input.value = value;
+      input.placeholder = 'Choice ' + (index + 1);
+      input.className = 'h-10 min-w-0 flex-1 rounded-xl border border-x-border px-3 text-[15px] outline-none focus:border-x-blue';
+      input.addEventListener('input', function () {
+        choiceValues[index] = input.value;
+        notify();
+      });
+      row.appendChild(input);
+      if (choiceValues.length > 2) {
+        var removeChoice = document.createElement('button');
+        removeChoice.type = 'button';
+        removeChoice.className = 'inline-flex size-8 shrink-0 items-center justify-center rounded-full text-x-muted hover:bg-x-hover';
+        removeChoice.setAttribute('aria-label', 'Remove choice');
+        removeChoice.textContent = '×';
+        removeChoice.addEventListener('click', function () {
+          choiceValues.splice(index, 1);
+          paint();
+          notify();
+        });
+        row.appendChild(removeChoice);
+      }
+      panel.appendChild(row);
+    });
+    var actions = document.createElement('div');
+    actions.className = 'flex items-center justify-between';
+    if (choiceValues.length < 4) {
+      var add = document.createElement('button');
+      add.type = 'button';
+      add.className = 'text-[13px] font-bold text-x-blue';
+      add.textContent = 'Add choice';
+      add.addEventListener('click', function () {
+        choiceValues.push('');
+        paint();
+      });
+      actions.appendChild(add);
+    } else {
+      actions.appendChild(document.createElement('span'));
+    }
+    var close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'text-[13px] font-bold text-x-muted';
+    close.textContent = 'Remove poll';
+    close.addEventListener('click', function () {
+      pollOpen = false;
+      choiceValues = ['', ''];
+      paint();
+      notify();
+    });
+    actions.appendChild(close);
+    panel.appendChild(actions);
+    preview.appendChild(panel);
+  }
+
+  photoButton.addEventListener('click', function () { fileInput.click(); });
+  fileInput.addEventListener('change', function () {
+    var picked = Array.prototype.slice.call(fileInput.files || []);
+    fileInput.value = '';
+    picked.forEach(function (file) {
+      var problem = postImageProblem(file);
+      if (problem) {
+        notice(problem);
+        return;
+      }
+      if (files.length >= 4) {
+        notice('A post can have 4 photos at most.');
+        return;
+      }
+      if (pollOpen) {
+        pollOpen = false;
+        choiceValues = ['', ''];
+        notice('The poll was cleared so these photos can be added.');
+      }
+      files.push(file);
+    });
+    paint();
+    notify();
+  });
+
+  emojiButton.addEventListener('click', function () {
+    emojiPop.classList.toggle('hidden');
+  });
+  document.addEventListener('click', function (event) {
+    if (!tools.contains(event.target)) emojiPop.classList.add('hidden');
+  });
+
+  pollButton.addEventListener('click', function () {
+    if (files.length) {
+      files = [];
+      notice('The photos were cleared so a poll can be added.');
+    }
+    pollOpen = true;
+    paint();
+    notify();
+  });
+
+  return {
+    ready: function (text) {
+      return !!(String(text || '').trim() || files.length || (pollOpen && filledChoices().length >= 2));
+    },
+    problem: function () {
+      if (!pollOpen) return '';
+      var filled = filledChoices();
+      if (filled.length === 0) return '';
+      if (filled.length < 2) return 'A poll needs at least 2 choices.';
+      return '';
+    },
+    fill: function (form) {
+      files.forEach(function (file) { form.append('image', file); });
+      var filled = filledChoices();
+      if (pollOpen && filled.length >= 2) form.append('poll', JSON.stringify(filled));
+    },
+    clear: function () {
+      files = [];
+      pollOpen = false;
+      choiceValues = ['', ''];
+      fileInput.value = '';
+      emojiPop.classList.add('hidden');
+      paint();
+      notify();
+    },
+  };
 }

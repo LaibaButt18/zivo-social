@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chats | Zivo</title>
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="x-page app-lock">
+  <div class="flex h-svh w-full min-w-0 max-w-full overflow-hidden">
+    <header class="sticky top-0 z-40 hidden h-svh w-[72px] min-w-0 shrink-0 flex-col px-2 sm:flex lg:w-[244px] lg:px-3">
+      <div class="flex w-full flex-col">
+        <a href="feed.html" class="mb-3 inline-flex items-center gap-2.5 px-2.5 pt-12 lg:px-3" aria-label="Zivo">
+          <img src="./assets/logo-mark.svg" alt="" class="size-8 shrink-0">
+          <span class="hidden text-[22px] font-extrabold leading-none tracking-[-0.03em] lg:inline">Zivo</span>
+        </a>
+        <nav class="app-menu">
+          <a href="feed.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.4 12 4.2l7.5 6.2V19a1.5 1.5 0 0 1-1.5 1.5H15v-5.2H9V20.5H6A1.5 1.5 0 0 1 4.5 19z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Home</span>
+          </a>
+          <a href="groups.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" d="M15.2 19.2v-1c0-1.8-1.8-3.2-4-3.2s-4 1.4-4 3.2v1"/><circle cx="11.2" cy="8.3" r="2.6"/><path stroke-linecap="round" d="M18.8 19.2v-.8c0-1.3-1-2.4-2.3-2.8"/><circle cx="16.6" cy="9.2" r="2"/></svg>
+            <span class="hidden text-[15px] lg:inline">Groups</span>
+          </a>
+          <a href="chats.html" class="x-nav" aria-current="page">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.2 7.2h11.6A1.6 1.6 0 0 1 19.4 8.8v6a1.6 1.6 0 0 1-1.6 1.6H9.4L6.2 19.2v-2.8A1.6 1.6 0 0 1 4.6 14.8v-6a1.6 1.6 0 0 1 1.6-1.6z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Chats</span>
+          </a>
+          <a href="webinars.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="3.4" y="6.6" width="11.2" height="8.2" rx="1.8"/><path stroke-linecap="round" stroke-linejoin="round" d="m14.6 9.8 5.2-2.3v6.4l-5.2-2.3"/></svg>
+            <span class="hidden text-[15px] lg:inline">Webinars</span>
+          </a>
+          <a href="blogs.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5.2 5.2h4.4A2.4 2.4 0 0 1 12 7.6v11.2a2 2 0 0 0-2-2H5.2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M18.8 5.2h-4.4A2.4 2.4 0 0 0 12 7.6v11.2a2 2 0 0 1 2-2h4.8z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Blogs</span>
+          </a>
+          <a href="notifications.html" class="x-nav" data-nav="notifications">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.4 9.2a5.6 5.6 0 0 1 11.2 0c0 4.2 1.3 5.6 1.3 5.6H5.1s1.3-1.4 1.3-5.6z"/><path stroke-linecap="round" d="M10 18.2a2 2 0 0 0 4 0"/></svg>
+            <span class="hidden text-[15px] lg:inline">Notifications</span>
+          </a>
+          <div class="nav-divider" role="separator"></div>
+          <a href="profile.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="12" cy="8.4" r="2.8"/><path stroke-linecap="round" d="M6.2 19.1c1.2-2.5 3.3-3.8 5.8-3.8s4.6 1.3 5.8 3.8"/></svg>
+            <span class="hidden text-[15px] lg:inline">Profile</span>
+          </a>
+          <a href="premium.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linejoin="round" d="m12 3.4 2.05 4.9 5.25.45-4.05 3.4 1.25 5.15L12 14.7 7.5 17.3l1.25-5.15-4.05-3.4 5.25-.45z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Premium</span>
+          </a>
+        </nav>
+        <a href="feed.html#compose" class="x-btn-blue mt-3 size-11 self-center text-[15px] lg:h-11 lg:w-full lg:self-auto" aria-label="Post">
+          <svg viewBox="0 0 24 24" class="size-6 lg:hidden" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+          <span class="hidden text-[15px] lg:inline">Post</span>
+        </a>
+      </div>
+      <div class="relative mt-auto mb-3">
+        <button id="accountToggle" type="button" class="flex w-full items-center gap-2 rounded-full p-2 text-left hover:bg-black/10">
+          <div id="mePhoto" class="size-10 shrink-0"></div>
+          <span class="hidden min-w-0 flex-1 lg:block">
+            <span id="greeting" class="block truncate text-[15px] font-bold">Account</span>
+            <span id="handle" class="block truncate text-[15px] text-x-muted"></span>
+          </span>
+          <svg viewBox="0 0 24 24" class="hidden size-5 shrink-0 lg:block" aria-hidden="true"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></svg>
+        </button>
+        <div id="accountPopover" class="menu-pop absolute bottom-full left-0 z-50 mb-2 hidden w-[220px] overflow-hidden rounded-2xl bg-white py-2 lg:w-full">
+          <a href="profile.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">View profile</a>
+          <a href="premium.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">Premium</a>
+          <button id="logout" type="button" class="w-full px-4 py-3 text-left text-[15px] font-bold hover:bg-x-hover">Log out</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="h-svh min-w-0 flex-1 overflow-y-auto overscroll-none border-x-line pb-20 sm:border-x sm:pb-12">
+      <div class="sticky top-0 z-20 border-b border-x-line bg-white/85 px-4 py-3 backdrop-blur-md">
+        <div class="flex items-center justify-between gap-3">
+          <h1 class="text-xl font-extrabold">Chats</h1>
+          <button id="newChat" type="button" class="x-btn-blue h-9 px-4 text-[15px]">New chat</button>
+        </div>
+      </div>
+
+      <form id="createForm" class="hidden border-b border-x-line px-4 py-4">
+        <h2 class="text-[17px] font-extrabold">New group chat</h2>
+        <p class="mt-1 text-[15px] leading-5 text-x-muted">Only people in the chat can read the messages.</p>
+        <label class="mt-4 block">
+          <span class="mb-1.5 block text-[13px] text-x-muted">Name</span>
+          <input id="chatName" type="text" maxlength="50" class="x-input" placeholder="Group name">
+        </label>
+        <div class="mt-4">
+          <span class="mb-1.5 block text-[13px] text-x-muted">People</span>
+          <div id="chatPeoplePicker"></div>
+        </div>
+        <div class="mt-4 flex items-center gap-3">
+          <input id="chatPhoto" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
+          <label for="chatPhoto" class="inline-flex cursor-pointer rounded-full border border-x-border px-4 py-1.5 text-[15px] font-bold hover:bg-x-hover">Add photo</label>
+          <span id="chatPhotoName" class="min-w-0 truncate text-[13px] text-x-muted"></span>
+        </div>
+        <div class="mt-4 flex items-center gap-2">
+          <button id="createSubmit" type="submit" class="x-btn-blue h-9 px-4 text-[15px]">Create</button>
+          <button id="createCancel" type="button" class="rounded-full px-4 py-1.5 text-[15px] font-bold text-x-muted hover:bg-black/5">Cancel</button>
+        </div>
+        <p id="createNotice" class="mt-3 hidden text-[13px] text-x-danger" role="status"></p>
+      </form>
+
+      <div id="chats"></div>
+    </main>
+
+    <aside class="sticky top-0 hidden h-svh w-[clamp(280px,32vw,400px)] min-w-0 shrink overflow-y-auto overscroll-none px-3 lg:block">
+      <section class="x-card mt-3 px-4 py-4">
+        <h2 class="text-xl font-extrabold">Group chats</h2>
+        <p class="mt-1 text-[15px] leading-5 text-x-muted">Messages stay in the chat. Anyone in it can reply and add people.</p>
+      </section>
+      <p class="px-4 py-4 text-[13px] leading-5 text-x-muted">© 2026 Zivo</p>
+    </aside>
+  </div>
+
+  <nav class="fixed inset-x-0 bottom-0 z-30 flex h-14 items-center justify-around overflow-x-auto border-t border-x-line bg-white sm:hidden">
+    <a href="feed.html" class="rounded-full p-3" aria-label="Home">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linejoin="round" d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg>
+    </a>
+    <a href="groups.html" class="rounded-full p-3" aria-label="Groups">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" d="M8.5 19v-1.2c0-1.7-1.6-3-3.5-3s-3.5 1.3-3.5 3V19"/><circle cx="5" cy="8.5" r="2.2"/><path stroke-linecap="round" d="M22.5 19v-1.2c0-1.7-1.6-3-3.5-3-1.1 0-2.1.4-2.7 1.1"/><circle cx="19" cy="8.5" r="2.2"/><path stroke-linecap="round" d="M16.2 19v-1.4c0-2.2-2.1-4-4.7-4s-4.7 1.8-4.7 4V19"/><circle cx="11.5" cy="7.6" r="2.6"/></svg>
+    </a>
+    <a href="chats.html" class="shrink-0 rounded-full p-3" aria-label="Chats" aria-current="page">
+      <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path fill="currentColor" d="M5 5.5h14a2 2 0 0 1 2 2v7.2a2 2 0 0 1-2 2H9.4L4.2 20.8V16.7H5a2 2 0 0 1-2-2V7.5a2 2 0 0 1 2-2z"/></svg>
+    </a>
+    <a href="webinars.html" class="shrink-0 rounded-full p-3" aria-label="Webinars">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="6" width="12" height="9" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m15 9.5 6-2.5v7l-6-2.5"/><path stroke-linecap="round" d="M6 19h8"/></svg>
+    </a>
+        <a href="blogs.html" class="shrink-0 rounded-full p-3" aria-label="Blogs">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5.2 5.2h4.4A2.4 2.4 0 0 1 12 7.6v11.2a2 2 0 0 0-2-2H5.2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M18.8 5.2h-4.4A2.4 2.4 0 0 0 12 7.6v11.2a2 2 0 0 1 2-2h4.8z"/></svg>
+    </a>
+    <a href="notifications.html" class="relative shrink-0 rounded-full p-3" data-nav="notifications" aria-label="Notifications">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.4 9.2a5.6 5.6 0 0 1 11.2 0c0 4.2 1.3 5.6 1.3 5.6H5.1s1.3-1.4 1.3-5.6z"/><path stroke-linecap="round" d="M10 18.2a2 2 0 0 0 4 0"/></svg>
+    </a>
+    <a href="profile.html" class="rounded-full p-3" aria-label="Profile">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path stroke-linecap="round" d="M5.2 19.4c1.5-2.8 3.9-4.2 6.8-4.2s5.3 1.4 6.8 4.2"/></svg>
+    </a>
+    <a href="premium.html" class="rounded-full p-3" aria-label="Premium">
+      <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path fill="currentColor" d="M12 2.4 9.6 8.2 3.3 8.8l4.8 4.1-1.4 6.3L12 16.2l5.3 3 1.4-6.3 4.8-4.1-6.3-.6z"/></svg>
+    </a>
+  </nav>
+
+  <script src="./api.js"></script>
+  <script>
+    var chats = [];
+    var peoplePicker = mountUserSearch(document.getElementById('chatPeoplePicker'), {
+      multiple: true,
+      max: 31,
+      inset: false,
+      placeholder: 'Search by name or username',
+    });
+
+    function picture(src, letter, sizeClass) {
+      if (src) {
+        var img = document.createElement('img');
+        img.src = API + src;
+        img.alt = '';
+        img.className = 'shrink-0 rounded-full object-cover ' + sizeClass;
+        return img;
+      }
+      var fallback = document.createElement('span');
+      fallback.className = 'flex shrink-0 items-center justify-center rounded-full bg-x-blue text-sm font-bold text-white ' + sizeClass;
+      fallback.textContent = (letter || 'C').toUpperCase();
+      return fallback;
+    }
+
+    function imageProblem(file) {
+      if (!file) return '';
+      var types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+      if (types.indexOf(file.type) === -1 || file.size === 0 || file.size > 2 * 1024 * 1024) {
+        return 'Use a jpg, png, gif, or webp under 2 MB.';
+      }
+      return '';
+    }
+
+    function showNotice(text) {
+      var notice = document.getElementById('createNotice');
+      if (!text) {
+        notice.classList.add('hidden');
+        notice.textContent = '';
+        return;
+      }
+      notice.classList.remove('hidden');
+      notice.textContent = text;
+    }
+
+    function paint() {
+      var box = document.getElementById('chats');
+      box.innerHTML = '';
+      if (!chats.length) {
+        var empty = document.createElement('div');
+        empty.className = 'px-8 py-12';
+        var title = document.createElement('h2');
+        title.className = 'text-[31px] leading-9 font-extrabold';
+        title.textContent = 'No chats yet';
+        var copy = document.createElement('p');
+        copy.className = 'mt-2 max-w-sm text-[15px] leading-5 text-x-muted';
+        copy.textContent = 'Start a group chat and message the people in it.';
+        empty.appendChild(title);
+        empty.appendChild(copy);
+        box.appendChild(empty);
+        return;
+      }
+      chats.forEach(function (chat) {
+        var link = document.createElement('a');
+        link.href = 'chat.html?id=' + encodeURIComponent(chat.id);
+        link.className = 'flex items-center gap-3 border-b border-x-line px-4 py-3 hover:bg-black/[0.03]';
+        link.appendChild(picture(chat.photo, (chat.name || 'C').charAt(0), 'size-14'));
+        var copy = document.createElement('div');
+        copy.className = 'min-w-0 flex-1';
+        var row = document.createElement('div');
+        row.className = 'flex items-center gap-2';
+        var name = document.createElement('p');
+        name.className = 'min-w-0 flex-1 truncate text-[15px] ' + (chat.unread ? 'font-extrabold' : 'font-bold');
+        name.textContent = chat.name;
+        row.appendChild(name);
+        if (chat.unread) {
+          var badge = document.createElement('span');
+          badge.className = 'inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-x-blue px-1.5 text-[12px] font-bold text-white';
+          badge.textContent = String(chat.unread);
+          row.appendChild(badge);
+        }
+        var preview = document.createElement('p');
+        preview.className = 'truncate text-[15px] ' + (chat.unread ? 'font-bold text-x-ink' : 'text-x-muted');
+        var last = chat.last_message;
+        if (!last) preview.textContent = chat.member_count + (chat.member_count === 1 ? ' person' : ' people');
+        else if (last.system) preview.textContent = last.preview;
+        else preview.textContent = (last.mine ? 'You: ' : last.name + ': ') + last.preview;
+        copy.appendChild(row);
+        copy.appendChild(preview);
+        link.appendChild(copy);
+        box.appendChild(link);
+      });
+    }
+
+    function loadChats() {
+      return apiFetch('/chats').then(function (result) {
+        if (result.status === 401) {
+          clearToken();
+          window.location.href = 'loginpage.html';
+          return;
+        }
+        chats = Array.isArray(result.data) ? result.data : [];
+        paint();
+      });
+    }
+
+    if (!localStorage.getItem('zivo_token')) {
+      window.location.href = 'loginpage.html';
+    } else {
+      apiFetch('/me').then(function (result) {
+        if (!result.ok) {
+          clearToken();
+          window.location.href = 'loginpage.html';
+          return;
+        }
+        document.getElementById('greeting').textContent = result.data.name;
+        if (result.data.premium) document.getElementById('greeting').appendChild(premiumMark());
+        document.getElementById('mePhoto').appendChild(picture(result.data.photo, (result.data.name || '?').charAt(0), 'size-10'));
+        if (result.data.username) document.getElementById('handle').textContent = '@' + result.data.username;
+        return loadChats();
+      }).catch(function () {
+        window.location.href = 'loginpage.html';
+      });
+    }
+
+    document.getElementById('newChat').addEventListener('click', function () {
+      var form = document.getElementById('createForm');
+      form.classList.toggle('hidden');
+      if (!form.classList.contains('hidden')) document.getElementById('chatName').focus();
+    });
+    document.getElementById('createCancel').addEventListener('click', function () {
+      document.getElementById('createForm').classList.add('hidden');
+      document.getElementById('chatName').value = '';
+      peoplePicker.clear();
+      document.getElementById('chatPhoto').value = '';
+      document.getElementById('chatPhotoName').textContent = '';
+      showNotice('');
+    });
+    document.getElementById('chatPhoto').addEventListener('change', function () {
+      var file = this.files[0];
+      var problem = imageProblem(file);
+      if (problem) {
+        this.value = '';
+        document.getElementById('chatPhotoName').textContent = '';
+        showNotice(problem);
+        return;
+      }
+      showNotice('');
+      document.getElementById('chatPhotoName').textContent = file ? file.name : '';
+    });
+    document.getElementById('createForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      var name = document.getElementById('chatName').value.trim();
+      var people = peoplePicker.getSelected().map(function (person) { return person.email; }).join(', ');
+      var file = document.getElementById('chatPhoto').files[0];
+      if (!name) {
+        showNotice('Chat name cannot be empty.');
+        return;
+      }
+      if (name.length > 50) {
+        showNotice('Chat name can be 50 characters at most.');
+        return;
+      }
+      var problem = imageProblem(file);
+      if (problem) {
+        showNotice(problem);
+        return;
+      }
+      var body = new FormData();
+      body.append('name', name);
+      body.append('members', people);
+      if (file) body.append('photo', file);
+      var button = document.getElementById('createSubmit');
+      button.disabled = true;
+      apiForm('/chats', body).then(function (result) {
+        button.disabled = false;
+        if (!result.ok) {
+          showNotice(result.data.message || 'Could not create that chat.');
+          return;
+        }
+        window.location.href = 'chat.html?id=' + encodeURIComponent(result.data.id);
+      }).catch(function () {
+        button.disabled = false;
+        showNotice('Cannot reach the server.');
+      });
+    });
+
+    document.addEventListener('click', function (event) {
+      var pop = document.getElementById('accountPopover');
+      var toggle = document.getElementById('accountToggle');
+      if (toggle.contains(event.target)) {
+        pop.classList.toggle('hidden');
+        return;
+      }
+      if (!pop.contains(event.target)) pop.classList.add('hidden');
+    });
+    document.getElementById('logout').addEventListener('click', function () {
+      apiFetch('/logout', { method: 'POST', body: '{}' }).finally(function () {
+        clearToken();
+        window.location.href = 'loginpage.html';
+      });
+    });
+  </script>
+</body>
+</html>

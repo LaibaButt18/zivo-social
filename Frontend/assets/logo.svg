@@ -1,6 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="100.00 -1593.00 4213.00 1622.00" fill="#0F1419" role="img" aria-label="Zivo">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 40" role="img" aria-label="Zivo">
   <title>Zivo</title>
-  <g transform="scale(1,-1)">
-    <g transform="translate(0,0)"><path d="M109 0V202L688 1000Q748 1083 821.5 1165.5Q895 1248 970 1330L994 1216Q891 1206 787.5 1204.0Q684 1202 580 1202H108V1490H1281V1287L713 504Q650 418 573.5 332.0Q497 246 419 160L395 274Q506 284 615.5 286.0Q725 288 835 288H1282V0Z"/></g><g transform="translate(1350,0)"><path d="M115 0V1118H464V0ZM289 1249Q215 1249 162.0 1298.5Q109 1348 109 1417Q109 1487 162.0 1536.0Q215 1585 289 1585Q364 1585 417.0 1536.5Q470 1488 470 1417Q470 1347 417.0 1298.0Q364 1249 289 1249Z"/></g><g transform="translate(1890,0)"><path d="M427 0 22 1118H390L557 571Q591 461 616.0 346.0Q641 231 667 103H603Q628 231 652.5 345.5Q677 460 710 571L874 1118H1238L831 0Z"/></g><g transform="translate(3110,0)"><path d="M634 -21Q459 -21 333.0 51.5Q207 124 139.5 253.5Q72 383 72 555Q72 728 139.5 857.5Q207 987 333.0 1059.5Q459 1132 634 1132Q809 1132 935.0 1059.5Q1061 987 1128.0 857.5Q1195 728 1195 555Q1195 383 1128.0 253.5Q1061 124 935.0 51.5Q809 -21 634 -21ZM634 246Q701 246 747.0 285.0Q793 324 816.5 394.0Q840 464 840 557Q840 650 816.5 719.5Q793 789 747.0 827.0Q701 865 634 865Q567 865 521.0 827.0Q475 789 451.5 719.5Q428 650 428 557Q428 464 451.5 394.0Q475 324 521.0 285.0Q567 246 634 246Z"/></g>
+  <g transform="translate(0,4)">
+    <rect width="32" height="32" rx="8" fill="#1d9bf0"/>
+    <path d="M8.6 10.2h14.8L8.6 21.8h14.8" fill="none" stroke="#fff" stroke-width="3.15" stroke-linecap="square" stroke-linejoin="round"/>
   </g>
+  <text x="42" y="28.5" fill="#0f1419" font-family="Inter, Helvetica Neue, Arial, sans-serif" font-size="26" font-weight="800" letter-spacing="-0.7">Zivo</text>
 </svg>

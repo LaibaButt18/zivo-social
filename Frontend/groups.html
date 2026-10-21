@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Groups | Zivo</title>
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="x-page app-lock">
+  <div class="flex h-svh w-full min-w-0 max-w-full overflow-hidden">
+    <header class="sticky top-0 z-40 hidden h-svh w-[72px] min-w-0 shrink-0 flex-col px-2 sm:flex lg:w-[244px] lg:px-3">
+      <div class="flex w-full flex-col">
+        <a href="feed.html" class="mb-3 inline-flex items-center gap-2.5 px-2.5 pt-12 lg:px-3" aria-label="Zivo">
+          <img src="./assets/logo-mark.svg" alt="" class="size-8 shrink-0">
+          <span class="hidden text-[22px] font-extrabold leading-none tracking-[-0.03em] lg:inline">Zivo</span>
+        </a>
+        <nav class="app-menu">
+          <a href="feed.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.4 12 4.2l7.5 6.2V19a1.5 1.5 0 0 1-1.5 1.5H15v-5.2H9V20.5H6A1.5 1.5 0 0 1 4.5 19z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Home</span>
+          </a>
+          <a href="groups.html" class="x-nav" aria-current="page">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" d="M15.2 19.2v-1c0-1.8-1.8-3.2-4-3.2s-4 1.4-4 3.2v1"/><circle cx="11.2" cy="8.3" r="2.6"/><path stroke-linecap="round" d="M18.8 19.2v-.8c0-1.3-1-2.4-2.3-2.8"/><circle cx="16.6" cy="9.2" r="2"/></svg>
+            <span class="hidden text-[15px] lg:inline">Groups</span>
+          </a>
+          <a href="chats.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.2 7.2h11.6A1.6 1.6 0 0 1 19.4 8.8v6a1.6 1.6 0 0 1-1.6 1.6H9.4L6.2 19.2v-2.8A1.6 1.6 0 0 1 4.6 14.8v-6a1.6 1.6 0 0 1 1.6-1.6z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Chats</span>
+          </a>
+          <a href="webinars.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="3.4" y="6.6" width="11.2" height="8.2" rx="1.8"/><path stroke-linecap="round" stroke-linejoin="round" d="m14.6 9.8 5.2-2.3v6.4l-5.2-2.3"/></svg>
+            <span class="hidden text-[15px] lg:inline">Webinars</span>
+          </a>
+          <a href="blogs.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5.2 5.2h4.4A2.4 2.4 0 0 1 12 7.6v11.2a2 2 0 0 0-2-2H5.2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M18.8 5.2h-4.4A2.4 2.4 0 0 0 12 7.6v11.2a2 2 0 0 1 2-2h4.8z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Blogs</span>
+          </a>
+          <a href="notifications.html" class="x-nav" data-nav="notifications">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.4 9.2a5.6 5.6 0 0 1 11.2 0c0 4.2 1.3 5.6 1.3 5.6H5.1s1.3-1.4 1.3-5.6z"/><path stroke-linecap="round" d="M10 18.2a2 2 0 0 0 4 0"/></svg>
+            <span class="hidden text-[15px] lg:inline">Notifications</span>
+          </a>
+          <div class="nav-divider" role="separator"></div>
+          <a href="profile.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="12" cy="8.4" r="2.8"/><path stroke-linecap="round" d="M6.2 19.1c1.2-2.5 3.3-3.8 5.8-3.8s4.6 1.3 5.8 3.8"/></svg>
+            <span class="hidden text-[15px] lg:inline">Profile</span>
+          </a>
+          <a href="premium.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linejoin="round" d="m12 3.4 2.05 4.9 5.25.45-4.05 3.4 1.25 5.15L12 14.7 7.5 17.3l1.25-5.15-4.05-3.4 5.25-.45z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Premium</span>
+          </a>
+        </nav>
+        <a href="feed.html#compose" class="x-btn-blue mt-3 size-11 self-center text-[15px] lg:h-11 lg:w-full lg:self-auto" aria-label="Post">
+          <svg viewBox="0 0 24 24" class="size-6 lg:hidden" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+          <span class="hidden text-[15px] lg:inline">Post</span>
+        </a>
+      </div>
+      <div class="relative mt-auto mb-3">
+        <button id="accountToggle" type="button" class="flex w-full items-center gap-2 rounded-full p-2 text-left hover:bg-black/10">
+          <div id="mePhoto" class="size-10 shrink-0"></div>
+          <span class="hidden min-w-0 flex-1 lg:block">
+            <span id="greeting" class="block truncate text-[15px] font-bold">Account</span>
+            <span id="handle" class="block truncate text-[15px] text-x-muted"></span>
+          </span>
+          <svg viewBox="0 0 24 24" class="hidden size-5 shrink-0 lg:block" aria-hidden="true"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></svg>
+        </button>
+        <div id="accountPopover" class="menu-pop absolute bottom-full left-0 z-50 mb-2 hidden w-[220px] overflow-hidden rounded-2xl bg-white py-2 lg:w-full">
+          <a href="profile.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">View profile</a>
+          <a href="premium.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">Premium</a>
+          <button id="logout" type="button" class="w-full px-4 py-3 text-left text-[15px] font-bold hover:bg-x-hover">Log out</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="h-svh min-w-0 flex-1 overflow-y-auto overscroll-none border-x-line pb-20 sm:border-x sm:pb-12">
+      <div class="sticky top-0 z-20 border-b border-x-line bg-white/85 px-4 py-3 backdrop-blur-md">
+        <div class="flex items-center justify-between gap-3">
+          <h1 class="text-xl font-extrabold">Groups</h1>
+          <button id="newGroup" type="button" class="x-btn-blue h-9 px-4 text-[15px]">New group</button>
+        </div>
+        <label class="mt-3 block">
+          <span class="sr-only">Search groups</span>
+          <input id="groupSearch" type="search" placeholder="Search groups" class="h-10 w-full rounded-full border border-transparent bg-x-chip px-4 text-[15px] outline-none placeholder:text-x-muted focus:border-x-blue focus:bg-white">
+        </label>
+      </div>
+
+      <form id="createForm" class="hidden border-b border-x-line px-4 py-4">
+        <h2 class="text-[17px] font-extrabold">Create a group</h2>
+        <p class="mt-1 text-[15px] leading-5 text-x-muted">Posts stay inside the group. Only members can see them.</p>
+        <label class="mt-4 block">
+          <span class="mb-1.5 block text-[13px] text-x-muted">Name</span>
+          <input id="groupName" type="text" maxlength="60" class="x-input" placeholder="Group name">
+        </label>
+        <label class="mt-4 block">
+          <span class="mb-1.5 block text-[13px] text-x-muted">Description</span>
+          <textarea id="groupDescription" rows="3" maxlength="300" class="x-input h-auto py-3" placeholder="What is this group about?"></textarea>
+        </label>
+        <div class="mt-4 flex items-center gap-3">
+          <input id="groupPhoto" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
+          <label for="groupPhoto" class="inline-flex cursor-pointer rounded-full border border-x-border px-4 py-1.5 text-[15px] font-bold hover:bg-x-hover">Add photo</label>
+          <span id="groupPhotoName" class="min-w-0 truncate text-[13px] text-x-muted"></span>
+        </div>
+        <img id="groupPhotoPreview" alt="" class="mt-3 hidden h-32 w-full rounded-2xl border border-x-line object-cover">
+        <div class="mt-4 flex items-center gap-2">
+          <button id="createSubmit" type="submit" class="x-btn-blue h-9 px-4 text-[15px]">Create</button>
+          <button id="createCancel" type="button" class="rounded-full px-4 py-1.5 text-[15px] font-bold text-x-muted hover:bg-black/5">Cancel</button>
+        </div>
+        <p id="createNotice" class="mt-3 hidden text-[13px] text-x-danger" role="status"></p>
+      </form>
+
+      <section class="border-b border-x-line">
+        <h2 class="px-4 pt-4 pb-2 text-[17px] font-extrabold">Your groups</h2>
+        <div id="mine"></div>
+      </section>
+      <section>
+        <h2 class="px-4 pt-4 pb-2 text-[17px] font-extrabold">Discover</h2>
+        <div id="discover"></div>
+      </section>
+    </main>
+
+    <aside class="sticky top-0 hidden h-svh w-[clamp(280px,32vw,400px)] min-w-0 shrink overflow-y-auto overscroll-none px-3 lg:block">
+      <section class="x-card mt-3 px-4 py-4">
+        <h2 class="text-xl font-extrabold">Private posts</h2>
+        <p class="mt-1 text-[15px] leading-5 text-x-muted">People can find a group, but only members can read what is posted there.</p>
+      </section>
+      <p class="px-4 py-4 text-[13px] leading-5 text-x-muted">© 2026 Zivo</p>
+    </aside>
+  </div>
+
+  <nav class="fixed inset-x-0 bottom-0 z-30 flex h-14 items-center justify-around overflow-x-auto border-t border-x-line bg-white sm:hidden">
+    <a href="feed.html" class="rounded-full p-3" aria-label="Home">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linejoin="round" d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg>
+    </a>
+    <a href="groups.html" class="rounded-full p-3" aria-label="Groups" aria-current="page">
+      <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path fill="currentColor" d="M8.2 11.2a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4zM4.2 18.8v-1.1c0-1.5 1.4-2.7 3.2-2.7h1.6c1.8 0 3.2 1.2 3.2 2.7v1.1H4.2zM15.8 11.4a2.4 2.4 0 1 0 0-4.8 2.4 2.4 0 0 0 0 4.8zM12.6 18.8v-1.3c0-1.8 1.8-3.2 4-3.2h.2c2.2 0 4 1.4 4 3.2v1.3h-8.2z"/></svg>
+    </a>
+    <a href="chats.html" class="shrink-0 rounded-full p-3" aria-label="Chats">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 6.8h14a1.5 1.5 0 0 1 1.5 1.5v7a1.5 1.5 0 0 1-1.5 1.5H9.2L5 20.2v-3.4H5A1.5 1.5 0 0 1 3.5 15.3v-7A1.5 1.5 0 0 1 5 6.8z"/></svg>
+    </a>
+    <a href="webinars.html" class="shrink-0 rounded-full p-3" aria-label="Webinars">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="6" width="12" height="9" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m15 9.5 6-2.5v7l-6-2.5"/><path stroke-linecap="round" d="M6 19h8"/></svg>
+    </a>
+        <a href="blogs.html" class="shrink-0 rounded-full p-3" aria-label="Blogs">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5.2 5.2h4.4A2.4 2.4 0 0 1 12 7.6v11.2a2 2 0 0 0-2-2H5.2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M18.8 5.2h-4.4A2.4 2.4 0 0 0 12 7.6v11.2a2 2 0 0 1 2-2h4.8z"/></svg>
+    </a>
+    <a href="notifications.html" class="relative shrink-0 rounded-full p-3" data-nav="notifications" aria-label="Notifications">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.4 9.2a5.6 5.6 0 0 1 11.2 0c0 4.2 1.3 5.6 1.3 5.6H5.1s1.3-1.4 1.3-5.6z"/><path stroke-linecap="round" d="M10 18.2a2 2 0 0 0 4 0"/></svg>
+    </a>
+    <a href="profile.html" class="rounded-full p-3" aria-label="Profile">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path stroke-linecap="round" d="M5.2 19.4c1.5-2.8 3.9-4.2 6.8-4.2s5.3 1.4 6.8 4.2"/></svg>
+    </a>
+    <a href="premium.html" class="rounded-full p-3" aria-label="Premium">
+      <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path fill="currentColor" d="M12 2.4 9.6 8.2 3.3 8.8l4.8 4.1-1.4 6.3L12 16.2l5.3 3 1.4-6.3 4.8-4.1-6.3-.6z"/></svg>
+    </a>
+  </nav>
+
+  <script src="./api.js"></script>
+  <script>
+    var mineGroups = [];
+    var discoverGroups = [];
+    var query = '';
+
+    function picture(src, letter, sizeClass, round) {
+      var shape = round === false ? 'rounded-2xl' : 'rounded-full';
+      if (src) {
+        var img = document.createElement('img');
+        img.src = API + src;
+        img.alt = '';
+        img.className = 'shrink-0 object-cover ' + shape + ' ' + sizeClass;
+        return img;
+      }
+      var fallback = document.createElement('span');
+      fallback.className = 'flex shrink-0 items-center justify-center bg-x-blue text-sm font-bold text-white ' + shape + ' ' + sizeClass;
+      fallback.textContent = (letter || 'G').toUpperCase();
+      return fallback;
+    }
+
+    function imageProblem(file) {
+      if (!file) return '';
+      var types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+      if (types.indexOf(file.type) === -1 || file.size === 0 || file.size > 2 * 1024 * 1024) {
+        return 'Use a jpg, png, gif, or webp under 2 MB.';
+      }
+      return '';
+    }
+
+    function showCreateNotice(text) {
+      var notice = document.getElementById('createNotice');
+      if (!text) {
+        notice.classList.add('hidden');
+        notice.textContent = '';
+        return;
+      }
+      notice.classList.remove('hidden');
+      notice.textContent = text;
+    }
+
+    function memberLine(group) {
+      var count = group.member_count || 0;
+      var line = count === 1 ? '1 member' : count + ' members';
+      if (group.pending) line += ' · Request pending';
+      return line;
+    }
+
+    function matches(group) {
+      if (!query) return true;
+      return (group.name || '').toLowerCase().indexOf(query) !== -1;
+    }
+
+    function paintList(box, groups, emptyText) {
+      box.innerHTML = '';
+      var visible = groups.filter(matches);
+      if (!visible.length) {
+        var empty = document.createElement('p');
+        empty.className = 'px-4 pb-4 text-[15px] text-x-muted';
+        empty.textContent = emptyText;
+        box.appendChild(empty);
+        return;
+      }
+      visible.forEach(function (group) {
+        var link = document.createElement('a');
+        link.href = 'group.html?id=' + encodeURIComponent(group.id);
+        link.className = 'flex items-center gap-3 px-4 py-3 hover:bg-black/[0.03]';
+        link.appendChild(picture(group.photo, (group.name || 'G').charAt(0), 'size-12', false));
+        var copy = document.createElement('div');
+        copy.className = 'min-w-0 flex-1';
+        var name = document.createElement('p');
+        name.className = 'truncate text-[15px] font-bold';
+        name.textContent = group.name;
+        var meta = document.createElement('p');
+        meta.className = 'truncate text-[15px] text-x-muted';
+        meta.textContent = memberLine(group);
+        copy.appendChild(name);
+        copy.appendChild(meta);
+        link.appendChild(copy);
+        box.appendChild(link);
+      });
+    }
+
+    function paint() {
+      paintList(document.getElementById('mine'), mineGroups, query ? 'No groups of yours match that search.' : 'You have not joined a group yet.');
+      paintList(document.getElementById('discover'), discoverGroups, query ? 'No groups match that search.' : 'No other groups yet.');
+    }
+
+    function loadGroups() {
+      return apiFetch('/groups').then(function (result) {
+        if (result.status === 401) {
+          clearToken();
+          window.location.href = 'loginpage.html';
+          return;
+        }
+        if (!result.ok) return;
+        mineGroups = result.data.mine || [];
+        discoverGroups = result.data.discover || [];
+        paint();
+      });
+    }
+
+    function resetCreate() {
+      document.getElementById('groupName').value = '';
+      document.getElementById('groupDescription').value = '';
+      document.getElementById('groupPhoto').value = '';
+      document.getElementById('groupPhotoName').textContent = '';
+      var preview = document.getElementById('groupPhotoPreview');
+      preview.classList.add('hidden');
+      preview.removeAttribute('src');
+      showCreateNotice('');
+    }
+
+    if (!localStorage.getItem('zivo_token')) {
+      window.location.href = 'loginpage.html';
+    } else {
+      apiFetch('/me').then(function (result) {
+        if (!result.ok) {
+          clearToken();
+          window.location.href = 'loginpage.html';
+          return;
+        }
+        document.getElementById('greeting').textContent = result.data.name;
+        if (result.data.premium) document.getElementById('greeting').appendChild(premiumMark());
+        document.getElementById('mePhoto').appendChild(picture(result.data.photo, (result.data.name || '?').charAt(0), 'size-10'));
+        if (result.data.username) document.getElementById('handle').textContent = '@' + result.data.username;
+        return loadGroups();
+      }).catch(function () {
+        window.location.href = 'loginpage.html';
+      });
+    }
+
+    document.getElementById('groupSearch').addEventListener('input', function () {
+      query = this.value.trim().toLowerCase();
+      paint();
+    });
+
+    document.getElementById('newGroup').addEventListener('click', function () {
+      var form = document.getElementById('createForm');
+      form.classList.toggle('hidden');
+      if (!form.classList.contains('hidden')) document.getElementById('groupName').focus();
+    });
+
+    document.getElementById('createCancel').addEventListener('click', function () {
+      document.getElementById('createForm').classList.add('hidden');
+      resetCreate();
+    });
+
+    document.getElementById('groupPhoto').addEventListener('change', function () {
+      var file = this.files[0];
+      var preview = document.getElementById('groupPhotoPreview');
+      document.getElementById('groupPhotoName').textContent = file ? file.name : '';
+      var problem = imageProblem(file);
+      if (problem) {
+        this.value = '';
+        document.getElementById('groupPhotoName').textContent = '';
+        preview.classList.add('hidden');
+        preview.removeAttribute('src');
+        showCreateNotice(problem);
+        return;
+      }
+      showCreateNotice('');
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.classList.remove('hidden');
+      } else {
+        preview.classList.add('hidden');
+        preview.removeAttribute('src');
+      }
+    });
+
+    document.getElementById('createForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      var name = document.getElementById('groupName').value.trim();
+      var description = document.getElementById('groupDescription').value.trim();
+      var file = document.getElementById('groupPhoto').files[0];
+      if (!name) {
+        showCreateNotice('Group name cannot be empty.');
+        return;
+      }
+      if (name.length > 60) {
+        showCreateNotice('Group name can be 60 characters at most.');
+        return;
+      }
+      if (description.length > 300) {
+        showCreateNotice('Description can be 300 characters at most.');
+        return;
+      }
+      var problem = imageProblem(file);
+      if (problem) {
+        showCreateNotice(problem);
+        return;
+      }
+      var body = new FormData();
+      body.append('name', name);
+      body.append('description', description);
+      if (file) body.append('photo', file);
+      var button = document.getElementById('createSubmit');
+      button.disabled = true;
+      apiForm('/groups', body).then(function (result) {
+        button.disabled = false;
+        if (!result.ok) {
+          showCreateNotice(result.data.message || 'Could not create that group.');
+          return;
+        }
+        window.location.href = 'group.html?id=' + encodeURIComponent(result.data.id);
+      }).catch(function () {
+        button.disabled = false;
+        showCreateNotice('Cannot reach the server.');
+      });
+    });
+
+    document.addEventListener('click', function (event) {
+      var pop = document.getElementById('accountPopover');
+      var toggle = document.getElementById('accountToggle');
+      if (toggle.contains(event.target)) {
+        pop.classList.toggle('hidden');
+        return;
+      }
+      if (!pop.contains(event.target)) pop.classList.add('hidden');
+    });
+
+    document.getElementById('logout').addEventListener('click', function () {
+      apiFetch('/logout', { method: 'POST', body: '{}' }).finally(function () {
+        clearToken();
+        window.location.href = 'loginpage.html';
+      });
+    });
+  </script>
+</body>
+</html>
