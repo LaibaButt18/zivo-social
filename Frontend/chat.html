@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat | Zivo</title>
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="x-page app-lock">
+  <div class="flex h-svh w-full min-w-0 max-w-full overflow-hidden">
+    <header class="sticky top-0 z-40 hidden h-svh w-[72px] min-w-0 shrink-0 flex-col px-2 sm:flex lg:w-[244px] lg:px-3">
+      <div class="flex w-full flex-col">
+        <a href="feed.html" class="mb-3 inline-flex items-center gap-2.5 px-2.5 pt-12 lg:px-3" aria-label="Zivo">
+          <img src="./assets/logo-mark.svg" alt="" class="size-8 shrink-0">
+          <span class="hidden text-[22px] font-extrabold leading-none tracking-[-0.03em] lg:inline">Zivo</span>
+        </a>
+        <nav class="app-menu">
+          <a href="feed.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.4 12 4.2l7.5 6.2V19a1.5 1.5 0 0 1-1.5 1.5H15v-5.2H9V20.5H6A1.5 1.5 0 0 1 4.5 19z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Home</span>
+          </a>
+          <a href="groups.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" d="M15.2 19.2v-1c0-1.8-1.8-3.2-4-3.2s-4 1.4-4 3.2v1"/><circle cx="11.2" cy="8.3" r="2.6"/><path stroke-linecap="round" d="M18.8 19.2v-.8c0-1.3-1-2.4-2.3-2.8"/><circle cx="16.6" cy="9.2" r="2"/></svg>
+            <span class="hidden text-[15px] lg:inline">Groups</span>
+          </a>
+          <a href="chats.html" class="x-nav" aria-current="page">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.2 7.2h11.6A1.6 1.6 0 0 1 19.4 8.8v6a1.6 1.6 0 0 1-1.6 1.6H9.4L6.2 19.2v-2.8A1.6 1.6 0 0 1 4.6 14.8v-6a1.6 1.6 0 0 1 1.6-1.6z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Chats</span>
+          </a>
+          <a href="webinars.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="3.4" y="6.6" width="11.2" height="8.2" rx="1.8"/><path stroke-linecap="round" stroke-linejoin="round" d="m14.6 9.8 5.2-2.3v6.4l-5.2-2.3"/></svg>
+            <span class="hidden text-[15px] lg:inline">Webinars</span>
+          </a>
+          <a href="blogs.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5.2 5.2h4.4A2.4 2.4 0 0 1 12 7.6v11.2a2 2 0 0 0-2-2H5.2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M18.8 5.2h-4.4A2.4 2.4 0 0 0 12 7.6v11.2a2 2 0 0 1 2-2h4.8z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Blogs</span>
+          </a>
+          <a href="notifications.html" class="x-nav" data-nav="notifications">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.4 9.2a5.6 5.6 0 0 1 11.2 0c0 4.2 1.3 5.6 1.3 5.6H5.1s1.3-1.4 1.3-5.6z"/><path stroke-linecap="round" d="M10 18.2a2 2 0 0 0 4 0"/></svg>
+            <span class="hidden text-[15px] lg:inline">Notifications</span>
+          </a>
+          <div class="nav-divider" role="separator"></div>
+          <a href="profile.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="12" cy="8.4" r="2.8"/><path stroke-linecap="round" d="M6.2 19.1c1.2-2.5 3.3-3.8 5.8-3.8s4.6 1.3 5.8 3.8"/></svg>
+            <span class="hidden text-[15px] lg:inline">Profile</span>
+          </a>
+          <a href="premium.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linejoin="round" d="m12 3.4 2.05 4.9 5.25.45-4.05 3.4 1.25 5.15L12 14.7 7.5 17.3l1.25-5.15-4.05-3.4 5.25-.45z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Premium</span>
+          </a>
+        </nav>
+        <a href="feed.html#compose" class="x-btn-blue mt-3 size-11 self-center text-[15px] lg:h-11 lg:w-full lg:self-auto" aria-label="Post">
+          <svg viewBox="0 0 24 24" class="size-6 lg:hidden" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+          <span class="hidden text-[15px] lg:inline">Post</span>
+        </a>
+      </div>
+      <div class="relative mt-auto mb-3">
+        <button id="accountToggle" type="button" class="flex w-full items-center gap-2 rounded-full p-2 text-left hover:bg-black/10">
+          <div id="mePhoto" class="size-10 shrink-0"></div>
+          <span class="hidden min-w-0 flex-1 lg:block">
+            <span id="greeting" class="block truncate text-[15px] font-bold">Account</span>
+            <span id="handle" class="block truncate text-[15px] text-x-muted"></span>
+          </span>
+          <svg viewBox="0 0 24 24" class="hidden size-5 shrink-0 lg:block" aria-hidden="true"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></svg>
+        </button>
+        <div id="accountPopover" class="menu-pop absolute bottom-full left-0 z-50 mb-2 hidden w-[220px] overflow-hidden rounded-2xl bg-white py-2 lg:w-full">
+          <a href="profile.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">View profile</a>
+          <a href="premium.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">Premium</a>
+          <button id="logout" type="button" class="w-full px-4 py-3 text-left text-[15px] font-bold hover:bg-x-hover">Log out</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex h-svh min-w-0 flex-1 flex-col overflow-hidden border-x-line sm:border-x">
+      <div class="flex items-center gap-3 border-b border-x-line px-3 py-2">
+        <a href="chats.html" class="rounded-full p-2 hover:bg-black/10" aria-label="Back">
+          <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </a>
+        <div id="chatMark" class="size-10 shrink-0"></div>
+        <div class="min-w-0 flex-1">
+          <h1 id="chatName" class="truncate text-[15px] font-extrabold">Chat</h1>
+          <p id="chatMeta" class="truncate text-[13px] text-x-muted"></p>
+        </div>
+        <button id="peopleToggle" type="button" class="rounded-full px-3 py-1.5 text-[15px] font-bold hover:bg-x-hover lg:hidden">People</button>
+      </div>
+      <div id="peoplePanel" class="hidden max-h-96 overflow-y-auto border-b border-x-line lg:hidden"></div>
+      <div id="thread" class="min-h-0 flex-1 overflow-y-auto px-4 py-3"></div>
+      <p id="closed" class="hidden px-4 py-6 text-[15px] text-x-muted">You are no longer in this chat.</p>
+      <form id="composer" class="border-t border-x-line px-3 py-2 pb-20 sm:pb-2">
+        <div id="composeContext" class="mb-2 hidden items-start gap-2 rounded-2xl bg-x-chip px-3 py-2"></div>
+        <div class="flex items-end gap-2">
+          <input id="photo" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
+          <label id="photoLabel" for="photo" class="mb-1 inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full text-x-blue hover:bg-x-blue/10" aria-label="Add photo">
+            <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.3"/><path stroke-linecap="round" stroke-linejoin="round" d="m21 15.5-4.2-4.2L8 19"/></svg>
+          </label>
+          <div class="min-w-0 flex-1">
+            <img id="preview" alt="" class="mb-2 hidden max-h-32 rounded-2xl border border-x-line object-cover">
+            <input id="text" type="text" maxlength="1000" placeholder="Message" class="h-10 w-full rounded-full bg-x-chip px-4 text-[15px] outline-none placeholder:text-x-muted focus:bg-white focus:ring-1 focus:ring-x-blue">
+          </div>
+          <button id="send" type="submit" class="mb-1 text-[15px] font-bold text-x-blue disabled:text-x-blue/40" disabled>Send</button>
+        </div>
+        <p id="notice" class="mt-1 hidden px-12 text-[13px] text-x-danger" role="status"></p>
+      </form>
+    </main>
+
+    <aside id="peopleAside" class="sticky top-0 hidden h-svh w-[clamp(280px,32vw,360px)] shrink-0 flex-col overflow-hidden px-3 lg:flex">
+      <h2 class="px-1 pt-4 text-xl font-extrabold">People</h2>
+      <div id="peopleDesk" class="mt-3 min-h-0 flex-1 overflow-y-auto rounded-2xl bg-x-hover"></div>
+    </aside>
+  </div>
+
+  <nav class="fixed inset-x-0 bottom-0 z-30 flex h-14 items-center justify-around overflow-x-auto border-t border-x-line bg-white sm:hidden">
+    <a href="feed.html" class="rounded-full p-3" aria-label="Home">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linejoin="round" d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg>
+    </a>
+    <a href="groups.html" class="rounded-full p-3" aria-label="Groups">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" d="M8.5 19v-1.2c0-1.7-1.6-3-3.5-3s-3.5 1.3-3.5 3V19"/><circle cx="5" cy="8.5" r="2.2"/><path stroke-linecap="round" d="M22.5 19v-1.2c0-1.7-1.6-3-3.5-3-1.1 0-2.1.4-2.7 1.1"/><circle cx="19" cy="8.5" r="2.2"/><path stroke-linecap="round" d="M16.2 19v-1.4c0-2.2-2.1-4-4.7-4s-4.7 1.8-4.7 4V19"/><circle cx="11.5" cy="7.6" r="2.6"/></svg>
+    </a>
+    <a href="chats.html" class="shrink-0 rounded-full p-3" aria-label="Chats" aria-current="page">
+      <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path fill="currentColor" d="M5 5.5h14a2 2 0 0 1 2 2v7.2a2 2 0 0 1-2 2H9.4L4.2 20.8V16.7H5a2 2 0 0 1-2-2V7.5a2 2 0 0 1 2-2z"/></svg>
+    </a>
+    <a href="webinars.html" class="shrink-0 rounded-full p-3" aria-label="Webinars">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="6" width="12" height="9" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m15 9.5 6-2.5v7l-6-2.5"/><path stroke-linecap="round" d="M6 19h8"/></svg>
+    </a>
+        <a href="blogs.html" class="shrink-0 rounded-full p-3" aria-label="Blogs">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5.2 5.2h4.4A2.4 2.4 0 0 1 12 7.6v11.2a2 2 0 0 0-2-2H5.2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M18.8 5.2h-4.4A2.4 2.4 0 0 0 12 7.6v11.2a2 2 0 0 1 2-2h4.8z"/></svg>
+    </a>
+    <a href="notifications.html" class="relative shrink-0 rounded-full p-3" data-nav="notifications" aria-label="Notifications">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.4 9.2a5.6 5.6 0 0 1 11.2 0c0 4.2 1.3 5.6 1.3 5.6H5.1s1.3-1.4 1.3-5.6z"/><path stroke-linecap="round" d="M10 18.2a2 2 0 0 0 4 0"/></svg>
+    </a>
+    <a href="profile.html" class="rounded-full p-3" aria-label="Profile">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path stroke-linecap="round" d="M5.2 19.4c1.5-2.8 3.9-4.2 6.8-4.2s5.3 1.4 6.8 4.2"/></svg>
+    </a>
+    <a href="premium.html" class="rounded-full p-3" aria-label="Premium">
+      <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path fill="currentColor" d="M12 2.4 9.6 8.2 3.3 8.8l4.8 4.1-1.4 6.3L12 16.2l5.3 3 1.4-6.3 4.8-4.1-6.3-.6z"/></svg>
+    </a>
+  </nav>
+
+  <script src="./api.js"></script>
+  <script src="./posts.js"></script>
+  <script>
+    var params = new URLSearchParams(location.search);
+    var chatId = params.get('id') || '';
+    var chat = null;
+    var messages = [];
+    var lastId = 0;
+    var polling = null;
+    var meEmail = '';
+    var replyTo = null;
+    var editing = null;
+    var draft = '';
+    var REACTIONS = [
+      { id: 'heart', glyph: '❤️' },
+      { id: 'haha', glyph: '😂' },
+      { id: 'wow', glyph: '😮' },
+      { id: 'sad', glyph: '😢' },
+      { id: 'like', glyph: '👍' },
+    ];
+
+    function reactionGlyph(id) {
+      for (var i = 0; i < REACTIONS.length; i++) {
+        if (REACTIONS[i].id === id) return REACTIONS[i].glyph;
+      }
+      return '';
+    }
+
+    function messageClock(unix) {
+      var date = new Date((unix || 0) * 1000);
+      if (isNaN(date.getTime()) || !unix) return '';
+      return date.toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+    }
+
+    function closeMessageMenus() {
+      var menus = document.querySelectorAll('[data-message-pop]');
+      for (var i = 0; i < menus.length; i++) menus[i].classList.add('hidden');
+    }
+
+    function picture(src, letter, sizeClass) {
+      var letterSize = sizeClass.indexOf('text-') === -1 ? 'text-sm ' : '';
+      if (src) {
+        var img = document.createElement('img');
+        img.src = API + src;
+        img.alt = '';
+        img.className = 'shrink-0 rounded-full object-cover ' + sizeClass;
+        return img;
+      }
+      var fallback = document.createElement('span');
+      fallback.className = 'flex shrink-0 items-center justify-center rounded-full bg-x-blue font-bold text-white ' + letterSize + sizeClass;
+      fallback.textContent = (letter || '?').toUpperCase();
+      return fallback;
+    }
+
+    function imageProblem(file) {
+      if (!file) return '';
+      var types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+      if (types.indexOf(file.type) === -1 || file.size === 0 || file.size > 2 * 1024 * 1024) {
+        return 'Use a jpg, png, gif, or webp under 2 MB.';
+      }
+      return '';
+    }
+
+    function profileHref(username, email) {
+      var key = username || email || '';
+      if (!key) return 'profile.html';
+      return 'profile.html?user=' + encodeURIComponent(key);
+    }
+
+    function showNotice(text) {
+      var notice = document.getElementById('notice');
+      if (!text) {
+        notice.classList.add('hidden');
+        notice.textContent = '';
+        return;
+      }
+      notice.classList.remove('hidden');
+      notice.textContent = text;
+    }
+
+    function nearBottom(box) {
+      return box.scrollHeight - box.scrollTop - box.clientHeight < 80;
+    }
+
+    function paintHeader() {
+      document.getElementById('chatName').textContent = chat.name || 'Chat';
+      document.title = (chat.name || 'Chat') + ' | Zivo';
+      var count = chat.member_count || 0;
+      document.getElementById('chatMeta').textContent = count === 1 ? '1 person' : count + ' people';
+      var mark = document.getElementById('chatMark');
+      mark.innerHTML = '';
+      mark.appendChild(picture(chat.photo, (chat.name || 'C').charAt(0), 'size-10'));
+    }
+
+    function bubble(message, showName) {
+      if (message.system) {
+        var note = document.createElement('p');
+        note.className = 'py-2 text-center text-[13px] text-x-muted';
+        note.textContent = message.text;
+        return note;
+      }
+      var row = document.createElement('div');
+      row.id = 'message-' + message.id;
+      row.className = 'flex items-end gap-2 py-0.5 ' + (message.mine ? 'justify-end' : '');
+      if (!message.mine) {
+        if (showName) row.appendChild(picture(message.photo, (message.name || '?').charAt(0), 'size-7 text-xs'));
+        else {
+          var spacer = document.createElement('span');
+          spacer.className = 'size-7 shrink-0';
+          row.appendChild(spacer);
+        }
+      }
+      var column = document.createElement('div');
+      column.className = 'max-w-[75%]';
+      if (!message.mine && showName) {
+        var who = document.createElement('a');
+        who.href = profileHref(message.username, message.email);
+        who.className = 'mb-0.5 block px-3 text-[12px] font-bold text-x-muted hover:underline';
+        who.textContent = message.name;
+        column.appendChild(who);
+      }
+      var line = document.createElement('div');
+      line.className = 'flex items-end gap-1 ' + (message.mine ? 'flex-row-reverse' : '');
+      var body = document.createElement('div');
+      body.className = message.mine
+        ? 'rounded-3xl rounded-br-md bg-x-blue px-3 py-2 text-[15px] leading-5 break-words whitespace-pre-wrap text-white'
+        : 'rounded-3xl rounded-bl-md bg-x-chip px-3 py-2 text-[15px] leading-5 break-words whitespace-pre-wrap text-x-ink';
+      body.title = messageClock(message.created_at);
+      if (message.reply) {
+        var quote = document.createElement('button');
+        quote.type = 'button';
+        quote.className = message.mine
+          ? 'mb-1 block w-full rounded-2xl bg-white/15 px-2 py-1 text-left text-[13px] leading-4 text-white'
+          : 'mb-1 block w-full rounded-2xl bg-white px-2 py-1 text-left text-[13px] leading-4 text-x-ink';
+        if (message.reply.removed) {
+          quote.textContent = 'Message removed';
+        } else {
+          var quoteName = document.createElement('span');
+          quoteName.className = 'block font-bold';
+          quoteName.textContent = message.reply.system ? 'Chat' : (message.reply.name || 'Message');
+          var quoteText = document.createElement('span');
+          quoteText.className = 'block truncate';
+          quoteText.textContent = message.reply.text || (message.reply.image ? 'Photo' : '');
+          quote.appendChild(quoteName);
+          quote.appendChild(quoteText);
+          quote.addEventListener('click', function (event) {
+            event.stopPropagation();
+            var target = document.getElementById('message-' + message.reply.id);
+            if (target && target.scrollIntoView) target.scrollIntoView({ block: 'center' });
+          });
+          quote.addEventListener('dblclick', function (event) { event.stopPropagation(); });
+        }
+        body.appendChild(quote);
+      }
+      if (message.text) {
+        var text = document.createElement('p');
+        text.textContent = message.text;
+        body.appendChild(text);
+      }
+      if (message.image) {
+        var img = document.createElement('img');
+        img.src = API + message.image;
+        img.alt = '';
+        img.className = 'max-h-64 rounded-2xl object-cover' + (message.text || message.reply ? ' mt-1' : '');
+        body.appendChild(img);
+      }
+      if (message.edited) {
+        var edited = document.createElement('p');
+        edited.className = message.mine ? 'mt-0.5 text-[11px] text-white/80' : 'mt-0.5 text-[11px] text-x-muted';
+        edited.textContent = 'Edited';
+        body.appendChild(edited);
+      }
+      body.addEventListener('dblclick', function () {
+        reactTo(message, 'heart');
+      });
+      line.appendChild(body);
+      line.appendChild(messageMenu(message));
+      column.appendChild(line);
+      if (message.reactions && message.reactions.length) {
+        var pills = document.createElement('div');
+        pills.className = 'mt-1 flex flex-wrap gap-1 ' + (message.mine ? 'justify-end' : '');
+        message.reactions.forEach(function (item) {
+          var pill = document.createElement('button');
+          pill.type = 'button';
+          pill.className = item.mine
+            ? 'rounded-full border border-x-blue bg-white px-1.5 text-[13px] leading-5'
+            : 'rounded-full border border-x-line bg-white px-1.5 text-[13px] leading-5';
+          pill.textContent = reactionGlyph(item.emoji) + ' ' + item.count;
+          pill.addEventListener('click', function () {
+            reactTo(message, item.mine ? item.emoji : item.emoji);
+          });
+          pills.appendChild(pill);
+        });
+        column.appendChild(pills);
+      }
+      if (message.seen) {
+        var seen = document.createElement('p');
+        seen.className = 'mt-0.5 px-2 text-right text-[12px] text-x-muted';
+        seen.textContent = 'Seen';
+        column.appendChild(seen);
+      }
+      row.appendChild(column);
+      return row;
+    }
+
+    function messageMenu(message) {
+      var wrap = document.createElement('div');
+      wrap.className = 'relative mb-1';
+      wrap.setAttribute('data-message-menu', '');
+      var toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'inline-flex size-7 items-center justify-center rounded-full text-x-muted hover:bg-x-hover';
+      toggle.setAttribute('aria-label', 'Message actions');
+      toggle.innerHTML = '<svg viewBox="0 0 24 24" class="size-4" aria-hidden="true"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></svg>';
+      var pop = document.createElement('div');
+      pop.setAttribute('data-message-pop', '');
+      pop.className = 'menu-pop fixed z-40 hidden w-52 overflow-hidden rounded-2xl bg-white py-1';
+      var when = document.createElement('p');
+      when.className = 'px-3 py-1 text-[12px] text-x-muted';
+      when.textContent = messageClock(message.created_at);
+      pop.appendChild(when);
+      var reactionRow = document.createElement('div');
+      reactionRow.className = 'flex items-center justify-between px-2 py-1';
+      REACTIONS.forEach(function (item) {
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'rounded-full px-1 text-[18px] leading-6 hover:bg-x-hover';
+        button.textContent = item.glyph;
+        button.setAttribute('aria-label', item.id);
+        button.addEventListener('click', function (event) {
+          event.stopPropagation();
+          closeMessageMenus();
+          reactTo(message, item.id);
+        });
+        reactionRow.appendChild(button);
+      });
+      pop.appendChild(reactionRow);
+      pop.appendChild(menuAction('Reply', function () { beginReply(message); }));
+      if (message.text) pop.appendChild(menuAction('Copy', function () { copyMessage(message); }));
+      if (message.mine) {
+        pop.appendChild(menuAction('Edit', function () { beginEdit(message); }));
+        pop.appendChild(menuAction('Unsend', function () { unsendMessage(message); }, true));
+      }
+      toggle.addEventListener('click', function (event) {
+        event.stopPropagation();
+        var open = pop.classList.contains('hidden');
+        closeMessageMenus();
+        if (!open) return;
+        var rect = toggle.getBoundingClientRect();
+        var top = rect.bottom + 6;
+        if (top + 230 > window.innerHeight) top = Math.max(8, rect.top - 230);
+        pop.style.top = top + 'px';
+        if (message.mine) {
+          pop.style.left = 'auto';
+          pop.style.right = Math.max(8, window.innerWidth - rect.right) + 'px';
+        } else {
+          pop.style.right = 'auto';
+          pop.style.left = Math.max(8, rect.left) + 'px';
+        }
+        pop.classList.remove('hidden');
+      });
+      wrap.appendChild(toggle);
+      wrap.appendChild(pop);
+      return wrap;
+    }
+
+    function menuAction(label, action, danger) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'block w-full px-3 py-2 text-left text-[15px] font-bold hover:bg-x-hover ' + (danger ? 'text-x-danger' : '');
+      button.textContent = label;
+      button.addEventListener('click', function (event) {
+        event.stopPropagation();
+        closeMessageMenus();
+        action();
+      });
+      return button;
+    }
+
+    function paintComposeMode() {
+      var bar = document.getElementById('composeContext');
+      var photoLabel = document.getElementById('photoLabel');
+      var send = document.getElementById('send');
+      var input = document.getElementById('text');
+      bar.innerHTML = '';
+      if (!editing && !replyTo) {
+        bar.classList.add('hidden');
+        bar.classList.remove('flex');
+        photoLabel.classList.remove('hidden');
+        input.placeholder = 'Message';
+        send.textContent = 'Send';
+        syncSend();
+        return;
+      }
+      bar.classList.remove('hidden');
+      bar.classList.add('flex');
+      var copy = document.createElement('div');
+      copy.className = 'min-w-0 flex-1';
+      var title = document.createElement('p');
+      title.className = 'text-[13px] font-bold text-x-blue';
+      var detail = document.createElement('p');
+      detail.className = 'truncate text-[13px] text-x-muted';
+      if (editing) {
+        title.textContent = 'Editing message';
+        detail.textContent = editing.image ? 'The photo stays on the message.' : (editing.text || '');
+        photoLabel.classList.add('hidden');
+        input.placeholder = 'Edit message';
+        send.textContent = 'Save';
+      } else {
+        title.textContent = 'Replying to ' + (replyTo.mine ? 'yourself' : (replyTo.name || 'message'));
+        detail.textContent = replyTo.text || (replyTo.image ? 'Photo' : '');
+        photoLabel.classList.remove('hidden');
+        input.placeholder = 'Message';
+        send.textContent = 'Send';
+      }
+      copy.appendChild(title);
+      copy.appendChild(detail);
+      var cancel = document.createElement('button');
+      cancel.type = 'button';
+      cancel.className = 'shrink-0 text-[13px] font-bold text-x-muted';
+      cancel.textContent = 'Cancel';
+      cancel.addEventListener('click', function () {
+        if (editing) {
+          editing = null;
+          input.value = draft;
+          draft = '';
+        }
+        replyTo = null;
+        paintComposeMode();
+      });
+      bar.appendChild(copy);
+      bar.appendChild(cancel);
+      syncSend();
+    }
+
+    function beginReply(message) {
+      if (editing) {
+        editing = null;
+        document.getElementById('text').value = draft;
+        draft = '';
+      }
+      replyTo = message;
+      paintComposeMode();
+      document.getElementById('text').focus();
+    }
+
+    function beginEdit(message) {
+      if (!editing) draft = document.getElementById('text').value;
+      editing = { id: message.id, text: message.text || '', image: message.image || '' };
+      replyTo = null;
+      document.getElementById('text').value = message.text || '';
+      document.getElementById('photo').value = '';
+      var preview = document.getElementById('preview');
+      preview.classList.add('hidden');
+      preview.removeAttribute('src');
+      showNotice('');
+      paintComposeMode();
+      document.getElementById('text').focus();
+    }
+
+    function copyMessage(message) {
+      var text = message.text || '';
+      if (!text) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(function () {
+          showNotice('Could not copy that message.');
+        });
+        return;
+      }
+      showNotice('Could not copy that message.');
+    }
+
+    function reactTo(message, emoji) {
+      apiFetch('/chats/' + encodeURIComponent(chatId) + '/messages/' + encodeURIComponent(message.id) + '/react', {
+        method: 'POST',
+        body: JSON.stringify({ emoji: emoji }),
+      }).then(function (result) {
+        if (!result.ok) {
+          showNotice(result.data.message || 'Could not react to that message.');
+          return;
+        }
+        applyMessages([result.data], false);
+        refresh(false);
+      });
+    }
+
+    function unsendMessage(message) {
+      openDialog({
+        title: 'Unsend message?',
+        body: 'It disappears for everyone in this chat.',
+        confirmLabel: 'Unsend',
+      }).then(function (ok) {
+        if (!ok) return;
+        apiFetch('/chats/' + encodeURIComponent(chatId) + '/messages/' + encodeURIComponent(message.id) + '/delete', {
+          method: 'POST',
+          body: '{}',
+        }).then(function (result) {
+          if (!result.ok) {
+            showNotice(result.data.message || 'Could not unsend that message.');
+            return;
+          }
+          if (editing && editing.id === message.id) {
+            editing = null;
+            document.getElementById('text').value = draft;
+            draft = '';
+            paintComposeMode();
+          }
+          if (replyTo && replyTo.id === message.id) {
+            replyTo = null;
+            paintComposeMode();
+          }
+          messages = messages.filter(function (item) { return item.id !== message.id; });
+          paintThread(false);
+          refresh(false);
+        });
+      });
+    }
+
+    function paintThread(stick) {
+      var box = document.getElementById('thread');
+      var follow = stick || nearBottom(box);
+      box.innerHTML = '';
+      var previous = '';
+      messages.forEach(function (message) {
+        var key = message.system ? '' : message.email;
+        var showName = !message.mine && !message.system && key !== previous;
+        box.appendChild(bubble(message, showName));
+        previous = message.system ? '' : key;
+      });
+      if (follow) box.scrollTop = box.scrollHeight;
+    }
+
+    function roster(item) {
+      return (item.members || []).map(function (person) {
+        return person.role + ':' + person.email;
+      }).join(',');
+    }
+
+    function paintPeople(box) {
+      box.innerHTML = '';
+      mountUserSearch(box, {
+        placeholder: 'Search people to add',
+        divided: true,
+        isFull: function () { return (chat.member_count || 0) >= 32; },
+        exclude: function () {
+          return (chat.members || []).map(function (person) { return person.email; });
+        },
+        onSelect: function (person) {
+          return apiFetch('/chats/' + encodeURIComponent(chatId) + '/members', {
+            method: 'POST',
+            body: JSON.stringify({ user: person.email }),
+          }).then(function (result) {
+            if (!result.ok) return result;
+            chat = result.data;
+            paintHeader();
+            paintPeople(document.getElementById('peopleDesk'));
+            paintPeople(document.getElementById('peoplePanel'));
+            refresh(true);
+            return result;
+          });
+        },
+      });
+      var rename = document.createElement('form');
+      rename.className = 'flex flex-col gap-2 border-b border-x-line px-3 py-3';
+      var nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.maxLength = 50;
+      nameInput.value = chat.name || '';
+      nameInput.setAttribute('aria-label', 'Chat name');
+      nameInput.className = 'h-9 rounded-full bg-x-chip px-3 text-[15px] outline-none placeholder:text-x-muted focus:bg-white focus:ring-1 focus:ring-x-blue';
+      var photoRow = document.createElement('div');
+      photoRow.className = 'flex items-center gap-3';
+      var photoInput = document.createElement('input');
+      photoInput.type = 'file';
+      photoInput.accept = 'image/jpeg,image/png,image/gif,image/webp';
+      photoInput.className = 'sr-only';
+      var photoLabel = document.createElement('label');
+      photoLabel.className = 'cursor-pointer text-[15px] font-bold text-x-blue';
+      photoLabel.textContent = 'Change photo';
+      photoLabel.appendChild(photoInput);
+      var save = document.createElement('button');
+      save.type = 'submit';
+      save.className = 'text-[15px] font-bold text-x-blue';
+      save.textContent = 'Save';
+      photoRow.appendChild(photoLabel);
+      photoRow.appendChild(save);
+      rename.appendChild(nameInput);
+      rename.appendChild(photoRow);
+      box.appendChild(rename);
+      rename.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var nextName = nameInput.value.trim();
+        var file = photoInput.files[0];
+        if (!nextName) {
+          openDialog({ title: 'Name the chat', body: 'Chat name cannot be empty.' });
+          return;
+        }
+        if (nextName.length > 50) {
+          openDialog({ title: 'Name is too long', body: 'Chat name can be 50 characters at most.' });
+          return;
+        }
+        var problem = imageProblem(file);
+        if (problem) {
+          openDialog({ title: 'That photo won’t work', body: problem });
+          return;
+        }
+        var body = new FormData();
+        body.append('name', nextName);
+        if (file) body.append('photo', file);
+        save.disabled = true;
+        apiForm('/chats/' + encodeURIComponent(chatId) + '/update', body).then(function (result) {
+          save.disabled = false;
+          if (!result.ok) {
+            openDialog({ title: 'Could not update the chat', body: result.data.message || 'Try again.' });
+            return;
+          }
+          chat = result.data;
+          paintHeader();
+          paintPeople(document.getElementById('peopleDesk'));
+          paintPeople(document.getElementById('peoplePanel'));
+          refresh(true);
+        });
+      });
+
+      (chat.members || []).forEach(function (person) {
+        var row = document.createElement('div');
+        row.className = 'flex items-center gap-3 px-3 py-2';
+        var link = document.createElement('a');
+        link.href = profileHref(person.username, person.email);
+        link.className = 'flex min-w-0 flex-1 items-center gap-3';
+        link.appendChild(picture(person.photo, (person.name || '?').charAt(0), 'size-9'));
+        var copy = document.createElement('div');
+        copy.className = 'min-w-0';
+        var name = document.createElement('p');
+        name.className = 'truncate text-[15px] font-bold';
+        name.textContent = person.name;
+        var role = document.createElement('p');
+        role.className = 'text-[13px] text-x-muted';
+        role.textContent = person.role === 'owner' ? 'Admin' : 'Member';
+        copy.appendChild(name);
+        copy.appendChild(role);
+        link.appendChild(copy);
+        row.appendChild(link);
+        if (chat.is_owner && person.role !== 'owner') {
+          var remove = document.createElement('button');
+          remove.type = 'button';
+          remove.className = 'text-[13px] font-bold text-x-danger';
+          remove.textContent = 'Remove';
+          remove.addEventListener('click', function () {
+            openDialog({
+              title: 'Remove from chat?',
+              body: person.name + ' will no longer see these messages.',
+              confirmLabel: 'Remove',
+            }).then(function (ok) {
+              if (!ok) return;
+              apiFetch('/chats/' + encodeURIComponent(chatId) + '/members/remove', {
+                method: 'POST',
+                body: JSON.stringify({ user: person.email }),
+              }).then(function (result) {
+                if (!result.ok) {
+                  openDialog({ title: 'Could not remove that person', body: result.data.message || 'Try again.' });
+                  return;
+                }
+                chat = result.data;
+                paintHeader();
+                paintPeople(document.getElementById('peopleDesk'));
+                paintPeople(document.getElementById('peoplePanel'));
+                refresh(true);
+              });
+            });
+          });
+          row.appendChild(remove);
+        }
+        box.appendChild(row);
+      });
+
+      var leave = document.createElement('button');
+      leave.type = 'button';
+      leave.className = 'mx-3 mt-2 mb-4 rounded-full border border-x-border px-4 py-1.5 text-[15px] font-bold hover:border-[#f4212e] hover:bg-[#f4212e]/10 hover:text-x-danger';
+      leave.textContent = 'Leave chat';
+      leave.addEventListener('click', function () {
+        var alone = (chat.member_count || 0) <= 1;
+        openDialog({
+          title: alone ? 'Delete chat?' : 'Leave chat?',
+          body: alone ? 'You are the only person here. Leaving deletes the chat.' : 'You will stop seeing new messages.',
+          confirmLabel: alone ? 'Delete' : 'Leave',
+        }).then(function (ok) {
+          if (!ok) return;
+          apiFetch('/chats/' + encodeURIComponent(chatId) + '/leave', { method: 'POST', body: '{}' }).then(function (result) {
+            if (!result.ok) {
+              openDialog({ title: 'Could not leave', body: result.data.message || 'Try again.' });
+              return;
+            }
+            window.location.href = 'chats.html';
+          });
+        });
+      });
+      box.appendChild(leave);
+    }
+
+    function messageKey(message) {
+      var reactions = (message.reactions || []).map(function (item) {
+        return item.emoji + ':' + item.count + ':' + (item.mine ? '1' : '0');
+      }).join(',');
+      var reply = '';
+      if (message.reply) {
+        reply = message.reply.removed ? 'gone' : [message.reply.name, message.reply.text, message.reply.image ? '1' : '0'].join(':');
+      }
+      return [message.id, message.text, message.image, message.edited ? 1 : 0, message.seen ? 1 : 0, reactions, reply].join('|');
+    }
+
+    function sameThread(rows) {
+      if (rows.length !== messages.length) return false;
+      for (var i = 0; i < rows.length; i++) {
+        if (messageKey(rows[i]) !== messageKey(messages[i])) return false;
+      }
+      return true;
+    }
+
+    function syncThread(rows, stick) {
+      var next = rows || [];
+      var same = sameThread(next);
+      var previousLast = lastId;
+      messages = next;
+      lastId = next.length ? next[next.length - 1].id : 0;
+      if (editing && !next.some(function (item) { return item.id === editing.id; })) {
+        editing = null;
+        document.getElementById('text').value = draft;
+        draft = '';
+        paintComposeMode();
+        showNotice('That message was removed.');
+      }
+      if (replyTo && !next.some(function (item) { return item.id === replyTo.id; })) {
+        replyTo = null;
+        paintComposeMode();
+        showNotice('That message was removed.');
+      }
+      if (!same) paintThread(stick);
+      return lastId > previousLast;
+    }
+
+    function applyMessages(rows, stick) {
+      rows.forEach(function (message) {
+        var index = -1;
+        messages.forEach(function (item, i) {
+          if (item.id === message.id) index = i;
+        });
+        if (index === -1) messages.push(message);
+        else messages[index] = message;
+        if (message.id > lastId) lastId = message.id;
+      });
+      paintThread(stick);
+    }
+
+    function refresh(stick) {
+      return apiFetch('/chats/' + encodeURIComponent(chatId) + '/messages?after=' + lastId).then(function (result) {
+        if (result.status === 401) {
+          clearToken();
+          window.location.href = 'loginpage.html';
+          return;
+        }
+        if (!result.ok) {
+          stop();
+          document.getElementById('composer').classList.add('hidden');
+          document.getElementById('closed').classList.remove('hidden');
+          document.getElementById('closed').textContent = result.data.message || 'You are no longer in this chat.';
+          return;
+        }
+        if (result.data.chat) {
+          var next = result.data.chat;
+          var peopleChanged = !chat || roster(next) !== roster(chat) || next.name !== chat.name || next.photo !== chat.photo;
+          chat = next;
+          paintHeader();
+          if (peopleChanged) {
+            paintPeople(document.getElementById('peopleDesk'));
+            paintPeople(document.getElementById('peoplePanel'));
+          }
+        }
+        var grew = syncThread(result.data.thread || result.data.messages || [], stick);
+        if (grew || stick) {
+          apiFetch('/chats/' + encodeURIComponent(chatId) + '/read', { method: 'POST', body: '{}' });
+        }
+      });
+    }
+
+    function stop() {
+      if (polling) {
+        clearInterval(polling);
+        polling = null;
+      }
+    }
+
+    function syncSend() {
+      var text = document.getElementById('text').value.trim();
+      var file = document.getElementById('photo').files[0];
+      var ready = editing ? !!(text || editing.image) : !!(text || file);
+      document.getElementById('send').disabled = !ready;
+    }
+
+    if (!localStorage.getItem('zivo_token')) {
+      window.location.href = 'loginpage.html';
+    } else if (!/^\d+$/.test(chatId)) {
+      document.getElementById('closed').classList.remove('hidden');
+      document.getElementById('closed').textContent = 'This chat doesn’t exist.';
+      document.getElementById('composer').classList.add('hidden');
+    } else {
+      apiFetch('/me').then(function (result) {
+        if (!result.ok) {
+          clearToken();
+          window.location.href = 'loginpage.html';
+          return;
+        }
+        meEmail = result.data.email || '';
+        document.getElementById('greeting').textContent = result.data.name;
+        if (result.data.premium) document.getElementById('greeting').appendChild(premiumMark());
+        document.getElementById('mePhoto').appendChild(picture(result.data.photo, (result.data.name || '?').charAt(0), 'size-10'));
+        if (result.data.username) document.getElementById('handle').textContent = '@' + result.data.username;
+        return apiFetch('/chats/' + encodeURIComponent(chatId)).then(function (detail) {
+          if (!detail.ok) {
+            document.getElementById('composer').classList.add('hidden');
+            document.getElementById('closed').classList.remove('hidden');
+            document.getElementById('closed').textContent = detail.data.message || 'This chat doesn’t exist.';
+            return;
+          }
+          chat = detail.data;
+          paintHeader();
+          paintPeople(document.getElementById('peopleDesk'));
+          paintPeople(document.getElementById('peoplePanel'));
+          return refresh(true).then(function () {
+            polling = setInterval(function () { refresh(false); }, 2500);
+          });
+        });
+      }).catch(function () {
+        window.location.href = 'loginpage.html';
+      });
+    }
+
+    document.getElementById('thread').addEventListener('scroll', closeMessageMenus);
+    document.getElementById('peopleToggle').addEventListener('click', function () {
+      document.getElementById('peoplePanel').classList.toggle('hidden');
+    });
+
+    document.getElementById('text').addEventListener('input', syncSend);
+    document.getElementById('photo').addEventListener('change', function () {
+      var file = this.files[0];
+      var preview = document.getElementById('preview');
+      var problem = imageProblem(file);
+      if (problem) {
+        this.value = '';
+        preview.classList.add('hidden');
+        preview.removeAttribute('src');
+        showNotice(problem);
+        syncSend();
+        return;
+      }
+      showNotice('');
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.classList.remove('hidden');
+      } else {
+        preview.classList.add('hidden');
+        preview.removeAttribute('src');
+      }
+      syncSend();
+    });
+
+    document.getElementById('composer').addEventListener('submit', function (event) {
+      event.preventDefault();
+      var text = document.getElementById('text').value.trim();
+      var file = document.getElementById('photo').files[0];
+      if (editing) {
+        if (!text && !editing.image) {
+          showNotice('Write a message or leave the photo.');
+          return;
+        }
+        if (text.length > 1000) {
+          showNotice('Messages can be 1,000 characters at most.');
+          return;
+        }
+        var save = document.getElementById('send');
+        save.disabled = true;
+        apiFetch('/chats/' + encodeURIComponent(chatId) + '/messages/' + encodeURIComponent(editing.id) + '/edit', {
+          method: 'POST',
+          body: JSON.stringify({ text: text }),
+        }).then(function (result) {
+          syncSend();
+          if (!result.ok) {
+            showNotice(result.data.message || 'Could not edit that message.');
+            return;
+          }
+          editing = null;
+          draft = '';
+          document.getElementById('text').value = '';
+          showNotice('');
+          paintComposeMode();
+          applyMessages([result.data], false);
+          refresh(false);
+        }).catch(function () {
+          syncSend();
+          showNotice('Cannot reach the server.');
+        });
+        return;
+      }
+      if (!text && !file) {
+        showNotice('Write a message or add a photo.');
+        return;
+      }
+      if (text.length > 1000) {
+        showNotice('Messages can be 1,000 characters at most.');
+        return;
+      }
+      var problem = imageProblem(file);
+      if (problem) {
+        showNotice(problem);
+        return;
+      }
+      var body = new FormData();
+      body.append('text', text);
+      if (file) body.append('image', file);
+      if (replyTo) body.append('reply_to', String(replyTo.id));
+      var button = document.getElementById('send');
+      button.disabled = true;
+      apiForm('/chats/' + encodeURIComponent(chatId) + '/messages', body).then(function (result) {
+        syncSend();
+        if (!result.ok) {
+          showNotice(result.data.message || 'Could not send that message.');
+          return;
+        }
+        document.getElementById('text').value = '';
+        document.getElementById('photo').value = '';
+        var preview = document.getElementById('preview');
+        preview.classList.add('hidden');
+        preview.removeAttribute('src');
+        replyTo = null;
+        draft = '';
+        showNotice('');
+        paintComposeMode();
+        syncSend();
+        applyMessages([result.data], true);
+        refresh(true);
+      }).catch(function () {
+        syncSend();
+        showNotice('Cannot reach the server.');
+      });
+    });
+
+    document.addEventListener('click', function (event) {
+      var pop = document.getElementById('accountPopover');
+      var toggle = document.getElementById('accountToggle');
+      if (!toggle || !pop) return;
+      if (toggle.contains(event.target)) {
+        pop.classList.toggle('hidden');
+        return;
+      }
+      if (!pop.contains(event.target)) pop.classList.add('hidden');
+      if (!event.target.closest || !event.target.closest('[data-message-menu]')) closeMessageMenus();
+    });
+    document.getElementById('logout').addEventListener('click', function () {
+      stop();
+      apiFetch('/logout', { method: 'POST', body: '{}' }).finally(function () {
+        clearToken();
+        window.location.href = 'loginpage.html';
+      });
+    });
+  </script>
+</body>
+</html>

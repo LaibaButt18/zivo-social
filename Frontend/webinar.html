@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webinar | Zivo</title>
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="x-page app-lock">
+  <div class="flex h-svh w-full min-w-0 max-w-full overflow-hidden">
+    <header class="sticky top-0 z-40 hidden h-svh w-[72px] min-w-0 shrink-0 flex-col px-2 sm:flex lg:w-[244px] lg:px-3">
+      <div class="flex w-full flex-col">
+        <a href="feed.html" class="mb-3 inline-flex items-center gap-2.5 px-2.5 pt-12 lg:px-3" aria-label="Zivo">
+          <img src="./assets/logo-mark.svg" alt="" class="size-8 shrink-0">
+          <span class="hidden text-[22px] font-extrabold leading-none tracking-[-0.03em] lg:inline">Zivo</span>
+        </a>
+        <nav class="app-menu">
+          <a href="feed.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.4 12 4.2l7.5 6.2V19a1.5 1.5 0 0 1-1.5 1.5H15v-5.2H9V20.5H6A1.5 1.5 0 0 1 4.5 19z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Home</span>
+          </a>
+          <a href="groups.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" d="M15.2 19.2v-1c0-1.8-1.8-3.2-4-3.2s-4 1.4-4 3.2v1"/><circle cx="11.2" cy="8.3" r="2.6"/><path stroke-linecap="round" d="M18.8 19.2v-.8c0-1.3-1-2.4-2.3-2.8"/><circle cx="16.6" cy="9.2" r="2"/></svg>
+            <span class="hidden text-[15px] lg:inline">Groups</span>
+          </a>
+          <a href="chats.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.2 7.2h11.6A1.6 1.6 0 0 1 19.4 8.8v6a1.6 1.6 0 0 1-1.6 1.6H9.4L6.2 19.2v-2.8A1.6 1.6 0 0 1 4.6 14.8v-6a1.6 1.6 0 0 1 1.6-1.6z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Chats</span>
+          </a>
+          <a href="webinars.html" class="x-nav" aria-current="page">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><rect x="3.4" y="6.6" width="11.2" height="8.2" rx="1.8"/><path stroke-linecap="round" stroke-linejoin="round" d="m14.6 9.8 5.2-2.3v6.4l-5.2-2.3"/></svg>
+            <span class="hidden text-[15px] lg:inline">Webinars</span>
+          </a>
+          <a href="blogs.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5.2 5.2h4.4A2.4 2.4 0 0 1 12 7.6v11.2a2 2 0 0 0-2-2H5.2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M18.8 5.2h-4.4A2.4 2.4 0 0 0 12 7.6v11.2a2 2 0 0 1 2-2h4.8z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Blogs</span>
+          </a>
+          <a href="notifications.html" class="x-nav" data-nav="notifications">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.4 9.2a5.6 5.6 0 0 1 11.2 0c0 4.2 1.3 5.6 1.3 5.6H5.1s1.3-1.4 1.3-5.6z"/><path stroke-linecap="round" d="M10 18.2a2 2 0 0 0 4 0"/></svg>
+            <span class="hidden text-[15px] lg:inline">Notifications</span>
+          </a>
+          <div class="nav-divider" role="separator"></div>
+          <a href="profile.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="12" cy="8.4" r="2.8"/><path stroke-linecap="round" d="M6.2 19.1c1.2-2.5 3.3-3.8 5.8-3.8s4.6 1.3 5.8 3.8"/></svg>
+            <span class="hidden text-[15px] lg:inline">Profile</span>
+          </a>
+          <a href="premium.html" class="x-nav">
+            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path stroke-linejoin="round" d="m12 3.4 2.05 4.9 5.25.45-4.05 3.4 1.25 5.15L12 14.7 7.5 17.3l1.25-5.15-4.05-3.4 5.25-.45z"/></svg>
+            <span class="hidden text-[15px] lg:inline">Premium</span>
+          </a>
+        </nav>
+        <a href="feed.html#compose" class="x-btn-blue mt-3 size-11 self-center text-[15px] lg:h-11 lg:w-full lg:self-auto" aria-label="Post">
+          <svg viewBox="0 0 24 24" class="size-6 lg:hidden" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+          <span class="hidden text-[15px] lg:inline">Post</span>
+        </a>
+      </div>
+      <div class="relative mt-auto mb-3">
+        <button id="accountToggle" type="button" class="flex w-full items-center gap-2 rounded-full p-2 text-left hover:bg-black/10">
+          <div id="mePhoto" class="size-10 shrink-0"></div>
+          <span class="hidden min-w-0 flex-1 lg:block">
+            <span id="greeting" class="block truncate text-[15px] font-bold">Account</span>
+            <span id="handle" class="block truncate text-[15px] text-x-muted"></span>
+          </span>
+          <svg viewBox="0 0 24 24" class="hidden size-5 shrink-0 lg:block" aria-hidden="true"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></svg>
+        </button>
+        <div id="accountPopover" class="menu-pop absolute bottom-full left-0 z-50 mb-2 hidden w-[220px] overflow-hidden rounded-2xl bg-white py-2 lg:w-full">
+          <a href="profile.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">View profile</a>
+          <a href="premium.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">Premium</a>
+          <button id="logout" type="button" class="w-full px-4 py-3 text-left text-[15px] font-bold hover:bg-x-hover">Log out</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="flex h-svh min-w-0 flex-1 flex-col overflow-hidden border-x-line pb-14 sm:border-x sm:pb-0 lg:flex-row">
+      <section class="flex min-h-0 min-w-0 flex-1 flex-col">
+        <div class="flex items-center justify-between gap-3 border-b border-x-line px-6 py-4">
+          <div class="min-w-0">
+            <h1 id="roomTitle" class="truncate text-xl font-extrabold">Webinar</h1>
+            <p id="countLabel" class="text-[13px] text-x-muted"></p>
+          </div>
+          <a href="webinars.html" class="shrink-0 rounded-full px-3 py-1.5 text-[15px] font-bold text-x-muted hover:bg-black/5">Back</a>
+        </div>
+
+        <div id="lobby" class="min-h-0 flex-1 overflow-y-auto px-6 py-6" data-show="min-h-0 flex-1 overflow-y-auto px-6 py-6">
+          <div class="mx-auto flex w-full max-w-3xl flex-col">
+            <img id="lobbyCover" alt="" class="mb-4 hidden h-40 w-full rounded-2xl border border-x-line object-cover">
+            <h2 id="lobbyTitle" class="sr-only">Webinar</h2>
+            <p id="lobbyHost" class="text-[15px] font-bold"></p>
+            <p id="lobbyWhen" class="mt-0.5 text-[15px] text-x-muted"></p>
+            <p id="lobbyAbout" class="mt-2 max-w-xl text-[15px] leading-5 text-x-muted"></p>
+            <p id="lobbyNotice" class="mt-3 hidden text-[13px] text-x-danger" role="status"></p>
+            <div id="previewWrap" class="hidden" data-show="relative mt-4 aspect-video w-full overflow-hidden rounded-2xl bg-black">
+              <video id="previewVideo" class="absolute inset-0 hidden h-full w-full object-cover" autoplay muted playsinline></video>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <button id="goLive" type="button" class="hidden" data-show="x-btn-blue h-11 px-6 text-[15px]">Go live</button>
+              <button id="joinLive" type="button" class="hidden" data-show="x-btn-blue h-11 px-6 text-[15px]">Join</button>
+              <button id="startAgain" type="button" class="hidden" data-show="x-btn-blue h-11 px-6 text-[15px]">Start again</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="liveView" class="hidden" data-show="flex min-h-0 flex-1 flex-col">
+          <div class="relative min-h-[280px] flex-1 bg-[#0f1419] p-4">
+            <div id="stageGrid" class="grid h-full min-h-0 gap-3"></div>
+            <div id="floaters" class="pointer-events-none absolute inset-0"></div>
+            <div id="stageBanner" class="hidden">
+              <p id="stageText" class="text-[15px] font-bold text-white"></p>
+              <button id="retryStage" type="button" class="hidden">Try again</button>
+            </div>
+          </div>
+          <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 border-t border-x-line px-4 py-3">
+            <div></div>
+            <div class="flex flex-wrap items-center justify-center gap-2">
+              <button id="micButton" type="button" class="hidden" aria-label="Mute" data-show="inline-flex size-11 items-center justify-center rounded-full border border-x-border text-x-ink hover:bg-x-hover">
+                <svg data-on viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="9" y="3.5" width="6" height="10" rx="3"/><path stroke-linecap="round" d="M6.5 11a5.5 5.5 0 0 0 11 0M12 16.5V20M9 20h6"/></svg>
+                <svg data-off viewBox="0 0 24 24" class="hidden size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="9" y="3.5" width="6" height="10" rx="3"/><path stroke-linecap="round" d="M6.5 11a5.5 5.5 0 0 0 11 0M12 16.5V20M9 20h6M5 5l14 14"/></svg>
+              </button>
+              <button id="cameraButton" type="button" class="hidden" aria-label="Camera off" data-show="inline-flex size-11 items-center justify-center rounded-full border border-x-border text-x-ink hover:bg-x-hover">
+                <svg data-on viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2.5" y="6.5" width="12" height="9" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m14.5 9.5 6-2.5v8l-6-2.5"/></svg>
+                <svg data-off viewBox="0 0 24 24" class="hidden size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2.5" y="6.5" width="12" height="9" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m14.5 9.5 6-2.5v8l-6-2.5M4 4l16 16"/></svg>
+              </button>
+              <button id="shareButton" type="button" class="hidden" aria-label="Share screen" data-show="inline-flex size-11 items-center justify-center rounded-full border border-x-border text-x-ink hover:bg-x-hover">
+                <svg data-on viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 9.5v5M9.5 12 12 9.5 14.5 12M8 20h8"/></svg>
+                <svg data-off viewBox="0 0 24 24" class="hidden size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path stroke-linecap="round" d="M8 20h8M9 10l6 6M15 10l-6 6"/></svg>
+              </button>
+              <button id="handButton" type="button" class="hidden" aria-label="Raise hand" data-show="inline-flex size-11 items-center justify-center rounded-full border border-x-border text-x-ink hover:bg-x-hover">
+                <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8 11V6.5a1.5 1.5 0 0 1 3 0V11"/><path stroke-linecap="round" stroke-linejoin="round" d="M11 10.5V5.5a1.5 1.5 0 0 1 3 0v5.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 10.2V7a1.5 1.5 0 0 1 3 0v6.2c0 3.2-2 5.8-5.2 5.8-2.4 0-3.8-1.2-4.8-2.6L5.2 13a1.4 1.4 0 0 1 2.2-1.6L8 12.2"/></svg>
+              </button>
+              <button id="leaveButton" type="button" class="inline-flex size-11 items-center justify-center rounded-full border border-x-border text-x-ink hover:bg-x-hover" aria-label="Leave" title="Leave">
+                <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M14 7V5H5v14h9v-2"/><path stroke-linecap="round" stroke-linejoin="round" d="M10 12h9M16 9l3 3-3 3"/></svg>
+              </button>
+              <button id="endButton" type="button" class="hidden" aria-label="End" data-show="inline-flex size-11 items-center justify-center rounded-full bg-x-danger text-white hover:bg-[#d61f2a]">
+                <svg viewBox="0 0 24 24" class="size-5 rotate-[135deg]" fill="currentColor" aria-hidden="true"><path d="M7.1 3.8c.5-.9 1.6-1.2 2.5-.7l1.5.8c.8.4 1.1 1.4.7 2.2l-.5 1.1c-.2.5 0 1 .4 1.3l2.8 2.2c.4.3.5.8.3 1.3l-.5 1.1c-.4.8-.1 1.8.7 2.2l1.5.8c.9.5 2 .1 2.5-.8l.6-1.1c.6-1.1 2-1.5 3-.9 1.6 1 2.2 3.1 1.3 4.8-1.4 2.6-4.6 4.3-7.6 3.4-5.2-1.5-9.3-6.2-10.2-11.5-.5-2.8.8-5.6 3.1-6.8l.9-.4z"/></svg>
+              </button>
+            </div>
+            <div id="reactionBar" class="flex items-center justify-end"></div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="flex max-h-[46vh] w-full min-w-0 shrink-0 flex-col border-t border-x-line lg:max-h-none lg:h-svh lg:w-[340px] lg:border-t-0 lg:border-l">
+        <div id="inviteBox" class="hidden" data-show="border-b border-x-line px-4 py-3"></div>
+        <div class="min-h-0 flex-1 overflow-y-auto px-2 py-2">
+          <h2 class="px-3 pt-2 pb-1 text-[15px] font-extrabold">People</h2>
+          <div id="peopleList"></div>
+          <h2 class="mx-3 mt-2 border-t border-x-line px-0 pt-3 pb-1 text-[15px] font-extrabold">Raised hands</h2>
+          <div id="handsList"></div>
+          <h2 class="mx-3 mt-2 border-t border-x-line px-0 pt-3 pb-1 text-[15px] font-extrabold">Chat</h2>
+          <div id="messages" class="max-h-64 overflow-y-auto lg:max-h-none">
+            <p id="chatEmpty" class="px-4 py-3 text-[15px] text-x-muted">No messages yet.</p>
+          </div>
+        </div>
+        <form id="chatForm" class="border-t border-x-line p-4">
+          <div class="flex items-center gap-2">
+            <label class="min-w-0 flex-1">
+              <span class="sr-only">Message</span>
+              <input id="chatText" type="text" maxlength="1000" placeholder="Chat starts when the room is live" disabled class="h-10 w-full rounded-full border border-transparent bg-x-chip px-4 text-[15px] outline-none placeholder:text-x-muted focus:border-x-blue focus:bg-white disabled:opacity-60">
+            </label>
+            <button id="chatSend" type="submit" disabled class="x-btn-blue h-9 px-4 text-[15px] disabled:opacity-50">Send</button>
+          </div>
+          <p id="chatNotice" class="mt-2 hidden text-[13px] text-x-danger" role="status"></p>
+        </form>
+      </aside>
+    </div>
+  </div>
+
+  <nav class="fixed inset-x-0 bottom-0 z-30 flex h-14 items-center justify-around overflow-x-auto border-t border-x-line bg-white sm:hidden">
+    <a href="feed.html" class="shrink-0 rounded-full p-3" aria-label="Home">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linejoin="round" d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg>
+    </a>
+    <a href="groups.html" class="shrink-0 rounded-full p-3" aria-label="Groups">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" d="M8.5 19v-1.2c0-1.7-1.6-3-3.5-3s-3.5 1.3-3.5 3V19"/><circle cx="5" cy="8.5" r="2.2"/><path stroke-linecap="round" d="M22.5 19v-1.2c0-1.7-1.6-3-3.5-3-1.1 0-2.1.4-2.7 1.1"/><circle cx="19" cy="8.5" r="2.2"/><path stroke-linecap="round" d="M16.2 19v-1.4c0-2.2-2.1-4-4.7-4s-4.7 1.8-4.7 4V19"/><circle cx="11.5" cy="7.6" r="2.6"/></svg>
+    </a>
+    <a href="chats.html" class="shrink-0 rounded-full p-3" aria-label="Chats">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 6.8h14a1.5 1.5 0 0 1 1.5 1.5v7a1.5 1.5 0 0 1-1.5 1.5H9.2L5 20.2v-3.4H5A1.5 1.5 0 0 1 3.5 15.3v-7A1.5 1.5 0 0 1 5 6.8z"/></svg>
+    </a>
+    <a href="webinars.html" class="shrink-0 rounded-full p-3" aria-label="Webinars" aria-current="page">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="6" width="12" height="9" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m15 9.5 6-2.5v7l-6-2.5"/><path stroke-linecap="round" d="M6 19h8"/></svg>
+    </a>
+        <a href="blogs.html" class="shrink-0 rounded-full p-3" aria-label="Blogs">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5.2 5.2h4.4A2.4 2.4 0 0 1 12 7.6v11.2a2 2 0 0 0-2-2H5.2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M18.8 5.2h-4.4A2.4 2.4 0 0 0 12 7.6v11.2a2 2 0 0 1 2-2h4.8z"/></svg>
+    </a>
+    <a href="notifications.html" class="relative shrink-0 rounded-full p-3" data-nav="notifications" aria-label="Notifications">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6.4 9.2a5.6 5.6 0 0 1 11.2 0c0 4.2 1.3 5.6 1.3 5.6H5.1s1.3-1.4 1.3-5.6z"/><path stroke-linecap="round" d="M10 18.2a2 2 0 0 0 4 0"/></svg>
+    </a>
+    <a href="profile.html" class="shrink-0 rounded-full p-3" aria-label="Profile">
+      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path stroke-linecap="round" d="M5.2 19.4c1.5-2.8 3.9-4.2 6.8-4.2s5.3 1.4 6.8 4.2"/></svg>
+    </a>
+    <a href="premium.html" class="shrink-0 rounded-full p-3" aria-label="Premium">
+      <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path fill="currentColor" d="M12 2.4 9.6 8.2 3.3 8.8l4.8 4.1-1.4 6.3L12 16.2l5.3 3 1.4-6.3 4.8-4.1-6.3-.6z"/></svg>
+    </a>
+  </nav>
+
+  <script src="./api.js"></script>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="./webinar.js"></script>
+</body>
+</html>
