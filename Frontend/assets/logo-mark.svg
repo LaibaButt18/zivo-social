@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Zivo">
   <title>Zivo</title>
-  <rect width="32" height="32" rx="8" fill="#1d9bf0"/>
+  <rect width="32" height="32" rx="6" fill="#1d9bf0"/>
   <path d="M8.6 10.2h14.8L8.6 21.8h14.8" fill="none" stroke="#fff" stroke-width="3.15" stroke-linecap="square" stroke-linejoin="round"/>
 </svg>

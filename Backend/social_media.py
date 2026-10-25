@@ -445,6 +445,12 @@ class SocialMedia:
         user.notifications.enqueue(note)
         while len(user.notifications.items) > NOTIFY_CAP:
             user.notifications.dequeue()
+        if note["kind"] in ("follow", "friend", "group", "chat", "webinar", "blog"):
+            try:
+                from mail import send_activity_email
+                send_activity_email(user.email, user.name, note["text"], note["href"])
+            except Exception as err:
+                print("mail: activity email failed:", err, flush=True)
 
     def mark_notifications(self, email, note_id=None):
         user = self.users_by_email.get(email)

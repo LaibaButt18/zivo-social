@@ -980,11 +980,7 @@ function paintLobby() {
 
 function refreshWebinar() {
   return apiFetch("/webinars/" + webinarId).then(function (result) {
-    if (result.status === 401) {
-      clearToken();
-      window.location.href = "loginpage.html";
-      return;
-    }
+    if (result.status === 401) return;
     if (!result.ok) {
       setNotice("lobbyNotice", result.data.message || "That webinar was not found.");
       return;
@@ -1169,7 +1165,7 @@ function bindRoom() {
   REACTIONS.forEach(function (item) {
     var button = document.createElement("button");
     button.type = "button";
-    button.className = "rounded-full px-2 py-1 text-lg hover:bg-black/5";
+    button.className = "rounded-full px-2 py-1 text-lg hover:bg-x-hover";
     button.textContent = item.glyph;
     button.setAttribute("aria-label", item.id);
     button.addEventListener("click", function () {
@@ -1181,26 +1177,18 @@ function bindRoom() {
 
 function bootRoom() {
   webinarId = paramsId();
-  if (!localStorage.getItem("zivo_token")) {
-    window.location.href = "loginpage.html";
-    return;
-  }
+  if (!requireAuth()) return;
   if (!webinarId) {
     window.location.href = "webinars.html";
     return;
   }
   bindRoom();
   apiFetch("/me").then(function (result) {
-    if (!result.ok) {
-      clearToken();
-      window.location.href = "loginpage.html";
-      return;
-    }
+    if (!result.ok) return;
     me = result.data;
-    document.getElementById("greeting").textContent = me.name;
-    if (me.premium) document.getElementById("greeting").appendChild(premiumMark());
-    document.getElementById("mePhoto").appendChild(picture(me.photo, me.name, "size-10"));
-    if (me.username) document.getElementById("handle").textContent = "@" + me.username;
+    if (window.__zivoShell && typeof window.__zivoShell.paintProfile === "function") {
+      window.__zivoShell.paintProfile(me);
+    }
     return apiFetch("/webinars/ice");
   }).then(function (result) {
     if (result && result.ok && result.data.iceServers) iceServers = result.data.iceServers;
@@ -1211,24 +1199,11 @@ function bootRoom() {
     setNotice("lobbyNotice", "Cannot reach the server.");
   });
 
-  document.addEventListener("click", function (event) {
-    var pop = document.getElementById("accountPopover");
-    var toggle = document.getElementById("accountToggle");
-    if (!pop || !toggle) return;
-    if (toggle.contains(event.target)) {
-      pop.classList.toggle("hidden");
-      return;
-    }
-    if (!pop.contains(event.target)) pop.classList.add("hidden");
-  });
-  document.getElementById("logout").addEventListener("click", function () {
+  window.__zivoWebinarLogout = function () {
     if (roleNow() === "host" && joined && socket) socket.emit("end", {});
     else if (socket) socket.disconnect();
-    apiFetch("/logout", { method: "POST", body: "{}" }).finally(function () {
-      clearToken();
-      window.location.href = "loginpage.html";
-    });
-  });
+    signOut();
+  };
 }
 
 bootRoom();

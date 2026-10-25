@@ -11,6 +11,7 @@ from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from flask_socketio import SocketIO, disconnect, emit, join_room, leave_room
 
+from mail import absolute_url, send_password_changed, send_password_reset, send_welcome
 from models import Blog, Chat, ChatMessage, Comment, Group, Post, User, Webinar, WebinarMessage
 from social_media import CHAT_REACTIONS, WEBINAR_ROOM_CAP, SocialMedia
 
@@ -664,6 +665,45 @@ def user_from_token(token):
     return social.users_by_email.get(email)
 
 
+def unauthorized_payload():
+    token = read_token()
+    if not token:
+        return {
+            "ok": False,
+            "message": "Please log in again.",
+            "reason": "required",
+        }
+    if token in revoked_tokens:
+        return {
+            "ok": False,
+            "message": "You were signed out. Please sign in again.",
+            "reason": "logout",
+        }
+    try:
+        jwt.decode(token, app.secret_key, algorithms=[JWT_ALGORITHM])
+    except jwt.ExpiredSignatureError:
+        return {
+            "ok": False,
+            "message": "Your session expired. Please sign in again.",
+            "reason": "expired",
+        }
+    except jwt.InvalidTokenError:
+        return {
+            "ok": False,
+            "message": "Please log in again.",
+            "reason": "required",
+        }
+    return {
+        "ok": False,
+        "message": "Please log in again.",
+        "reason": "required",
+    }
+
+
+def unauthorized_response():
+    return jsonify(unauthorized_payload()), 401
+
+
 def current_user():
     return user_from_token(read_token())
 
@@ -955,6 +995,7 @@ def signup():
 
     token = new_token(user.email)
     save_data()
+    send_welcome(user.email, user.name)
     return jsonify({"ok": True, "token": token})
 
 
@@ -984,15 +1025,17 @@ def forgot():
             "expires": time.time() + RESET_SECONDS,
         }
         save_data()
-        link = "http://127.0.0.1:5000/resetpassword.html?token=" + token
-        print("", flush=True)
-        print("Password reset link (valid for 30 minutes):", flush=True)
-        print(link, flush=True)
-        print("", flush=True)
+        link = absolute_url("resetpassword.html?token=" + token)
+        send_password_reset(user.email, user.name, link)
+        if os.environ.get("SMTP_DEBUG", "").strip() == "1":
+            print("", flush=True)
+            print("Password reset link (valid for 30 minutes):", flush=True)
+            print(link, flush=True)
+            print("", flush=True)
 
     return jsonify({
         "ok": True,
-        "message": "If that email has an account, the reset link is in the server terminal.",
+        "message": "If that email has an account, we sent a reset link. Check your inbox (and spam).",
     })
 
 
@@ -1007,12 +1050,16 @@ def reset_password():
             save_data()
         return jsonify({"ok": False, "message": "That reset link is invalid or expired."}), 400
 
-    message = social.set_password(record["email"], data.get("password", ""))
+    email = record["email"]
+    message = social.set_password(email, data.get("password", ""))
     if message is not None:
         return jsonify({"ok": False, "message": message}), 400
 
     del reset_tokens[token]
     save_data()
+    user = social.users_by_email.get(email)
+    if user is not None:
+        send_password_changed(user.email, user.name)
     return jsonify({"ok": True, "message": "Password updated. You can sign in."})
 
 
@@ -1020,7 +1067,7 @@ def reset_password():
 def me():
     user = current_user()
     if user is None:
-        return jsonify({"ok": False, "message": "Please log in again."}), 401
+        return unauthorized_response()
 
     return jsonify({
         "name": user.name,
@@ -1030,6 +1077,7 @@ def me():
         "photo": photo_path(user.photo),
         "cover": photo_path(user.cover),
         "following_count": len(social.following.get(user.email, [])),
+        "followers_count": follower_count(user.email),
         "premium": bool(user.premium),
     })
 

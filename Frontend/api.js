@@ -1,16 +1,78 @@
 var API = "http://127.0.0.1:5000";
+var authRedirecting = false;
+
+function getToken() {
+  return localStorage.getItem("zivo_token") || "";
+}
 
 function authHeaders() {
   var headers = { "Content-Type": "application/json" };
-  var token = localStorage.getItem("zivo_token");
+  var token = getToken();
   if (token) {
     headers.Authorization = "Bearer " + token;
   }
   return headers;
 }
 
+function tokenLooksExpired(token) {
+  if (!token) return false;
+  try {
+    var parts = token.split(".");
+    if (parts.length < 2) return false;
+    var json = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    while (json.length % 4) json += "=";
+    var payload = JSON.parse(atob(json));
+    if (!payload.exp) return false;
+    return payload.exp * 1000 <= Date.now();
+  } catch (err) {
+    return false;
+  }
+}
+
+function authNoticeText(reason) {
+  if (reason === "expired") return "Your session expired. Please sign in again.";
+  if (reason === "logout") return "You were signed out.";
+  if (reason === "required") return "Please sign in to continue.";
+  return "";
+}
+
+function redirectToLogin(reason) {
+  if (authRedirecting) return;
+  authRedirecting = true;
+  clearToken();
+  var path = window.location.pathname || "";
+  if (/loginpage\.html$/.test(path) || /login\.html$/.test(path)) {
+    authRedirecting = false;
+    showAuthNotice(reason);
+    return;
+  }
+  var query = reason ? ("?reason=" + encodeURIComponent(reason)) : "";
+  window.location.href = "loginpage.html" + query;
+}
+
+function showAuthNotice(reason) {
+  var notice = document.getElementById("notice");
+  if (!notice) return;
+  var text = authNoticeText(reason || new URLSearchParams(window.location.search).get("reason"));
+  if (!text) return;
+  notice.classList.remove("hidden");
+  notice.className = "text-[15px] leading-5 text-x-ink";
+  notice.setAttribute("role", "status");
+  notice.textContent = text;
+}
+
+function maybeHandleUnauthorized(result, token, options) {
+  options = options || {};
+  if (!result || result.status !== 401 || options.skipAuthRedirect) return result;
+  if (!token) return result;
+  var reason = (result.data && result.data.reason) || (tokenLooksExpired(token) ? "expired" : "required");
+  redirectToLogin(reason);
+  return result;
+}
+
 function apiFetch(path, options) {
   options = options || {};
+  var token = getToken();
   options.headers = authHeaders();
   return fetch(API + path, options).then(function (response) {
     return response.text().then(function (text) {
@@ -22,14 +84,19 @@ function apiFetch(path, options) {
           data = { message: "The server could not complete that request." };
         }
       }
-      return { ok: response.ok, status: response.status, data: data };
+      return maybeHandleUnauthorized(
+        { ok: response.ok, status: response.status, data: data },
+        token,
+        options
+      );
     });
   });
 }
 
-function apiForm(path, formData) {
+function apiForm(path, formData, options) {
+  options = options || {};
   var headers = {};
-  var token = localStorage.getItem("zivo_token");
+  var token = getToken();
   if (token) {
     headers.Authorization = "Bearer " + token;
   }
@@ -47,7 +114,11 @@ function apiForm(path, formData) {
           data = { message: "The server could not complete that request." };
         }
       }
-      return { ok: response.ok, status: response.status, data: data };
+      return maybeHandleUnauthorized(
+        { ok: response.ok, status: response.status, data: data },
+        token,
+        options
+      );
     });
   });
 }
@@ -60,6 +131,46 @@ function saveToken(data) {
 
 function clearToken() {
   localStorage.removeItem("zivo_token");
+}
+
+function requireAuth() {
+  if (!getToken()) {
+    redirectToLogin("required");
+    return false;
+  }
+  if (tokenLooksExpired(getToken())) {
+    redirectToLogin("expired");
+    return false;
+  }
+  return true;
+}
+
+function requireGuest() {
+  if (!getToken()) {
+    showAuthNotice();
+    return Promise.resolve(false);
+  }
+  return apiFetch("/me", { skipAuthRedirect: true }).then(function (result) {
+    if (result.ok) {
+      window.location.replace("feed.html");
+      return true;
+    }
+    var reason = (result.data && result.data.reason) || (tokenLooksExpired(getToken()) ? "expired" : "required");
+    clearToken();
+    showAuthNotice(reason);
+    return false;
+  }).catch(function () {
+    showAuthNotice();
+    return false;
+  });
+}
+
+function signOut() {
+  return apiFetch("/logout", { method: "POST", body: "{}", skipAuthRedirect: true })
+    .catch(function () { return null; })
+    .finally(function () {
+      redirectToLogin("logout");
+    });
 }
 
 function premiumMark() {
@@ -79,8 +190,6 @@ function loadUserDirectory() {
   if (!userDirectoryPromise) {
     userDirectoryPromise = apiFetch("/users").then(function (result) {
       if (result.status === 401) {
-        clearToken();
-        window.location.href = "loginpage.html";
         return { ok: false, people: [] };
       }
       if (!result.ok || !Array.isArray(result.data)) {
@@ -165,7 +274,7 @@ function mountUserSearch(container, options) {
   input.setAttribute("aria-expanded", "false");
   input.setAttribute("aria-controls", listId);
   input.placeholder = options.placeholder || "Search people";
-  input.className = "h-10 w-full rounded-full border border-transparent bg-x-chip pr-3 pl-10 text-[15px] outline-none placeholder:text-x-muted focus:border-x-blue focus:bg-white focus:ring-1 focus:ring-x-blue";
+  input.className = "h-10 w-full rounded-full border border-transparent bg-x-chip pr-3 pl-10 text-[15px] outline-none placeholder:text-x-muted focus:border-x-blue focus:bg-x-panel focus:ring-1 focus:ring-x-blue";
   field.appendChild(icon);
   field.appendChild(input);
 
@@ -173,7 +282,7 @@ function mountUserSearch(container, options) {
   results.id = listId;
   results.setAttribute("data-user-results", "");
   results.setAttribute("role", "listbox");
-  results.className = "menu-pop mt-2 hidden max-h-64 overflow-y-auto overscroll-contain rounded-2xl border border-x-line bg-white";
+  results.className = "menu-pop mt-2 hidden max-h-64 overflow-y-auto overscroll-contain rounded-2xl border border-x-line bg-x-panel";
 
   var error = document.createElement("p");
   error.className = "mt-2 hidden text-[13px] text-x-danger";
@@ -235,7 +344,7 @@ function mountUserSearch(container, options) {
       label.textContent = person.name || person.username || person.email;
       var remove = document.createElement("button");
       remove.type = "button";
-      remove.className = "inline-flex size-6 shrink-0 items-center justify-center rounded-full text-x-muted hover:bg-black/10 hover:text-x-ink";
+      remove.className = "inline-flex size-6 shrink-0 items-center justify-center rounded-full text-x-muted hover:bg-x-hover hover:text-x-ink";
       remove.setAttribute("aria-label", "Remove " + label.textContent);
       remove.innerHTML = '<svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></svg>';
       remove.addEventListener("click", function () {

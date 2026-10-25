@@ -98,7 +98,7 @@ function mountPostMenu(header, post, helpers) {
   button.innerHTML = '<svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg>';
 
   var menu = document.createElement('div');
-  menu.className = 'menu-pop absolute right-0 z-20 hidden w-36 overflow-hidden rounded-xl bg-white py-1';
+  menu.className = 'menu-pop absolute right-0 z-20 hidden w-36 overflow-hidden rounded-xl bg-x-panel py-1';
   menu.setAttribute('role', 'menu');
   menu.setAttribute('data-own-menu', '');
 
@@ -106,7 +106,7 @@ function mountPostMenu(header, post, helpers) {
     var el = document.createElement('button');
     el.type = 'button';
     el.setAttribute('role', 'menuitem');
-    el.className = 'block w-full px-4 py-2.5 text-left text-[15px] font-bold hover:bg-black/[0.03]';
+    el.className = 'block w-full px-4 py-2.5 text-left text-[15px] font-bold hover:bg-x-hover';
     if (danger) el.classList.add('text-x-danger');
     el.textContent = label;
     return el;
@@ -126,7 +126,7 @@ function mountPostMenu(header, post, helpers) {
   actions.className = 'mt-2 flex items-center justify-end gap-2';
   var cancel = document.createElement('button');
   cancel.type = 'button';
-  cancel.className = 'rounded-full px-4 py-1.5 text-[15px] font-bold text-x-muted hover:bg-black/5';
+  cancel.className = 'rounded-full px-4 py-1.5 text-[15px] font-bold text-x-muted hover:bg-x-hover';
   cancel.textContent = 'Cancel';
   var save = document.createElement('button');
   save.type = 'submit';
@@ -265,7 +265,7 @@ function mountCommentTools(copy, text, post, comment, paint, showError, allowEdi
   var field = document.createElement('input');
   field.type = 'text';
   field.maxLength = 280;
-  field.className = 'h-9 min-w-0 flex-1 rounded-full bg-x-chip px-4 text-[15px] outline-none placeholder:text-x-muted focus:bg-white focus:ring-1 focus:ring-x-blue';
+  field.className = 'h-9 min-w-0 flex-1 rounded-full bg-x-chip px-4 text-[15px] outline-none placeholder:text-x-muted focus:bg-x-panel focus:ring-1 focus:ring-x-blue';
   var save = document.createElement('button');
   save.type = 'submit';
   save.className = 'x-btn-blue h-8 shrink-0 px-3 text-[13px]';
@@ -396,7 +396,7 @@ function mountPostActions(parent, post, helpers) {
   input.type = 'text';
   input.maxLength = 280;
   input.placeholder = 'Post your reply';
-  input.className = 'h-10 min-w-0 flex-1 rounded-full bg-x-chip px-4 text-[15px] outline-none placeholder:text-x-muted focus:bg-white focus:ring-1 focus:ring-x-blue';
+  input.className = 'h-10 min-w-0 flex-1 rounded-full bg-x-chip px-4 text-[15px] outline-none placeholder:text-x-muted focus:bg-x-panel focus:ring-1 focus:ring-x-blue';
   var submit = document.createElement('button');
   submit.type = 'submit';
   submit.className = 'x-btn-blue h-9 shrink-0 px-4 text-[15px]';
@@ -622,22 +622,32 @@ function bindPostComposer(preview, tools, textarea, hooks) {
   fileInput.multiple = true;
   fileInput.className = 'sr-only';
 
-  function iconButton(label, svg) {
+  function iconButton(label, svg, tint) {
     var button = document.createElement('button');
     button.type = 'button';
-    button.className = 'inline-flex size-9 items-center justify-center rounded-full text-x-blue hover:bg-x-blue/10';
+    if (hooks.darkTools) {
+      button.className = 'z-tool-chip';
+      if (tint) button.style.color = tint;
+    } else {
+      button.className = 'inline-flex size-9 items-center justify-center rounded-full text-x-blue hover:bg-x-blue/10';
+    }
     button.setAttribute('aria-label', label);
     button.title = label;
     button.innerHTML = svg;
     return button;
   }
 
-  var photoButton = iconButton('Add photos', '<svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.3"/><path stroke-linecap="round" stroke-linejoin="round" d="m21 15.5-4.2-4.2L8 19"/></svg>');
-  var emojiButton = iconButton('Add emoji', '<svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path stroke-linecap="round" d="M8.5 14.2c.9 1.1 2.1 1.6 3.5 1.6s2.6-.5 3.5-1.6"/><path stroke-linecap="round" d="M9 10h.01M15 10h.01"/></svg>');
-  var pollButton = iconButton('Add poll', '<svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 19V10"/><path d="M12 19V5"/><path d="M19 19v-7"/></svg>');
+  var photoButton = iconButton('Photo', '<svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.3"/><path stroke-linecap="round" stroke-linejoin="round" d="m21 15.5-4.2-4.2L8 19"/></svg>', '#1d9bf0');
+  var emojiButton = iconButton('Emoji', '<svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path stroke-linecap="round" d="M8.5 14.2c.9 1.1 2.1 1.6 3.5 1.6s2.6-.5 3.5-1.6"/><path stroke-linecap="round" d="M9 10h.01M15 10h.01"/></svg>', '#f7b928');
+  var pollButton = iconButton('Poll', '<svg viewBox="0 0 24 24" class="size-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 19V10"/><path d="M12 19V5"/><path d="M19 19v-7"/></svg>', '#00ba7c');
+  if (hooks.darkTools) {
+    photoButton.insertAdjacentHTML('beforeend', '<span>Photo</span>');
+    emojiButton.insertAdjacentHTML('beforeend', '<span>Emoji</span>');
+    pollButton.insertAdjacentHTML('beforeend', '<span>Poll</span>');
+  }
 
   var emojiPop = document.createElement('div');
-  emojiPop.className = 'absolute bottom-12 left-10 z-20 hidden w-56 rounded-2xl border border-x-line bg-white p-2 shadow-xl';
+  emojiPop.className = 'absolute bottom-12 left-0 z-20 hidden w-56 rounded-2xl border border-x-line bg-x-panel p-2 shadow-xl';
   var emojiGrid = document.createElement('div');
   emojiGrid.className = 'grid grid-cols-8 gap-1';
   POST_EMOJIS.forEach(function (symbol) {
