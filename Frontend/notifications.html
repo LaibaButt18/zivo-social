@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications | Zivo</title>
+  <meta name="theme-color" content="#0f1419">
+  <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="x-page z-shell app-lock" data-nav="notifications">
+  <div class="z-app">
+    <header id="zTopbar" class="z-topbar"></header>
+    <div class="z-columns">
+      <aside id="zLeft" class="z-rail z-rail-left"></aside>
+      <main class="z-center">
+      <div class="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-x-line bg-x-bg/90 px-4 py-3 backdrop-blur-md">
+        <h1 class="text-xl font-extrabold">Notifications</h1>
+        <button id="markRead" type="button" class="rounded-full px-3 py-1.5 text-[13px] font-bold text-x-blue hover:bg-x-blue/10">Mark all read</button>
+      </div>
+      <div id="notes"></div>
+      <p id="empty" class="hidden px-4 py-10 text-center text-[15px] text-x-muted">No notifications yet.</p>
+    </main>
+      <aside id="zRight" class="z-rail z-rail-right"></aside>
+    </div>
+  </div>
+
+  <nav id="zBottom" class="z-bottom" aria-label="Mobile"></nav>
+<script src="./api.js"></script>
+  <script src="./shell.js"></script>
+  <script>
+    
+    var shell = initShell({ nav: 'notifications' });
+var notes = [];
+
+    function picture(src, letter) {
+      if (src) {
+        var img = document.createElement("img");
+        img.src = API + src;
+        img.alt = "";
+        img.className = "size-10 shrink-0 rounded-full object-cover";
+        return img;
+      }
+      var fallback = document.createElement("span");
+      fallback.className = "flex size-10 shrink-0 items-center justify-center rounded-full bg-x-blue text-sm font-bold text-white";
+      fallback.textContent = (letter || "?").toUpperCase();
+      return fallback;
+    }
+
+    function ago(seconds) {
+      if (!seconds) return "";
+      var delta = Math.floor(Date.now() / 1000 - seconds);
+      if (delta < 60) return "Just now";
+      if (delta < 3600) return Math.floor(delta / 60) + "m";
+      if (delta < 86400) return Math.floor(delta / 3600) + "h";
+      return Math.floor(delta / 86400) + "d";
+    }
+
+    function paint() {
+      var box = document.getElementById("notes");
+      box.innerHTML = "";
+      document.getElementById("empty").classList.toggle("hidden", notes.length > 0);
+      notes.forEach(function (note) {
+        var row = document.createElement(note.href ? "a" : "div");
+        if (note.href) row.href = note.href;
+        row.className = "flex items-start gap-3 border-b border-x-line px-4 py-4 " + (note.read ? "hover:bg-x-hover" : "bg-x-blue/10 hover:bg-x-blue/15");
+        var mark = document.createElement("span");
+        mark.className = "mt-1 size-2 shrink-0 rounded-full " + (note.read ? "bg-transparent" : "bg-x-blue");
+        var copy = document.createElement("div");
+        copy.className = "min-w-0 flex-1";
+        var text = document.createElement("p");
+        text.className = "text-[15px] leading-5";
+        text.textContent = note.text;
+        var time = document.createElement("p");
+        time.className = "mt-1 text-[13px] text-x-muted";
+        time.textContent = ago(note.created_at);
+        copy.appendChild(text);
+        copy.appendChild(time);
+        row.appendChild(mark);
+        row.appendChild(copy);
+        if (note.href) {
+          row.addEventListener("click", function () {
+            if (!note.read) {
+              apiFetch("/notifications/read", { method: "POST", body: JSON.stringify({ id: note.id }) });
+            }
+          });
+        }
+        box.appendChild(row);
+      });
+    }
+
+    function loadNotes() {
+      return apiFetch("/notifications").then(function (result) {
+        if (result.status === 401) return;
+        notes = Array.isArray(result.data) ? result.data : [];
+        paint();
+        if (notes.some(function (note) { return !note.read; })) {
+          apiFetch("/notifications/read", { method: "POST", body: "{}" }).then(function () {
+            refreshNotifyBadge();
+          });
+        }
+      });
+    }
+
+    if (!requireAuth()) {
+      // redirected to sign in
+    } else {
+      apiFetch("/me").then(function (result) {
+        if (!result.ok) return;
+        shell.paintProfile(result.data);
+        if (result.data.username) document.getElementById("handle").textContent = "@" + result.data.username;
+        return loadNotes();
+      }).catch(function () {
+        window.location.href = "loginpage.html";
+      });
+    }
+
+    document.getElementById("markRead").addEventListener("click", function () {
+      apiFetch("/notifications/read", { method: "POST", body: "{}" }).then(function (result) {
+        if (!result.ok) return;
+        notes.forEach(function (note) { note.read = true; });
+        paint();
+        refreshNotifyBadge();
+      });
+    });
+</script>
+</body>
+</html>

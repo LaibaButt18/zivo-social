@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group | Zivo</title>
+  <meta name="theme-color" content="#0f1419">
+  <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="x-page z-shell app-lock" data-nav="groups">
+  <div class="z-app">
+    <header id="zTopbar" class="z-topbar"></header>
+    <div class="z-columns">
+      <aside id="zLeft" class="z-rail z-rail-left"></aside>
+      <main class="z-center">
+      <div class="sticky top-0 z-20 flex items-center gap-6 border-b border-x-line bg-x-bg/90 px-3 py-2 backdrop-blur-md">
+        <a href="groups.html" class="rounded-full p-2 hover:bg-x-hover" aria-label="Back">
+          <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </a>
+        <h1 id="headerName" class="min-w-0 truncate text-xl font-bold">Group</h1>
+      </div>
+      <div id="groupBody"></div>
+      <div id="missing" class="hidden px-8 py-16">
+        <h2 class="text-[31px] leading-9 font-extrabold">This group doesn’t exist</h2>
+        <p class="mt-2 text-[15px] text-x-muted">It may have been deleted.</p>
+        <a href="groups.html" class="x-link mt-4 inline-block text-[15px]">Back to groups</a>
+      </div>
+    </main>
+      <aside id="zRight" class="z-rail z-rail-right"></aside>
+    </div>
+  </div>
+
+  <nav id="zBottom" class="z-bottom" aria-label="Mobile"></nav>
+<script src="./api.js"></script>
+  <script src="./shell.js"></script>
+  <script src="./posts.js"></script>
+  <script>
+    
+    var shell = initShell({ nav: 'groups' });
+var params = new URLSearchParams(location.search);
+    var groupId = params.get('id') || '';
+    var group = null;
+    var posts = [];
+    var tab = 'posts';
+    var meEmail = '';
+    var mePhoto = '';
+    var meName = '';
+
+    function picture(src, letter, sizeClass, round) {
+      var shape = round === false ? 'rounded-2xl' : 'rounded-full';
+      var letterSize = sizeClass.indexOf('text-') === -1 ? 'text-sm ' : '';
+      if (src) {
+        var img = document.createElement('img');
+        img.src = API + src;
+        img.alt = '';
+        img.className = 'shrink-0 object-cover ' + shape + ' ' + sizeClass;
+        return img;
+      }
+      var fallback = document.createElement('span');
+      fallback.className = 'flex shrink-0 items-center justify-center bg-x-blue font-bold text-white ' + letterSize + shape + ' ' + sizeClass;
+      fallback.textContent = (letter || '?').toUpperCase();
+      return fallback;
+    }
+
+    function profileHref(username, email) {
+      var key = username || email || '';
+      if (!key) return 'profile.html';
+      return 'profile.html?user=' + encodeURIComponent(key);
+    }
+
+    function imageProblem(file) {
+      if (!file) return '';
+      var types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+      if (types.indexOf(file.type) === -1 || file.size === 0 || file.size > 2 * 1024 * 1024) {
+        return 'Use a jpg, png, gif, or webp under 2 MB.';
+      }
+      return '';
+    }
+
+    function roleLabel(role) {
+      if (role === 'owner') return 'Owner';
+      if (role === 'admin') return 'Admin';
+      return 'Member';
+    }
+
+    function textButton(label, danger) {
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = danger
+        ? 'rounded-full px-3 py-1 text-[13px] font-bold text-x-danger hover:bg-x-hover'
+        : 'rounded-full border border-x-border px-3 py-1 text-[13px] font-bold hover:bg-x-hover';
+      button.textContent = label;
+      return button;
+    }
+
+    function showMissing() {
+      document.getElementById('headerName').textContent = 'Group';
+      document.getElementById('groupBody').innerHTML = '';
+      document.getElementById('missing').classList.remove('hidden');
+    }
+
+    function fieldNotice() {
+      var notice = document.createElement('p');
+      notice.className = 'mt-2 hidden text-[13px] text-x-danger';
+      notice.setAttribute('role', 'status');
+      return notice;
+    }
+
+    function reveal(notice, text) {
+      notice.classList.remove('hidden');
+      notice.textContent = text;
+    }
+
+    function applyGroup(next) {
+      group = next;
+      document.getElementById('headerName').textContent = group.name || 'Group';
+      document.title = (group.name || 'Group') + ' | Zivo';
+      if (!group.is_member && tab !== 'posts') tab = 'posts';
+      render();
+      if (group.is_member) loadPosts();
+    }
+
+    function postJson(path, body) {
+      return apiFetch('/groups/' + encodeURIComponent(groupId) + path, {
+        method: 'POST',
+        body: JSON.stringify(body || {}),
+      });
+    }
+
+    function takeGroup(result, notice) {
+      if (!result.ok) {
+        if (notice) reveal(notice, result.data.message || 'Something went wrong.');
+        else openDialog({ title: 'Could not update the group', body: result.data.message || 'Try again in a moment.' });
+        return false;
+      }
+      if (result.data && result.data.id) applyGroup(result.data);
+      return true;
+    }
+
+    function renderPosts() {
+      var box = document.getElementById('posts');
+      if (!box) return;
+      box.innerHTML = '';
+      if (!posts.length) {
+        var empty = document.createElement('p');
+        empty.className = 'px-4 py-8 text-[15px] text-x-muted';
+        empty.textContent = group.can_post ? 'No posts yet. Share something with the group.' : 'No posts yet.';
+        box.appendChild(empty);
+        return;
+      }
+      posts.forEach(function (post) {
+        var href = profileHref(post.username, post.email);
+        var article = document.createElement('article');
+        article.className = 'flex gap-3 border-b border-x-line px-4 py-3';
+        var avatarLink = document.createElement('a');
+        avatarLink.href = href;
+        avatarLink.className = 'shrink-0';
+        avatarLink.appendChild(picture(post.photo, (post.name || '?').charAt(0), 'size-10', true));
+        article.appendChild(avatarLink);
+        var body = document.createElement('div');
+        body.className = 'min-w-0 flex-1';
+        var head = document.createElement('div');
+        head.className = 'flex items-start gap-1';
+        var who = document.createElement('p');
+        who.className = 'flex min-w-0 flex-1 items-baseline gap-1 text-[15px]';
+        var name = document.createElement('a');
+        name.href = href;
+        name.className = 'truncate font-bold hover:underline';
+        name.textContent = post.name;
+        who.appendChild(name);
+        if (post.premium) who.appendChild(premiumMark());
+        if (post.username) {
+          var handle = document.createElement('a');
+          handle.href = href;
+          handle.className = 'truncate text-x-muted hover:underline';
+          handle.textContent = '@' + post.username;
+          who.appendChild(handle);
+        }
+        head.appendChild(who);
+        body.appendChild(head);
+        var text = document.createElement('p');
+        text.className = 'text-[15px] leading-5 break-words whitespace-pre-wrap';
+        if (post.text) text.textContent = post.text;
+        else text.classList.add('hidden');
+        body.appendChild(text);
+        mountPostMenu(head, post, {
+          meEmail: meEmail,
+          textEl: text,
+          canModerate: !!group.can_moderate,
+          onDeleted: function () {
+            posts = posts.filter(function (item) { return item.id !== post.id; });
+            renderPosts();
+          },
+        });
+        mountPostMedia(body, post, function (updated) {
+          posts = posts.map(function (item) { return item.id === updated.id ? updated : item; });
+          renderPosts();
+        });
+        mountPostActions(body, post, {
+          picture: function (src, letter, sizeClass) { return picture(src, letter, sizeClass, true); },
+          profileHref: profileHref,
+          meEmail: meEmail,
+          canComment: !!group.can_comment,
+          canModerate: !!group.can_moderate,
+        });
+        article.appendChild(body);
+        box.appendChild(article);
+      });
+    }
+
+    function loadPosts() {
+      return apiFetch('/groups/' + encodeURIComponent(groupId) + '/posts').then(function (result) {
+        if (!result.ok) return;
+        posts = Array.isArray(result.data) ? result.data : [];
+        renderPosts();
+      });
+    }
+
+    function memberActions(person) {
+      var wrap = document.createElement('div');
+      wrap.className = 'flex shrink-0 flex-wrap justify-end gap-1';
+      if (person.email === meEmail || person.role === 'owner') return wrap;
+      if (group.is_owner && person.role === 'member') {
+        var promote = textButton('Make admin');
+        promote.addEventListener('click', function () {
+          openDialog({
+            title: 'Make admin?',
+            body: person.name + ' will be able to manage members, requests, and permissions.',
+            confirmLabel: 'Make admin',
+          }).then(function (ok) {
+            if (!ok) return;
+            postJson('/members/role', { user: person.email, role: 'admin' }).then(function (result) {
+              takeGroup(result);
+            });
+          });
+        });
+        wrap.appendChild(promote);
+      }
+      if (group.is_owner && person.role === 'admin') {
+        var demote = textButton('Dismiss admin');
+        demote.addEventListener('click', function () {
+          openDialog({
+            title: 'Dismiss admin?',
+            body: person.name + ' will become a regular member.',
+            confirmLabel: 'Dismiss',
+          }).then(function (ok) {
+            if (!ok) return;
+            postJson('/members/role', { user: person.email, role: 'member' }).then(function (result) {
+              takeGroup(result);
+            });
+          });
+        });
+        wrap.appendChild(demote);
+      }
+      if (group.is_owner) {
+        var transfer = textButton('Make owner');
+        transfer.addEventListener('click', function () {
+          openDialog({
+            title: 'Transfer ownership?',
+            body: person.name + ' will become the owner. You will stay on as an admin.',
+            confirmLabel: 'Transfer',
+          }).then(function (ok) {
+            if (!ok) return;
+            postJson('/transfer', { user: person.email }).then(function (result) {
+              takeGroup(result);
+            });
+          });
+        });
+        wrap.appendChild(transfer);
+      }
+      var canRemove = group.is_owner || (group.can_moderate && person.role === 'member');
+      if (canRemove) {
+        var remove = textButton('Remove', true);
+        remove.addEventListener('click', function () {
+          openDialog({
+            title: 'Remove from group?',
+            body: person.name + ' will lose access to posts in this group.',
+            confirmLabel: 'Remove',
+          }).then(function (ok) {
+            if (!ok) return;
+            postJson('/members/remove', { user: person.email }).then(function (result) {
+              takeGroup(result);
+            });
+          });
+        });
+        wrap.appendChild(remove);
+      }
+      return wrap;
+    }
+
+    function renderMembers(box) {
+      if (group.can_add) {
+        var form = document.createElement('form');
+        form.className = 'flex items-center gap-2 border-b border-x-line px-4 py-3';
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = 'Username or email';
+        input.className = 'h-10 min-w-0 flex-1 rounded-full bg-x-chip px-4 text-[15px] outline-none placeholder:text-x-muted focus:bg-x-panel focus:ring-1 focus:ring-x-blue';
+        var submit = document.createElement('button');
+        submit.type = 'submit';
+        submit.className = 'x-btn-blue h-9 shrink-0 px-4 text-[15px]';
+        submit.textContent = 'Add';
+        var notice = fieldNotice();
+        form.appendChild(input);
+        form.appendChild(submit);
+        box.appendChild(form);
+        box.appendChild(notice);
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+          var value = input.value.trim();
+          if (!value) {
+            reveal(notice, 'Enter a username or email.');
+            return;
+          }
+          submit.disabled = true;
+          postJson('/members', { user: value }).then(function (result) {
+            submit.disabled = false;
+            if (!takeGroup(result, notice)) return;
+            notice.classList.add('hidden');
+            input.value = '';
+            if (result.data.outcome === 'requested') {
+              openDialog({
+                title: 'Waiting for approval',
+                body: 'An admin has to approve that person before they can see posts.',
+              });
+            }
+          }).catch(function () {
+            submit.disabled = false;
+            reveal(notice, 'Cannot reach the server.');
+          });
+        });
+      }
+
+      if (group.can_moderate && group.requests && group.requests.length) {
+        var heading = document.createElement('h2');
+        heading.className = 'px-4 pt-4 text-[15px] font-extrabold';
+        heading.textContent = 'Requests';
+        box.appendChild(heading);
+        group.requests.forEach(function (person) {
+          var row = document.createElement('div');
+          row.className = 'flex items-center gap-3 px-4 py-3';
+          var link = document.createElement('a');
+          link.href = profileHref(person.username, person.email);
+          link.className = 'flex min-w-0 flex-1 items-center gap-3';
+          link.appendChild(picture(person.photo, (person.name || '?').charAt(0), 'size-10', true));
+          var copy = document.createElement('div');
+          copy.className = 'min-w-0';
+          var name = document.createElement('p');
+          name.className = 'truncate text-[15px] font-bold';
+          name.textContent = person.name;
+          copy.appendChild(name);
+          link.appendChild(copy);
+          var approve = textButton('Approve');
+          var reject = textButton('Reject', true);
+          approve.addEventListener('click', function () {
+            postJson('/requests/approve', { user: person.email }).then(function (result) { takeGroup(result); });
+          });
+          reject.addEventListener('click', function () {
+            postJson('/requests/reject', { user: person.email }).then(function (result) { takeGroup(result); });
+          });
+          row.appendChild(link);
+          row.appendChild(approve);
+          row.appendChild(reject);
+          box.appendChild(row);
+        });
+      }
+
+      var people = group.members || [];
+      if (!people.length) {
+        var empty = document.createElement('p');
+        empty.className = 'px-4 py-4 text-[15px] text-x-muted';
+        empty.textContent = 'No members yet.';
+        box.appendChild(empty);
+        return;
+      }
+      people.forEach(function (person) {
+        var row = document.createElement('div');
+        row.className = 'flex items-center gap-3 border-b border-x-line px-4 py-3';
+        var link = document.createElement('a');
+        link.href = profileHref(person.username, person.email);
+        link.className = 'flex min-w-0 flex-1 items-center gap-3';
+        link.appendChild(picture(person.photo, (person.name || '?').charAt(0), 'size-10', true));
+        var copy = document.createElement('div');
+        copy.className = 'min-w-0';
+        var name = document.createElement('p');
+        name.className = 'flex min-w-0 items-center gap-1 truncate text-[15px] font-bold';
+        var nameText = document.createElement('span');
+        nameText.className = 'truncate';
+        nameText.textContent = person.name;
+        name.appendChild(nameText);
+        if (person.premium) name.appendChild(premiumMark());
+        var meta = document.createElement('p');
+        meta.className = 'truncate text-[13px] text-x-muted';
+        meta.textContent = roleLabel(person.role) + (person.username ? ' · @' + person.username : '');
+        copy.appendChild(name);
+        copy.appendChild(meta);
+        link.appendChild(copy);
+        row.appendChild(link);
+        row.appendChild(memberActions(person));
+        box.appendChild(row);
+      });
+    }
+
+    function selectField(label, name, value) {
+      var wrap = document.createElement('label');
+      wrap.className = 'mt-4 block';
+      var title = document.createElement('span');
+      title.className = 'mb-1.5 block text-[13px] text-x-muted';
+      title.textContent = label;
+      var select = document.createElement('select');
+      select.name = name;
+      select.className = 'x-input';
+      [['all_members', 'All members'], ['admins_only', 'Admins only']].forEach(function (option) {
+        var el = document.createElement('option');
+        el.value = option[0];
+        el.textContent = option[1];
+        if (option[0] === value) el.selected = true;
+        select.appendChild(el);
+      });
+      wrap.appendChild(title);
+      wrap.appendChild(select);
+      return wrap;
+    }
+
+    function renderSettings(box) {
+      if (group.can_edit) {
+        var info = document.createElement('form');
+        info.className = 'border-b border-x-line px-4 py-4';
+        var title = document.createElement('h2');
+        title.className = 'text-[17px] font-extrabold';
+        title.textContent = 'Group info';
+        var nameLabel = document.createElement('label');
+        nameLabel.className = 'mt-4 block';
+        var nameSpan = document.createElement('span');
+        nameSpan.className = 'mb-1.5 block text-[13px] text-x-muted';
+        nameSpan.textContent = 'Name';
+        var nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.maxLength = 60;
+        nameInput.value = group.name || '';
+        nameInput.className = 'x-input';
+        nameLabel.appendChild(nameSpan);
+        nameLabel.appendChild(nameInput);
+        var aboutLabel = document.createElement('label');
+        aboutLabel.className = 'mt-4 block';
+        var aboutSpan = document.createElement('span');
+        aboutSpan.className = 'mb-1.5 block text-[13px] text-x-muted';
+        aboutSpan.textContent = 'Description';
+        var about = document.createElement('textarea');
+        about.rows = 3;
+        about.maxLength = 300;
+        about.value = group.description || '';
+        about.className = 'x-input h-auto py-3';
+        aboutLabel.appendChild(aboutSpan);
+        aboutLabel.appendChild(about);
+        var file = document.createElement('input');
+        file.type = 'file';
+        file.accept = 'image/jpeg,image/png,image/gif,image/webp';
+        file.className = 'mt-4 block text-[13px]';
+        var save = document.createElement('button');
+        save.type = 'submit';
+        save.className = 'x-btn-blue mt-4 h-9 px-4 text-[15px]';
+        save.textContent = 'Save info';
+        var notice = fieldNotice();
+        info.appendChild(title);
+        info.appendChild(nameLabel);
+        info.appendChild(aboutLabel);
+        info.appendChild(file);
+        info.appendChild(save);
+        info.appendChild(notice);
+        info.addEventListener('submit', function (event) {
+          event.preventDefault();
+          var nextName = nameInput.value.trim();
+          var nextAbout = about.value.trim();
+          var photo = file.files[0];
+          if (!nextName) {
+            reveal(notice, 'Group name cannot be empty.');
+            return;
+          }
+          if (nextName.length > 60) {
+            reveal(notice, 'Group name can be 60 characters at most.');
+            return;
+          }
+          if (nextAbout.length > 300) {
+            reveal(notice, 'Description can be 300 characters at most.');
+            return;
+          }
+          var problem = imageProblem(photo);
+          if (problem) {
+            reveal(notice, problem);
+            return;
+          }
+          var body = new FormData();
+          body.append('name', nextName);
+          body.append('description', nextAbout);
+          if (photo) body.append('photo', photo);
+          save.disabled = true;
+          apiForm('/groups/' + encodeURIComponent(groupId) + '/update', body).then(function (result) {
+            save.disabled = false;
+            if (!takeGroup(result, notice)) return;
+          }).catch(function () {
+            save.disabled = false;
+            reveal(notice, 'Cannot reach the server.');
+          });
+        });
+        box.appendChild(info);
+      }
+
+      if (group.can_moderate && group.settings) {
+        var form = document.createElement('form');
+        form.className = 'border-b border-x-line px-4 py-4';
+        var heading = document.createElement('h2');
+        heading.className = 'text-[17px] font-extrabold';
+        heading.textContent = 'Permissions';
+        var copy = document.createElement('p');
+        copy.className = 'mt-1 text-[15px] leading-5 text-x-muted';
+        copy.textContent = 'Choose who can post, comment, add people, and edit the group.';
+        form.appendChild(heading);
+        form.appendChild(copy);
+        form.appendChild(selectField('Who can post', 'who_can_post', group.settings.who_can_post));
+        form.appendChild(selectField('Who can comment', 'who_can_comment', group.settings.who_can_comment));
+        form.appendChild(selectField('Who can add members', 'who_can_add', group.settings.who_can_add));
+        form.appendChild(selectField('Who can edit group info', 'who_can_edit', group.settings.who_can_edit));
+        var approval = document.createElement('label');
+        approval.className = 'mt-4 flex items-start gap-3 text-[15px]';
+        var checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'mt-1';
+        checkbox.checked = !!group.settings.require_approval;
+        var approvalText = document.createElement('span');
+        approvalText.textContent = 'Approve new members. Admins can still add someone right away.';
+        approval.appendChild(checkbox);
+        approval.appendChild(approvalText);
+        form.appendChild(approval);
+        var save = document.createElement('button');
+        save.type = 'submit';
+        save.className = 'x-btn-blue mt-4 h-9 px-4 text-[15px]';
+        save.textContent = 'Save permissions';
+        var notice = fieldNotice();
+        form.appendChild(save);
+        form.appendChild(notice);
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+          var payload = {
+            who_can_post: form.querySelector('[name="who_can_post"]').value,
+            who_can_comment: form.querySelector('[name="who_can_comment"]').value,
+            who_can_add: form.querySelector('[name="who_can_add"]').value,
+            who_can_edit: form.querySelector('[name="who_can_edit"]').value,
+            require_approval: checkbox.checked,
+          };
+          var allowed = { all_members: true, admins_only: true };
+          if (!allowed[payload.who_can_post] || !allowed[payload.who_can_comment] || !allowed[payload.who_can_add] || !allowed[payload.who_can_edit]) {
+            reveal(notice, 'Choose all members or admins only.');
+            return;
+          }
+          save.disabled = true;
+          postJson('/settings', payload).then(function (result) {
+            save.disabled = false;
+            if (!takeGroup(result, notice)) return;
+            if (tab === 'posts') renderPosts();
+          }).catch(function () {
+            save.disabled = false;
+            reveal(notice, 'Cannot reach the server.');
+          });
+        });
+        box.appendChild(form);
+      }
+
+      if (group.is_owner) {
+        var danger = document.createElement('div');
+        danger.className = 'px-4 py-4';
+        var deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.className = 'rounded-full bg-x-danger px-4 py-2 text-[15px] font-bold text-white hover:opacity-90';
+        deleteButton.textContent = 'Delete group';
+        danger.appendChild(deleteButton);
+        deleteButton.addEventListener('click', function () {
+          openDialog({
+            title: 'Delete group?',
+            body: 'This removes the group and every post in it. This can’t be undone.',
+            confirmLabel: 'Delete',
+          }).then(function (ok) {
+            if (!ok) return;
+            postJson('/delete', {}).then(function (result) {
+              if (!result.ok) {
+                openDialog({ title: 'Could not delete group', body: result.data.message || 'Try again in a moment.' });
+                return;
+              }
+              window.location.href = 'groups.html';
+            });
+          });
+        });
+        box.appendChild(danger);
+      }
+    }
+
+    function renderComposer(box) {
+      if (!group.can_post) {
+        var locked = document.createElement('p');
+        locked.className = 'border-b border-x-line px-4 py-4 text-[15px] text-x-muted';
+        locked.textContent = 'Only admins can post in this group.';
+        box.appendChild(locked);
+        return;
+      }
+      var form = document.createElement('form');
+      form.className = 'flex gap-3 border-b border-x-line px-4 py-3';
+      form.appendChild(picture(mePhoto, (meName || '?').charAt(0), 'size-10', true));
+      var column = document.createElement('div');
+      column.className = 'min-w-0 flex-1';
+      var area = document.createElement('textarea');
+      area.rows = 2;
+      area.placeholder = 'Post to the group';
+      area.className = 'w-full resize-none bg-transparent pt-2 text-xl leading-6 outline-none placeholder:text-x-muted';
+      var preview = document.createElement('div');
+      var row = document.createElement('div');
+      row.className = 'mt-2 flex items-center justify-between border-t border-x-line pt-2';
+      var tools = document.createElement('div');
+      tools.className = 'flex min-w-0 items-center gap-1';
+      var submit = document.createElement('button');
+      submit.type = 'submit';
+      submit.disabled = true;
+      submit.className = 'h-9 cursor-not-allowed rounded-full bg-x-blue/50 px-4 text-[15px] font-bold text-white';
+      submit.textContent = 'Post';
+      row.appendChild(tools);
+      row.appendChild(submit);
+      var notice = fieldNotice();
+      column.appendChild(area);
+      column.appendChild(preview);
+      column.appendChild(row);
+      column.appendChild(notice);
+      form.appendChild(column);
+      box.appendChild(form);
+
+      var composer = bindPostComposer(preview, tools, area, {
+        onChange: sync,
+        onNotice: function (text) { reveal(notice, text); },
+      });
+
+      function sync() {
+        var ready = composer.ready(area.value);
+        submit.disabled = !ready;
+        submit.className = ready
+          ? 'x-btn-blue h-9 px-4 text-[15px]'
+          : 'h-9 cursor-not-allowed rounded-full bg-x-blue/50 px-4 text-[15px] font-bold text-white';
+      }
+      area.addEventListener('input', sync);
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var text = area.value.trim();
+        var problem = composer.problem();
+        if (problem) {
+          reveal(notice, problem);
+          return;
+        }
+        if (!composer.ready(text)) {
+          reveal(notice, 'Write something, add a photo, or start a poll.');
+          return;
+        }
+        var body = new FormData();
+        body.append('text', text);
+        composer.fill(body);
+        submit.disabled = true;
+        apiForm('/groups/' + encodeURIComponent(groupId) + '/posts', body).then(function (result) {
+          sync();
+          if (!result.ok) {
+            reveal(notice, result.data.message || 'Could not post that.');
+            return;
+          }
+          area.value = '';
+          notice.classList.add('hidden');
+          composer.clear();
+          loadPosts();
+        }).catch(function () {
+          sync();
+          reveal(notice, 'Cannot reach the server.');
+        });
+      });
+    }
+
+    function render() {
+      var root = document.getElementById('groupBody');
+      root.innerHTML = '';
+      document.getElementById('missing').classList.add('hidden');
+
+      var hero = document.createElement('div');
+      hero.className = 'border-b border-x-line';
+      var cover = document.createElement('div');
+      cover.className = 'h-40 overflow-hidden bg-[#cfd9de] sm:h-56';
+      if (group.photo) {
+        var coverImg = document.createElement('img');
+        coverImg.src = API + group.photo;
+        coverImg.alt = '';
+        coverImg.className = 'h-full w-full object-cover';
+        cover.appendChild(coverImg);
+      }
+      hero.appendChild(cover);
+
+      var sheet = document.createElement('div');
+      sheet.className = 'px-4 pb-4';
+      var top = document.createElement('div');
+      top.className = 'flex items-end justify-between';
+      var mark = document.createElement('div');
+      mark.className = '-mt-12 overflow-hidden rounded-2xl border-4 border-x-bg bg-x-bg sm:-mt-16';
+      mark.appendChild(picture(group.photo, (group.name || 'G').charAt(0), 'size-28 text-3xl sm:size-32', false));
+      top.appendChild(mark);
+      var actions = document.createElement('div');
+      actions.className = 'mb-3';
+      top.appendChild(actions);
+      sheet.appendChild(top);
+
+      var title = document.createElement('h2');
+      title.className = 'mt-3 text-xl font-extrabold break-words';
+      title.textContent = group.name;
+      var meta = document.createElement('p');
+      meta.className = 'mt-1 flex flex-wrap items-center gap-2 text-[15px] text-x-muted';
+      var count = group.member_count || 0;
+      var countLabel = document.createElement('span');
+      countLabel.textContent = count === 1 ? '1 member' : count + ' members';
+      meta.appendChild(countLabel);
+      if (group.role) {
+        var badge = document.createElement('span');
+        badge.className = 'rounded-full bg-x-chip px-2 py-0.5 text-[13px] font-bold text-x-ink';
+        badge.textContent = roleLabel(group.role);
+        meta.appendChild(badge);
+      }
+      sheet.appendChild(title);
+      sheet.appendChild(meta);
+      if (group.description) {
+        var about = document.createElement('p');
+        about.className = 'mt-3 text-[15px] leading-5 break-words whitespace-pre-wrap';
+        about.textContent = group.description;
+        sheet.appendChild(about);
+      }
+      if (!group.is_member && group.pending) {
+        var cancel = document.createElement('button');
+        cancel.type = 'button';
+        cancel.className = 'inline-flex h-9 items-center rounded-full border border-x-border px-4 text-[15px] font-bold hover:bg-x-hover';
+        cancel.textContent = 'Cancel request';
+        cancel.addEventListener('click', function () {
+          postJson('/leave', {}).then(function (result) {
+            if (!result.ok) {
+              openDialog({ title: 'Could not cancel', body: result.data.message || 'Try again in a moment.' });
+              return;
+            }
+            loadGroup();
+          });
+        });
+        actions.appendChild(cancel);
+      } else if (!group.is_member) {
+        var join = document.createElement('button');
+        join.type = 'button';
+        join.className = 'x-btn-blue h-9 px-4 text-[15px]';
+        join.textContent = 'Join';
+        join.addEventListener('click', function () {
+          join.disabled = true;
+          postJson('/join', {}).then(function (result) {
+            join.disabled = false;
+            if (!takeGroup(result)) return;
+          });
+        });
+        actions.appendChild(join);
+      } else {
+        var leave = document.createElement('button');
+        leave.type = 'button';
+        leave.className = 'inline-flex h-9 items-center rounded-full border border-x-border px-4 text-[15px] font-bold hover:border-[#f4212e] hover:bg-[#f4212e]/10 hover:text-x-danger';
+        leave.textContent = 'Leave';
+        leave.addEventListener('click', function () {
+          if (group.is_owner && (group.member_count || 0) > 1) {
+            openDialog({
+              title: 'Transfer ownership first',
+              body: 'Choose a new owner from Members before you leave.',
+            });
+            return;
+          }
+          var soleOwner = group.is_owner;
+          openDialog({
+            title: soleOwner ? 'Delete group?' : 'Leave group?',
+            body: soleOwner
+              ? 'You are the only member. Leaving deletes the group and its posts.'
+              : 'You will no longer see posts in this group.',
+            confirmLabel: soleOwner ? 'Delete' : 'Leave',
+          }).then(function (ok) {
+            if (!ok) return;
+            postJson('/leave', {}).then(function (result) {
+              if (!result.ok) {
+                openDialog({ title: 'Could not leave', body: result.data.message || 'Try again in a moment.' });
+                return;
+              }
+              if (result.data.deleted) {
+                window.location.href = 'groups.html';
+                return;
+              }
+              loadGroup();
+            });
+          });
+        });
+        actions.appendChild(leave);
+      }
+      if (!group.is_member) {
+        var privateNote = document.createElement('p');
+        privateNote.className = 'mt-3 text-[15px] text-x-muted';
+        privateNote.textContent = group.pending
+          ? 'Your request is waiting for an admin. Posts stay hidden until you are approved.'
+          : 'Posts in this group are visible to members only.';
+        sheet.appendChild(privateNote);
+      }
+      hero.appendChild(sheet);
+      root.appendChild(hero);
+
+      if (!group.is_member) return;
+
+      var tabs = document.createElement('div');
+      tabs.className = 'flex border-b border-x-line';
+      [['posts', 'Posts'], ['members', 'Members']].forEach(function (item) {
+        addTab(tabs, item[0], item[1]);
+      });
+      if (group.can_moderate || group.can_edit) addTab(tabs, 'settings', 'Settings');
+      root.appendChild(tabs);
+
+      var panel = document.createElement('div');
+      root.appendChild(panel);
+      if (tab === 'members') renderMembers(panel);
+      else if (tab === 'settings' && (group.can_moderate || group.can_edit)) renderSettings(panel);
+      else {
+        tab = 'posts';
+        renderComposer(panel);
+        var list = document.createElement('div');
+        list.id = 'posts';
+        panel.appendChild(list);
+        renderPosts();
+      }
+
+      function addTab(parent, id, label) {
+        var button = document.createElement('button');
+        button.type = 'button';
+        var on = tab === id;
+        button.className = 'relative flex-1 py-4 text-[15px] hover:bg-x-hover ' + (on ? 'font-bold' : 'font-medium text-x-muted');
+        button.textContent = label;
+        if (on) {
+          var bar = document.createElement('span');
+          bar.className = 'absolute bottom-0 left-1/2 h-1 w-14 -translate-x-1/2 rounded-full bg-x-blue';
+          button.appendChild(bar);
+        }
+        button.addEventListener('click', function () {
+          tab = id;
+          render();
+        });
+        parent.appendChild(button);
+      }
+    }
+
+    function loadGroup() {
+      return apiFetch('/groups/' + encodeURIComponent(groupId)).then(function (result) {
+        if (result.status === 401) return;
+        if (!result.ok) {
+          showMissing();
+          return;
+        }
+        applyGroup(result.data);
+      });
+    }
+
+    if (!localStorage.getItem('zivo_token')) {
+      window.location.href = 'loginpage.html';
+    } else if (!/^\d+$/.test(groupId)) {
+      showMissing();
+    } else {
+      apiFetch('/me').then(function (result) {
+        if (!result.ok) return;
+        meEmail = result.data.email || '';
+        mePhoto = result.data.photo || '';
+        meName = result.data.name || '';
+        shell.paintProfile(result.data);
+        if (result.data.username) document.getElementById('handle').textContent = '@' + result.data.username;
+        return loadGroup();
+      }).catch(function () {
+        window.location.href = 'loginpage.html';
+      });
+    }
+
+</script>
+</body>
+</html>

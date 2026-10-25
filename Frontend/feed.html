@@ -4,131 +4,73 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home | Zivo</title>
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#0f1419">
   <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./dist/output.css">
 </head>
-<body class="x-page app-lock">
-  <div class="flex h-svh w-full min-w-0 max-w-full overflow-hidden">
-    <header class="sticky top-0 hidden h-svh w-[64px] min-w-0 shrink-0 flex-col overflow-x-hidden px-1 sm:flex lg:w-[220px] lg:px-2">
-      <div class="flex flex-col items-start">
-        <a href="feed.html" class="inline-flex rounded-xl p-2 hover:bg-black/10" aria-label="Zivo">
-          <img src="./assets/logo-mark.svg" alt="" class="size-7 lg:hidden">
-          <img src="./assets/logo.svg" alt="" class="hidden h-7 w-auto lg:block">
-        </a>
-        <nav class="mt-1 flex flex-col gap-1">
-          <a href="feed.html" class="x-nav font-bold" aria-current="page">
-            <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path fill="currentColor" d="M12.6 2.7a1 1 0 0 0-1.2 0L2.5 9.6A1 1 0 0 0 2 10.4V20a2 2 0 0 0 2 2h5.2v-6.2h5.6V22H20a2 2 0 0 0 2-2v-9.6a1 1 0 0 0-.4-.8l-9-6.9z"/></svg>
-            <span class="hidden text-[15px] lg:inline">Home</span>
-          </a>
-          <a href="profile.html" class="x-nav">
-            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path stroke-linecap="round" d="M5.2 19.4c1.5-2.8 3.9-4.2 6.8-4.2s5.3 1.4 6.8 4.2"/></svg>
-            <span class="hidden text-[15px] lg:inline">Profile</span>
-          </a>
-        </nav>
-        <a href="#compose" data-compose class="x-btn-blue mt-2 size-11 lg:h-9 lg:w-[156px]" aria-label="Post">
-          <svg viewBox="0 0 24 24" class="size-6 lg:hidden" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
-          <span class="hidden text-[15px] lg:inline">Post</span>
-        </a>
-      </div>
+<body class="x-page z-shell app-lock" data-nav="home">
+  <div class="z-app">
+    <header id="zTopbar" class="z-topbar"></header>
+    <div class="z-columns">
+      <aside id="zLeft" class="z-rail z-rail-left"></aside>
 
-      <div class="relative mt-auto mb-3">
-        <button id="accountToggle" type="button" class="flex w-full items-center gap-2 rounded-full p-2 text-left hover:bg-black/10">
-          <div id="mePhoto" class="size-10 shrink-0"></div>
-          <span class="hidden min-w-0 flex-1 lg:block">
-            <span id="greeting" class="block truncate text-[15px] font-bold">Account</span>
-            <span id="handle" class="block truncate text-[15px] text-x-muted"></span>
-          </span>
-          <svg viewBox="0 0 24 24" class="hidden size-5 shrink-0 lg:block" aria-hidden="true"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></svg>
-        </button>
-        <p id="bio" class="hidden"></p>
-        <div id="accountPopover" class="menu-pop absolute bottom-full left-0 z-30 mb-2 hidden w-[260px] overflow-hidden rounded-2xl bg-white py-2">
-          <a href="profile.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">View profile</a>
-          <button id="logout" type="button" class="w-full px-4 py-3 text-left text-[15px] font-bold hover:bg-x-hover">Log out</button>
-        </div>
-      </div>
-    </header>
-
-    <main class="h-svh min-w-0 flex-1 overflow-y-auto overscroll-none border-x-line pb-20 sm:border-x sm:pb-12">
-      <div class="sticky top-0 z-20 border-b border-x-line bg-white/85 backdrop-blur-md">
-        <div class="flex items-center px-4 py-3">
-          <img src="./assets/logo.svg" alt="Zivo" class="h-7 w-auto sm:hidden">
-          <h1 class="hidden text-xl font-extrabold sm:block">Home</h1>
-        </div>
-        <div class="flex">
-          <button id="tabForYou" type="button" class="relative flex-1 py-4 text-[15px] font-bold hover:bg-black/[0.03]">
-            For you
-            <span id="forYouBar" class="absolute bottom-0 left-1/2 h-1 w-14 -translate-x-1/2 rounded-full bg-x-blue"></span>
-          </button>
-          <button id="tabFollowing" type="button" class="relative flex-1 py-4 text-[15px] font-medium text-x-muted hover:bg-black/[0.03]">
-            Following
-            <span id="followingBar" class="absolute bottom-0 left-1/2 hidden h-1 w-16 -translate-x-1/2 rounded-full bg-x-blue"></span>
-          </button>
-        </div>
-      </div>
-
-      <form id="postForm" class="flex gap-3 border-b border-x-line px-4 py-3">
-        <div id="composerPhoto" class="size-10 shrink-0"></div>
-        <div class="min-w-0 flex-1">
-          <label class="block" id="compose">
-            <span class="sr-only">New post</span>
-            <textarea id="postText" rows="2" class="w-full resize-none bg-transparent pt-2 text-xl leading-6 outline-none placeholder:text-x-muted" placeholder="What's happening?"></textarea>
-          </label>
-          <img id="imagePreview" alt="" class="mt-2 hidden max-h-80 w-full rounded-2xl border border-x-line object-cover">
-          <div class="mt-2 flex items-center justify-between border-t border-x-line pt-2">
-            <div class="flex min-w-0 items-center gap-2">
-              <input id="postImage" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
-              <label for="postImage" class="inline-flex size-9 cursor-pointer items-center justify-center rounded-full text-x-blue hover:bg-x-blue/10" aria-label="Add photo">
-                <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.3"/><path stroke-linecap="round" stroke-linejoin="round" d="m21 15.5-4.2-4.2L8 19"/></svg>
-              </label>
-              <span id="fileName" class="truncate text-[13px] text-x-muted"></span>
-            </div>
-            <button id="postSubmit" type="submit" class="h-9 cursor-not-allowed rounded-full bg-x-blue/50 px-4 text-[15px] font-bold text-white" disabled>Post</button>
+      <main class="z-center">
+        <div class="sticky top-0 z-20 border-b border-x-line bg-x-bg/90 backdrop-blur-md">
+          <div class="flex items-center px-4 py-3 sm:hidden">
+            <span class="inline-flex items-center gap-2">
+              <img src="./assets/logo-mark.svg" alt="" class="size-7">
+              <span class="text-[17px] font-extrabold tracking-[-0.03em]">Zivo</span>
+            </span>
           </div>
-          <p id="postNotice" class="mt-2 hidden text-[13px] text-x-danger" role="status"></p>
+          <div class="flex">
+            <button id="tabForYou" type="button" class="relative flex-1 py-3.5 text-[15px] font-bold hover:bg-x-hover">
+              For you
+              <span id="forYouBar" class="absolute bottom-0 left-1/2 h-1 w-14 -translate-x-1/2 rounded-full bg-x-blue"></span>
+            </button>
+            <button id="tabFollowing" type="button" class="relative flex-1 py-3.5 text-[15px] font-medium text-x-muted hover:bg-x-hover">
+              Following
+              <span id="followingBar" class="absolute bottom-0 left-1/2 hidden h-1 w-16 -translate-x-1/2 rounded-full bg-x-blue"></span>
+            </button>
+          </div>
         </div>
-      </form>
 
-      <p id="resultsLabel" class="hidden border-b border-x-line px-4 py-3 text-[15px] text-x-muted"></p>
-      <div id="posts"></div>
-    </main>
+        <form id="postForm" class="z-card mx-3 mt-3 p-4 sm:mx-4">
+          <div class="flex gap-3">
+            <div id="composerPhoto" class="size-10 shrink-0"></div>
+            <div class="min-w-0 flex-1">
+              <label class="block" id="compose">
+                <span class="sr-only">New post</span>
+                <textarea id="postText" rows="2" class="w-full resize-none bg-transparent pt-1 text-xl leading-6 outline-none placeholder:text-x-muted" placeholder="What's happening?"></textarea>
+              </label>
+              <div id="composerPreview"></div>
+              <div class="mt-2 flex items-center justify-between gap-2 border-t border-x-line pt-3">
+                <div id="composerTools" class="flex min-w-0 flex-wrap items-center gap-1.5"></div>
+                <button id="postSubmit" type="submit" class="h-9 cursor-not-allowed rounded-full bg-x-blue/50 px-4 text-[15px] font-bold text-white" disabled>Post</button>
+              </div>
+              <p id="postNotice" class="mt-2 hidden text-[13px] text-x-danger" role="status"></p>
+            </div>
+          </div>
+        </form>
 
-    <aside class="sticky top-0 hidden h-svh w-[clamp(280px,32vw,400px)] min-w-0 shrink overflow-y-auto overscroll-none px-3 lg:block">
-      <div class="sticky top-0 z-10 bg-white py-1">
-        <label class="group relative block">
-          <span class="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-x-muted group-focus-within:text-x-blue">
-            <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path stroke-linecap="round" d="m16 16 4 4"/></svg>
-          </span>
-          <input id="peopleSearch" type="search" placeholder="Search" class="h-9 w-full rounded-full border border-transparent bg-x-chip pr-3 pl-10 text-sm outline-none placeholder:text-x-muted focus:border-x-blue focus:bg-white">
-        </label>
-      </div>
+        <p id="resultsLabel" class="mx-3 mt-3 hidden px-1 text-[15px] text-x-muted sm:mx-4"></p>
+        <div id="posts" class="mx-3 mt-3 space-y-3 pb-4 sm:mx-4"></div>
+      </main>
 
-      <section class="x-card mt-3" aria-labelledby="people-heading">
-        <h2 id="people-heading" class="px-4 pt-3 pb-1 text-base font-extrabold">Who to follow</h2>
-        <div id="people"></div>
-      </section>
-
-      <p class="px-4 py-4 text-[13px] leading-5 text-x-muted">© 2026 Zivo</p>
-    </aside>
+      <aside id="zRight" class="z-rail z-rail-right"></aside>
+    </div>
   </div>
 
-  <nav class="fixed inset-x-0 bottom-0 z-30 flex h-14 items-center justify-around border-t border-x-line bg-white sm:hidden">
-    <a href="feed.html" class="rounded-full p-3" aria-label="Home" aria-current="page">
-      <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path fill="currentColor" d="M12.6 2.7a1 1 0 0 0-1.2 0L2.5 9.6A1 1 0 0 0 2 10.4V20a2 2 0 0 0 2 2h5.2v-6.2h5.6V22H20a2 2 0 0 0 2-2v-9.6a1 1 0 0 0-.4-.8l-9-6.9z"/></svg>
-    </a>
-    <a href="profile.html" class="rounded-full p-3" aria-label="Profile">
-      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path stroke-linecap="round" d="M5.2 19.4c1.5-2.8 3.9-4.2 6.8-4.2s5.3 1.4 6.8 4.2"/></svg>
-    </a>
-  </nav>
-  <a href="#compose" data-compose class="x-btn-blue fixed right-4 bottom-20 z-30 size-14 shadow-lg sm:hidden" aria-label="Post">
+  <nav id="zBottom" class="z-bottom" aria-label="Mobile"></nav>
+  <a href="#compose" data-compose class="z-fab" aria-label="Post">
     <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
   </a>
 
   <script src="./api.js"></script>
   <script src="./posts.js"></script>
+  <script src="./shell.js"></script>
   <script>
     let allPosts = [];
     let allPeople = [];
@@ -138,6 +80,7 @@
     let query = '';
     let showAllPeople = false;
     let postsLoaded = false;
+    const shell = initShell({ nav: 'home', autoRails: false });
 
     function showNotice(text) {
       const notice = document.getElementById('postNotice');
@@ -146,23 +89,11 @@
     }
 
     function profileHref(username, email) {
-      const key = username || email || '';
-      if (!key) return 'profile.html';
-      return 'profile.html?user=' + encodeURIComponent(key);
+      return shell.profileHref(username, email);
     }
 
     function picture(src, letter, sizeClass) {
-      if (src) {
-        const img = document.createElement('img');
-        img.src = API + src;
-        img.alt = '';
-        img.className = 'shrink-0 rounded-full object-cover ' + sizeClass;
-        return img;
-      }
-      const fallback = document.createElement('span');
-      fallback.className = 'flex shrink-0 items-center justify-center rounded-full bg-x-blue text-sm font-bold text-white ' + sizeClass;
-      fallback.textContent = (letter || '?').toUpperCase();
-      return fallback;
+      return shell.picture(src, letter, sizeClass);
     }
 
     function mountActions(parent, post) {
@@ -204,8 +135,8 @@
       const searching = query.length > 0;
       const forYou = document.getElementById('tabForYou');
       const following = document.getElementById('tabFollowing');
-      const on = 'relative flex-1 py-4 text-[15px] font-bold hover:bg-black/[0.03]';
-      const off = 'relative flex-1 py-4 text-[15px] font-medium text-x-muted hover:bg-black/[0.03]';
+      const on = 'relative flex-1 py-3.5 text-[15px] font-bold hover:bg-x-hover';
+      const off = 'relative flex-1 py-3.5 text-[15px] font-medium text-x-muted hover:bg-x-hover';
       forYou.className = !searching && feedTab === 'foryou' ? on : off;
       following.className = !searching && feedTab === 'following' ? on : off;
       document.getElementById('forYouBar').classList.toggle('hidden', searching || feedTab !== 'foryou');
@@ -217,6 +148,7 @@
       const label = document.getElementById('resultsLabel');
       box.innerHTML = '';
       paintTabs();
+      shell.paintTrends(allPosts);
       if (query) {
         label.classList.remove('hidden');
         label.textContent = posts.length ? 'Results for “' + query + '”' : 'No results for “' + query + '”';
@@ -226,9 +158,9 @@
       }
       if (!posts.length) {
         const empty = document.createElement('div');
-        empty.className = 'px-8 py-12';
+        empty.className = 'z-card px-8 py-12';
         const title = document.createElement('h2');
-        title.className = 'text-[31px] leading-9 font-extrabold';
+        title.className = 'text-[28px] leading-8 font-extrabold';
         const copy = document.createElement('p');
         copy.className = 'mt-2 max-w-sm text-[15px] leading-5 text-x-muted';
         if (query) {
@@ -250,7 +182,7 @@
       posts.forEach(function (post) {
         const href = profileHref(post.username, post.email);
         const article = document.createElement('article');
-        article.className = 'flex gap-3 border-b border-x-line px-4 py-3 transition-colors hover:bg-black/[0.03]';
+        article.className = 'z-post-card flex gap-3';
         const avatarLink = document.createElement('a');
         avatarLink.href = href;
         avatarLink.className = 'shrink-0';
@@ -269,6 +201,7 @@
         name.className = 'truncate font-bold hover:underline';
         name.textContent = post.name;
         who.appendChild(name);
+        if (post.premium) who.appendChild(premiumMark());
         if (post.username) {
           const handle = document.createElement('a');
           handle.href = href;
@@ -293,13 +226,10 @@
           },
         });
 
-        if (post.image) {
-          const img = document.createElement('img');
-          img.src = API + post.image;
-          img.alt = '';
-          img.className = 'mt-3 max-h-[510px] w-full rounded-2xl border border-x-line object-cover';
-          body.appendChild(img);
-        }
+        mountPostMedia(body, post, function (updated) {
+          allPosts = allPosts.map(function (item) { return item.id === updated.id ? updated : item; });
+          renderPosts(visiblePosts());
+        });
 
         mountActions(body, post);
         article.appendChild(body);
@@ -307,48 +237,13 @@
       });
     }
 
-    function renderPeople(people) {
+    function renderPeople() {
       const box = document.getElementById('people');
-      box.innerHTML = '';
-      if (!people.length) {
-        const empty = document.createElement('p');
-        empty.className = 'px-4 py-4 text-[15px] text-x-muted';
-        empty.textContent = query ? 'No people match that search.' : 'No one else has joined yet.';
-        box.appendChild(empty);
-        return;
-      }
-
-      const list = showAllPeople || query ? people : people.slice(0, 4);
-      list.forEach(function (person) {
-        const row = document.createElement('div');
-        row.className = 'flex items-center gap-2 px-3 py-2 hover:bg-black/[0.03]';
-        const link = document.createElement('a');
-        link.href = profileHref(person.username, person.email);
-        link.className = 'flex min-w-0 flex-1 items-center gap-3';
-        link.appendChild(picture(person.photo, (person.name || '?').charAt(0), 'size-10'));
-
-        const copy = document.createElement('div');
-        copy.className = 'min-w-0 flex-1';
-        const name = document.createElement('p');
-        name.className = 'text-[15px] leading-5 font-bold break-words';
-        name.textContent = person.name;
-        copy.appendChild(name);
-        const meta = document.createElement('p');
-        meta.className = 'text-[15px] leading-5 break-words text-x-muted';
-        meta.textContent = person.username ? '@' + person.username : (person.bio || '');
-        copy.appendChild(meta);
-        link.appendChild(copy);
-
-        const button = document.createElement('button');
-        button.type = 'button';
-        if (person.following) {
-          button.className = 'btn-following';
-          button.innerHTML = '<span class="label-follow">Following</span><span class="label-unfollow">Unfollow</span>';
-        } else {
-          button.className = 'btn-follow';
-          button.textContent = 'Follow';
-        }
-        button.addEventListener('click', function () {
+      if (!box) return;
+      shell.renderPeople(box, visiblePeople(), {
+        query: query,
+        showAll: showAllPeople,
+        onFollow: function (person) {
           const path = person.following ? '/unfollow' : '/follow';
           apiFetch(path, {
             method: 'POST',
@@ -360,29 +255,13 @@
             }
             loadPeople();
           });
-        });
-
-        row.appendChild(link);
-        row.appendChild(button);
-        box.appendChild(row);
+        },
       });
-
-      if (!query && !showAllPeople && people.length > 4) {
-        const more = document.createElement('button');
-        more.type = 'button';
-        more.className = 'w-full rounded-b-2xl px-4 py-4 text-left text-[15px] text-x-blue hover:bg-black/[0.03]';
-        more.textContent = 'Show more';
-        more.addEventListener('click', function () {
-          showAllPeople = true;
-          renderPeople(visiblePeople());
-        });
-        box.appendChild(more);
-      }
     }
 
     function draw() {
       renderPosts(visiblePosts());
-      renderPeople(visiblePeople());
+      renderPeople();
     }
 
     function loadPosts() {
@@ -402,16 +281,22 @@
       return apiFetch('/users').then(function (result) {
         if (result.status === 401) return;
         allPeople = Array.isArray(result.data) ? result.data : [];
-        renderPeople(visiblePeople());
+        renderPeople();
         if (postsLoaded) renderPosts(visiblePosts());
       });
     }
 
+    const composer = bindPostComposer(
+      document.getElementById('composerPreview'),
+      document.getElementById('composerTools'),
+      document.getElementById('postText'),
+      { onChange: syncPostButton, onNotice: showNotice, darkTools: true }
+    );
+
     function syncPostButton() {
       const text = document.getElementById('postText').value.trim();
-      const file = document.getElementById('postImage').files[0];
       const button = document.getElementById('postSubmit');
-      const ready = !!(text || file);
+      const ready = composer.ready(text);
       button.disabled = !ready;
       button.className = ready
         ? 'x-btn-blue h-9 min-w-16 px-4 text-[15px]'
@@ -419,43 +304,24 @@
     }
 
     function clearComposer() {
-      const preview = document.getElementById('imagePreview');
       document.getElementById('postText').value = '';
       document.getElementById('postText').style.height = '';
-      document.getElementById('postImage').value = '';
-      document.getElementById('fileName').textContent = '';
       document.getElementById('postNotice').classList.add('hidden');
-      preview.classList.add('hidden');
-      preview.removeAttribute('src');
-      syncPostButton();
+      composer.clear();
     }
 
-    if (!localStorage.getItem('zivo_token')) {
-      window.location.href = 'loginpage.html';
+    if (!requireAuth()) {
+      // redirected to sign in
     } else {
-      apiFetch('/me')
-        .then(function (result) {
-          if (!result.ok) {
-            clearToken();
-            window.location.href = 'loginpage.html';
-            return;
-          }
-          meUsername = result.data.username || '';
-          meEmail = result.data.email || '';
-          document.getElementById('greeting').textContent = result.data.name;
-          const avatar = picture(result.data.photo, result.data.name.charAt(0), 'size-10');
-          document.getElementById('mePhoto').appendChild(avatar);
-          document.getElementById('composerPhoto').appendChild(picture(result.data.photo, result.data.name.charAt(0), 'size-10'));
-          if (result.data.username) {
-            document.getElementById('handle').textContent = '@' + result.data.username;
-          }
-          if (result.data.bio) {
-            document.getElementById('bio').textContent = result.data.bio;
-          }
+      shell.loadMe({ skipRails: true })
+        .then(function (me) {
+          if (!me) return;
+          meUsername = me.username || '';
+          meEmail = me.email || '';
           return Promise.all([loadPosts(), loadPeople()]);
         })
         .catch(function () {
-          window.location.href = 'loginpage.html';
+          redirectToLogin('required');
         });
     }
 
@@ -469,9 +335,14 @@
       renderPosts(visiblePosts());
     });
 
-    document.getElementById('peopleSearch').addEventListener('input', function () {
-      query = this.value.trim();
+    function onSearchInput(value) {
+      query = value.trim();
+      showAllPeople = false;
       draw();
+    }
+
+    document.getElementById('shellSearch').addEventListener('input', function () {
+      onSearchInput(this.value);
     });
 
     document.getElementById('postText').addEventListener('input', function () {
@@ -486,20 +357,6 @@
       }
     });
 
-    document.getElementById('postImage').addEventListener('change', function () {
-      const file = this.files[0];
-      const preview = document.getElementById('imagePreview');
-      document.getElementById('fileName').textContent = file ? file.name : '';
-      if (file) {
-        preview.src = URL.createObjectURL(file);
-        preview.classList.remove('hidden');
-      } else {
-        preview.classList.add('hidden');
-        preview.removeAttribute('src');
-      }
-      syncPostButton();
-    });
-
     document.querySelectorAll('[data-compose]').forEach(function (link) {
       link.addEventListener('click', function (e) {
         e.preventDefault();
@@ -510,32 +367,25 @@
     });
 
     if (location.hash === '#compose') {
-      const box = document.getElementById('postText');
-      box.focus();
+      document.getElementById('postText').focus();
     }
-
-    document.addEventListener('click', function (e) {
-      const pop = document.getElementById('accountPopover');
-      const toggle = document.getElementById('accountToggle');
-      if (toggle.contains(e.target)) {
-        pop.classList.toggle('hidden');
-        return;
-      }
-      if (!pop.contains(e.target)) pop.classList.add('hidden');
-    });
 
     document.getElementById('postForm').addEventListener('submit', function (e) {
       e.preventDefault();
       const text = document.getElementById('postText').value.trim();
-      const file = document.getElementById('postImage').files[0];
-      if (!text && !file) {
-        showNotice('Write something or add an image.');
+      const problem = composer.problem();
+      if (problem) {
+        showNotice(problem);
+        return;
+      }
+      if (!composer.ready(text)) {
+        showNotice('Write something, add a photo, or start a poll.');
         return;
       }
 
       const form = new FormData();
       form.append('text', text);
-      if (file) form.append('image', file);
+      composer.fill(form);
 
       apiForm('/posts', form)
         .then(function (result) {
@@ -548,14 +398,6 @@
         })
         .catch(function () {
           showNotice('Cannot reach the server.');
-        });
-    });
-
-    document.getElementById('logout').addEventListener('click', function () {
-      apiFetch('/logout', { method: 'POST', body: '{}' })
-        .finally(function () {
-          clearToken();
-          window.location.href = 'loginpage.html';
         });
     });
 

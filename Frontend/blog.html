@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | Zivo</title>
+  <meta name="theme-color" content="#0f1419">
+  <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="x-page z-shell app-lock" data-nav="blogs">
+  <div class="z-app">
+    <header id="zTopbar" class="z-topbar"></header>
+    <div class="z-columns">
+      <aside id="zLeft" class="z-rail z-rail-left"></aside>
+      <main class="z-center">
+      <div class="sticky top-0 z-20 flex items-center gap-2 border-b border-x-line bg-x-bg/90 px-3 py-2.5 backdrop-blur-md sm:px-4">
+        <a href="blogs.html" class="inline-flex size-9 items-center justify-center rounded-full hover:bg-x-hover" aria-label="Back to blogs">
+          <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 5 8 12l7 7"/></svg>
+        </a>
+        <p id="pageTitle" class="min-w-0 flex-1 truncate text-[15px] font-bold">Blog</p>
+        <div id="ownerActions" class="flex shrink-0 items-center gap-1"></div>
+      </div>
+      <article id="article" class="mx-auto w-full max-w-[680px] px-5 pt-8 pb-16 sm:px-8"></article>
+      <p id="missing" class="mx-auto hidden max-w-[680px] px-5 py-16 text-center text-[15px] text-x-muted">That blog is not available.</p>
+    </main>
+      <aside id="zRight" class="z-rail z-rail-right"></aside>
+    </div>
+  </div>
+
+  <nav id="zBottom" class="z-bottom" aria-label="Mobile"></nav>
+<script src="./api.js"></script>
+  <script src="./shell.js"></script>
+  <script src="./posts.js"></script>
+  <script>
+    
+    var shell = initShell({ nav: 'blogs' });
+var blog = null;
+    var meEmail = "";
+    var editing = false;
+    var blogId = new URLSearchParams(window.location.search).get("id");
+
+    function picture(src, letter, sizeClass) {
+      var size = sizeClass || "size-11";
+      if (src) {
+        var img = document.createElement("img");
+        img.src = API + src;
+        img.alt = "";
+        img.className = size + " shrink-0 rounded-full object-cover";
+        return img;
+      }
+      var fallback = document.createElement("span");
+      fallback.className = "flex " + size + " shrink-0 items-center justify-center rounded-full bg-x-blue text-sm font-bold text-white";
+      fallback.textContent = (letter || "?").toUpperCase();
+      return fallback;
+    }
+
+    function when(seconds) {
+      if (!seconds) return "";
+      return new Date(seconds * 1000).toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" });
+    }
+
+    function readLabel(text) {
+      var words = String(text || "").trim().split(/\s+/).filter(Boolean).length;
+      var minutes = Math.max(1, Math.ceil(words / 200));
+      return minutes === 1 ? "1 min read" : minutes + " min read";
+    }
+
+    function imageProblem(file) {
+      if (!file) return "";
+      var types = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+      if (types.indexOf(file.type) === -1 || file.size === 0 || file.size > 2 * 1024 * 1024) {
+        return "Use a jpg, png, gif, or webp under 2 MB.";
+      }
+      return "";
+    }
+
+    function showMissing() {
+      document.getElementById("article").classList.add("hidden");
+      document.getElementById("missing").classList.remove("hidden");
+      document.getElementById("pageTitle").textContent = "Blog";
+      document.getElementById("ownerActions").innerHTML = "";
+    }
+
+    function paintOwnerActions() {
+      var box = document.getElementById("ownerActions");
+      box.innerHTML = "";
+      if (!blog || blog.email !== meEmail) return;
+      var edit = document.createElement("button");
+      edit.type = "button";
+      edit.className = "rounded-full px-3 py-1.5 text-[14px] font-bold hover:bg-x-hover";
+      edit.textContent = editing ? "Close" : "Edit";
+      edit.addEventListener("click", function () {
+        editing = !editing;
+        paint();
+      });
+      var remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "rounded-full px-3 py-1.5 text-[14px] font-bold text-x-danger hover:bg-x-hover";
+      remove.textContent = "Delete";
+      remove.addEventListener("click", function () {
+        openDialog({
+          title: "Delete blog?",
+          body: "This removes the blog and its comments.",
+          confirmLabel: "Delete",
+        }).then(function (ok) {
+          if (!ok) return;
+          apiFetch("/blogs/" + encodeURIComponent(blog.id) + "/delete", { method: "POST", body: "{}" }).then(function (result) {
+            if (!result.ok) return;
+            window.location.href = "blogs.html";
+          });
+        });
+      });
+      box.appendChild(edit);
+      box.appendChild(remove);
+    }
+
+    function paint() {
+      var root = document.getElementById("article");
+      root.innerHTML = "";
+      root.classList.remove("hidden");
+      document.getElementById("missing").classList.add("hidden");
+      document.getElementById("pageTitle").textContent = "Blog";
+      document.title = blog.title + " | Zivo";
+      paintOwnerActions();
+
+      if (editing) {
+        paintEditor(root);
+        return;
+      }
+
+      var kicker = document.createElement("p");
+      kicker.className = "text-[15px] text-x-muted";
+      kicker.textContent = [when(blog.created_at), readLabel(blog.body)].filter(Boolean).join(" · ");
+      root.appendChild(kicker);
+
+      var title = document.createElement("h1");
+      title.className = "mt-3 text-[32px] font-extrabold leading-[1.15] tracking-[-0.03em] text-balance sm:text-[40px]";
+      title.textContent = blog.title;
+      root.appendChild(title);
+
+      var profile = document.createElement("a");
+      profile.href = "profile.html?user=" + encodeURIComponent(blog.username || blog.email);
+      profile.className = "mt-6 flex w-fit max-w-full items-center gap-3";
+      profile.appendChild(picture(blog.photo, (blog.name || "?").charAt(0)));
+      var copy = document.createElement("span");
+      copy.className = "min-w-0";
+      var name = document.createElement("span");
+      name.className = "block truncate text-[15px] font-bold";
+      name.textContent = blog.name;
+      copy.appendChild(name);
+      if (blog.username) {
+        var handle = document.createElement("span");
+        handle.className = "block truncate text-[14px] text-x-muted";
+        handle.textContent = "@" + blog.username;
+        copy.appendChild(handle);
+      }
+      profile.appendChild(copy);
+      root.appendChild(profile);
+
+      if (blog.cover) {
+        var cover = document.createElement("img");
+        cover.src = API + blog.cover;
+        cover.alt = "";
+        cover.className = "mt-8 aspect-[16/9] w-full rounded-2xl object-cover";
+        root.appendChild(cover);
+      }
+
+      var body = document.createElement("p");
+      body.className = "mt-8 whitespace-pre-wrap text-[19px] leading-[1.75]";
+      body.textContent = blog.body || "";
+      root.appendChild(body);
+
+      var actions = document.createElement("div");
+      actions.className = "mt-10 flex items-center gap-6 border-t border-x-line py-4";
+      var like = document.createElement("button");
+      like.type = "button";
+      like.className = "inline-flex items-center gap-2 text-[15px] font-bold " + (blog.liked ? "text-x-like" : "text-x-muted hover:text-x-like");
+      like.setAttribute("aria-label", blog.liked ? "Liked" : "Like");
+      like.innerHTML = '<svg viewBox="0 0 24 24" class="size-5" aria-hidden="true" fill="' + (blog.liked ? "currentColor" : "none") + '" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+      var likeCount = document.createElement("span");
+      likeCount.textContent = String(blog.like_count || 0);
+      like.appendChild(likeCount);
+      like.addEventListener("click", function () {
+        if (blog.liked) return;
+        apiFetch("/blogs/" + encodeURIComponent(blog.id) + "/like", { method: "POST", body: "{}" }).then(function (result) {
+          if (!result.ok) return;
+          blog = result.data;
+          paint();
+        });
+      });
+      var commentsLabel = document.createElement("p");
+      commentsLabel.className = "text-[15px] text-x-muted";
+      var count = blog.comment_count || 0;
+      commentsLabel.textContent = count === 1 ? "1 comment" : count + " comments";
+      actions.appendChild(like);
+      actions.appendChild(commentsLabel);
+      root.appendChild(actions);
+
+      var heading = document.createElement("h2");
+      heading.className = "mt-8 text-[22px] font-extrabold";
+      heading.textContent = "Comments";
+      root.appendChild(heading);
+
+      if (!(blog.comments || []).length) {
+        var empty = document.createElement("p");
+        empty.className = "mt-3 text-[15px] text-x-muted";
+        empty.textContent = "No comments yet.";
+        root.appendChild(empty);
+      }
+
+      (blog.comments || []).forEach(function (comment) {
+        var row = document.createElement("div");
+        row.className = "mt-5 flex gap-3";
+        row.appendChild(picture(comment.photo, (comment.name || "?").charAt(0), "size-10"));
+        var card = document.createElement("div");
+        card.className = "min-w-0 flex-1 rounded-2xl bg-x-hover px-4 py-3";
+        var line = document.createElement("p");
+        line.className = "text-[15px] font-bold";
+        line.textContent = comment.name;
+        var text = document.createElement("p");
+        text.className = "mt-1 whitespace-pre-wrap text-[15px] leading-6";
+        text.textContent = comment.text;
+        card.appendChild(line);
+        card.appendChild(text);
+        if (comment.email === meEmail || blog.email === meEmail) {
+          var del = document.createElement("button");
+          del.type = "button";
+          del.className = "mt-2 text-[13px] font-bold text-x-muted hover:text-x-danger";
+          del.textContent = "Delete";
+          del.addEventListener("click", function () {
+            apiFetch("/blogs/" + encodeURIComponent(blog.id) + "/comments/" + encodeURIComponent(comment.id) + "/delete", {
+              method: "POST",
+              body: "{}",
+            }).then(function (result) {
+              if (!result.ok) return;
+              blog = result.data;
+              paint();
+            });
+          });
+          card.appendChild(del);
+        }
+        row.appendChild(card);
+        root.appendChild(row);
+      });
+
+      var form = document.createElement("form");
+      form.className = "mt-6 rounded-2xl border border-x-line p-3";
+      var input = document.createElement("textarea");
+      input.maxLength = 500;
+      input.rows = 3;
+      input.placeholder = "Write a comment";
+      input.className = "w-full resize-none bg-transparent text-[15px] leading-6 outline-none placeholder:text-x-muted";
+      var row = document.createElement("div");
+      row.className = "mt-2 flex items-center justify-end";
+      var send = document.createElement("button");
+      send.type = "submit";
+      send.className = "x-btn-blue h-9 px-4 text-[15px]";
+      send.textContent = "Comment";
+      var error = document.createElement("p");
+      error.className = "mt-2 hidden text-[13px] text-x-danger";
+      row.appendChild(send);
+      form.appendChild(input);
+      form.appendChild(row);
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var text = input.value.trim();
+        if (!text) {
+          error.textContent = "Write a comment.";
+          error.classList.remove("hidden");
+          return;
+        }
+        send.disabled = true;
+        apiFetch("/blogs/" + encodeURIComponent(blog.id) + "/comments", {
+          method: "POST",
+          body: JSON.stringify({ text: text }),
+        }).then(function (result) {
+          send.disabled = false;
+          if (!result.ok) {
+            error.textContent = result.data.message || "Could not post that comment.";
+            error.classList.remove("hidden");
+            return;
+          }
+          blog = result.data;
+          paint();
+        }).catch(function () {
+          send.disabled = false;
+          error.textContent = "Cannot reach the server.";
+          error.classList.remove("hidden");
+        });
+      });
+      root.appendChild(form);
+      root.appendChild(error);
+    }
+
+    function paintEditor(root) {
+      var form = document.createElement("form");
+      var label = document.createElement("p");
+      label.className = "text-[15px] text-x-muted";
+      label.textContent = "Editing";
+      var title = document.createElement("input");
+      title.maxLength = 80;
+      title.value = blog.title;
+      title.setAttribute("aria-label", "Title");
+      title.className = "mt-3 w-full bg-transparent text-[32px] font-extrabold leading-[1.15] tracking-[-0.03em] outline-none sm:text-[40px]";
+      var body = document.createElement("textarea");
+      body.maxLength = 4000;
+      body.rows = 10;
+      body.value = blog.body || "";
+      body.setAttribute("aria-label", "Blog");
+      body.className = "mt-8 min-h-48 w-full resize-none bg-transparent text-[19px] leading-[1.75] outline-none";
+      var coverRow = document.createElement("div");
+      coverRow.className = "mt-6 flex flex-wrap items-center gap-4";
+      var file = document.createElement("input");
+      file.type = "file";
+      file.accept = "image/jpeg,image/png,image/gif,image/webp";
+      file.id = "editCover";
+      file.className = "sr-only";
+      var fileLabel = document.createElement("label");
+      fileLabel.htmlFor = "editCover";
+      fileLabel.className = "inline-flex h-9 cursor-pointer items-center rounded-full border border-x-border px-4 text-[14px] font-bold hover:bg-x-hover";
+      fileLabel.textContent = blog.cover ? "Change cover" : "Add cover";
+      var removeCover = document.createElement("label");
+      removeCover.className = "inline-flex items-center gap-2 text-[14px] text-x-muted";
+      var box = document.createElement("input");
+      box.type = "checkbox";
+      removeCover.appendChild(box);
+      removeCover.appendChild(document.createTextNode("Remove cover"));
+      if (!blog.cover) removeCover.classList.add("hidden");
+      coverRow.appendChild(file);
+      coverRow.appendChild(fileLabel);
+      coverRow.appendChild(removeCover);
+      var error = document.createElement("p");
+      error.className = "mt-3 hidden text-[13px] text-x-danger";
+      var save = document.createElement("button");
+      save.type = "submit";
+      save.className = "x-btn-blue mt-5 h-10 px-5 text-[15px]";
+      save.textContent = "Save";
+      form.appendChild(label);
+      form.appendChild(title);
+      form.appendChild(body);
+      if (blog.cover) {
+        var current = document.createElement("img");
+        current.src = API + blog.cover;
+        current.alt = "";
+        current.className = "mt-6 aspect-[16/9] w-full rounded-2xl object-cover";
+        form.appendChild(current);
+      }
+      form.appendChild(coverRow);
+      form.appendChild(error);
+      form.appendChild(save);
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var problem = imageProblem(file.files[0]);
+        if (problem) {
+          error.textContent = problem;
+          error.classList.remove("hidden");
+          return;
+        }
+        var data = new FormData();
+        data.append("title", title.value.trim());
+        data.append("body", body.value.trim());
+        if (box.checked) data.append("remove_cover", "1");
+        if (file.files[0]) data.append("cover", file.files[0]);
+        save.disabled = true;
+        apiForm("/blogs/" + encodeURIComponent(blog.id) + "/edit", data).then(function (result) {
+          save.disabled = false;
+          if (!result.ok) {
+            error.textContent = result.data.message || "Could not save that blog.";
+            error.classList.remove("hidden");
+            return;
+          }
+          blog = result.data;
+          editing = false;
+          paint();
+        }).catch(function () {
+          save.disabled = false;
+          error.textContent = "Cannot reach the server.";
+          error.classList.remove("hidden");
+        });
+      });
+      root.appendChild(form);
+    }
+
+    function loadBlog() {
+      if (!blogId) {
+        showMissing();
+        return;
+      }
+      apiFetch("/blogs/" + encodeURIComponent(blogId)).then(function (result) {
+        if (result.status === 401) return;
+        if (!result.ok) {
+          showMissing();
+          return;
+        }
+        blog = result.data;
+        paint();
+      }).catch(function () {
+        showMissing();
+      });
+    }
+
+    if (!requireAuth()) {
+      // redirected to sign in
+    } else {
+      apiFetch("/me").then(function (result) {
+        if (!result.ok) return;
+        meEmail = result.data.email || "";
+        shell.paintProfile(result.data);
+        if (result.data.username) document.getElementById("handle").textContent = "@" + result.data.username;
+        loadBlog();
+      }).catch(function () {
+        window.location.href = "loginpage.html";
+      });
+    }
+</script>
+</body>
+</html>

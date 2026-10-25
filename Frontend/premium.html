@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premium | Zivo</title>
+  <meta name="theme-color" content="#0f1419">
+  <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="x-page z-shell app-lock" data-nav="premium">
+  <div class="z-app">
+    <header id="zTopbar" class="z-topbar"></header>
+    <div class="z-columns">
+      <aside id="zLeft" class="z-rail z-rail-left"></aside>
+      <main class="z-center">
+      <div class="sticky top-0 z-20 flex items-center gap-6 border-b border-x-line bg-x-bg/90 px-3 py-2 backdrop-blur-md">
+        <a href="feed.html" class="rounded-full p-2 hover:bg-x-hover" aria-label="Back">
+          <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </a>
+        <h1 class="text-xl font-bold">Premium</h1>
+      </div>
+
+      <div class="mx-auto w-full max-w-[520px] px-4 py-8 sm:py-12">
+        <article class="overflow-hidden rounded-3xl border border-x-border bg-x-panel">
+          <div class="bg-x-blue/10 px-6 pt-8 pb-7 text-center">
+            <div class="mx-auto flex size-16 items-center justify-center rounded-2xl bg-x-blue text-white">
+              <svg viewBox="0 0 24 24" class="size-8" aria-hidden="true"><path fill="currentColor" d="M12 2.4 9.6 8.2 3.3 8.8l4.8 4.1-1.4 6.3L12 16.2l5.3 3 1.4-6.3 4.8-4.1-6.3-.6z"/></svg>
+            </div>
+            <p class="mt-5 text-[13px] font-bold tracking-wide text-x-blue uppercase">Zivo Premium</p>
+            <h2 id="headline" class="mt-2 text-[28px] leading-tight font-extrabold tracking-[-0.03em] sm:text-[32px]">A star next to your name.</h2>
+            <p id="copy" class="mx-auto mt-3 max-w-sm text-[15px] leading-6 text-x-muted">Pay once with Stripe. Your profile, posts, and replies get a Premium badge.</p>
+          </div>
+
+          <div class="px-5 py-5">
+            <p class="text-[13px] font-bold text-x-muted">On your profile</p>
+            <div class="mt-3 flex items-center gap-3 rounded-2xl bg-x-chip px-4 py-3">
+              <span class="flex size-11 shrink-0 items-center justify-center rounded-full bg-x-blue text-sm font-bold text-white" aria-hidden="true">Y</span>
+              <span class="min-w-0">
+                <span class="flex items-center gap-1 text-[15px] font-bold">
+                  Your name
+                  <svg viewBox="0 0 24 24" class="size-4 text-x-blue" aria-hidden="true"><path fill="currentColor" d="M12 2.4 9.6 8.2 3.3 8.8l4.8 4.1-1.4 6.3L12 16.2l5.3 3 1.4-6.3 4.8-4.1-6.3-.6z"/></svg>
+                </span>
+                <span class="block text-[14px] text-x-muted">@you</span>
+              </span>
+            </div>
+          </div>
+
+          <ul class="border-t border-x-line">
+            <li class="flex items-center gap-3 px-5 py-4">
+              <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-x-blue/10 text-x-blue">
+                <svg viewBox="0 0 24 24" class="size-5" aria-hidden="true"><path fill="currentColor" d="M12 2.4 9.6 8.2 3.3 8.8l4.8 4.1-1.4 6.3L12 16.2l5.3 3 1.4-6.3 4.8-4.1-6.3-.6z"/></svg>
+              </span>
+              <span>
+                <span class="block text-[15px] font-bold">Verified star</span>
+                <span class="block text-[14px] leading-5 text-x-muted">Sits next to your name on your profile.</span>
+              </span>
+            </li>
+            <li class="flex items-center gap-3 border-t border-x-line px-5 py-4">
+              <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-x-blue/10 text-x-blue">
+                <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 6.8h14a1.5 1.5 0 0 1 1.5 1.5v7a1.5 1.5 0 0 1-1.5 1.5H9.2L5 20.2v-3.4A1.5 1.5 0 0 1 3.5 15.3v-7A1.5 1.5 0 0 1 5 6.8z"/></svg>
+              </span>
+              <span>
+                <span class="block text-[15px] font-bold">Badge on posts</span>
+                <span class="block text-[14px] leading-5 text-x-muted">The same star on posts and comments.</span>
+              </span>
+            </li>
+            <li class="flex items-center gap-3 border-t border-x-line px-5 py-4">
+              <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-x-blue/10 text-x-blue">
+                <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12.5 9.2 17 19 7"/></svg>
+              </span>
+              <span>
+                <span class="block text-[15px] font-bold">Pay once</span>
+                <span class="block text-[14px] leading-5 text-x-muted">One $4.99 payment. It does not renew.</span>
+              </span>
+            </li>
+          </ul>
+
+          <div class="border-t border-x-line px-5 py-5">
+            <div class="flex items-end justify-between">
+              <span class="text-[15px] font-bold">One-time payment</span>
+              <span class="text-[28px] leading-none font-extrabold tracking-[-0.03em]">$4.99</span>
+            </div>
+            <button id="checkout" type="button" class="x-btn-blue mt-4 h-12 w-full text-[15px]">Subscribe for $4.99</button>
+            <p class="mt-3 text-center text-[13px] leading-5 text-x-muted">One-time $4.99 test payment with Stripe.</p>
+            <p id="notice" class="mt-3 hidden text-center text-[15px] text-x-danger" role="status"></p>
+          </div>
+        </article>
+      </div>
+    </main>
+      <aside id="zRight" class="z-rail z-rail-right"></aside>
+    </div>
+  </div>
+
+  <nav id="zBottom" class="z-bottom" aria-label="Mobile"></nav>
+<script src="./api.js"></script>
+  <script src="./shell.js"></script>
+  <script>
+    
+    var shell = initShell({ nav: 'premium' });
+function picture(src, letter, sizeClass) {
+      if (src) {
+        const img = document.createElement('img');
+        img.src = API + src;
+        img.alt = '';
+        img.className = 'shrink-0 rounded-full object-cover ' + sizeClass;
+        return img;
+      }
+      const fallback = document.createElement('span');
+      fallback.className = 'flex shrink-0 items-center justify-center rounded-full bg-x-blue text-sm font-bold text-white ' + sizeClass;
+      fallback.textContent = (letter || '?').toUpperCase();
+      return fallback;
+    }
+
+    function showNotice(text) {
+      const notice = document.getElementById('notice');
+      notice.classList.remove('hidden');
+      notice.textContent = text;
+    }
+
+    function showPremium() {
+      document.getElementById('headline').textContent = 'You are Premium.';
+      document.getElementById('copy').textContent = 'Your blue star shows on your profile, posts, and replies.';
+      const button = document.getElementById('checkout');
+      button.disabled = true;
+      button.textContent = 'Premium active';
+      button.className = 'mt-4 h-12 w-full cursor-not-allowed rounded-full bg-x-blue/50 text-[15px] font-bold text-white';
+    }
+
+    if (!requireAuth()) {
+      // redirected to sign in
+    } else {
+      apiFetch('/me')
+        .then(function (result) {
+          if (!result.ok) return;
+          shell.paintProfile(result.data);
+          if (result.data.premium) showPremium();
+        })
+        .catch(function () {
+          window.location.href = 'loginpage.html';
+        });
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('canceled') === '1') {
+      showNotice('Checkout was canceled. You have not been charged.');
+    }
+    if (params.get('success') === '1' && params.get('session_id')) {
+      showNotice('Confirming your payment with Stripe...');
+      document.getElementById('notice').classList.remove('text-x-danger');
+      apiFetch('/premium/confirm', {
+        method: 'POST',
+        body: JSON.stringify({ session_id: params.get('session_id') }),
+      }).then(function (result) {
+        if (result.ok && result.data.premium) {
+          showPremium();
+          const noticeEl = document.getElementById('notice');
+          noticeEl.className = 'mt-3 text-center text-[15px] font-semibold text-[#00ba7c]';
+          noticeEl.textContent = '🎉 Payment confirmed! Premium is now active on your account.';
+          history.replaceState({}, '', window.location.pathname);
+          return;
+        }
+        const noticeEl = document.getElementById('notice');
+        noticeEl.className = 'mt-3 text-center text-[15px] text-x-danger';
+        noticeEl.textContent = result.data.message || 'Could not confirm that payment.';
+      }).catch(function () {
+        const noticeEl = document.getElementById('notice');
+        noticeEl.className = 'mt-3 text-center text-[15px] text-x-danger';
+        noticeEl.textContent = 'Could not verify payment with server. Please refresh this page.';
+      });
+    }
+
+    document.getElementById('checkout').addEventListener('click', function () {
+      const button = document.getElementById('checkout');
+      button.disabled = true;
+      button.textContent = 'Redirecting to Stripe...';
+      apiFetch('/premium/checkout', { method: 'POST', body: '{}' })
+        .then(function (result) {
+          if (result.data && result.data.already) {
+            showPremium();
+            return;
+          }
+          if (result.ok && result.data.url) {
+            window.location.href = result.data.url;
+            return;
+          }
+          button.disabled = false;
+          button.textContent = 'Subscribe for $4.99';
+          showNotice(result.data.message || 'Could not start checkout.');
+        })
+        .catch(function () {
+          button.disabled = false;
+          button.textContent = 'Subscribe for $4.99';
+          showNotice('Cannot reach the server.');
+        });
+    });
+
+</script>
+</body>
+</html>
