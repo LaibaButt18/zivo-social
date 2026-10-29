@@ -36,6 +36,83 @@ class SocialMedia:
         self.next_webinar_message_id = 1
         self.next_blog_id = 1
         self.next_notification_id = 1
+        self.posts_by_id = {}
+        self.posts_by_group = {}
+        self.groups_by_id = {}
+        self.chats_by_id = {}
+        self.webinars_by_id = {}
+        self.blogs_by_id = {}
+        self.users_by_username = {}
+        self.follower_index = {}
+
+    def _bind_user(self, user):
+        if user.username:
+            self.users_by_username[user.username.lower()] = user
+
+    def _bind_post(self, post):
+        self.posts_by_id[post.post_id] = post
+        self.posts_by_group.setdefault(post.group_id, []).append(post)
+
+    def _unbind_post(self, post):
+        self.posts_by_id.pop(post.post_id, None)
+        bucket = self.posts_by_group.get(post.group_id)
+        if bucket is not None and post in bucket:
+            bucket.remove(post)
+
+    def _bind_group(self, group):
+        self.groups_by_id[group.group_id] = group
+
+    def _unbind_group(self, group):
+        self.groups_by_id.pop(group.group_id, None)
+
+    def _bind_chat(self, chat):
+        self.chats_by_id[chat.chat_id] = chat
+
+    def _unbind_chat(self, chat):
+        self.chats_by_id.pop(chat.chat_id, None)
+
+    def _bind_webinar(self, webinar):
+        self.webinars_by_id[webinar.webinar_id] = webinar
+
+    def _bind_blog(self, blog):
+        self.blogs_by_id[blog.blog_id] = blog
+
+    def _unbind_blog(self, blog):
+        self.blogs_by_id.pop(blog.blog_id, None)
+
+    def reindex(self):
+        normalized = {}
+        for email, others in self.following.items():
+            normalized[email] = set(others)
+        self.following = normalized
+        self.follower_index = {}
+        for follower, others in self.following.items():
+            for other in others:
+                self.follower_index.setdefault(other, set()).add(follower)
+
+        self.posts_by_id = {}
+        self.posts_by_group = {}
+        for post in self.posts:
+            if not isinstance(post.likes, set):
+                post.likes = set(post.likes)
+            self._bind_post(post)
+        self.groups_by_id = {}
+        for group in self.groups:
+            self._bind_group(group)
+        self.chats_by_id = {}
+        for chat in self.chats:
+            self._bind_chat(chat)
+        self.webinars_by_id = {}
+        for webinar in self.webinars:
+            self._bind_webinar(webinar)
+        self.blogs_by_id = {}
+        for blog in self.blogs:
+            if not isinstance(blog.likes, set):
+                blog.likes = set(blog.likes)
+            self._bind_blog(blog)
+        self.users_by_username = {}
+        for user in self.users:
+            self._bind_user(user)
 
     def create_account(self, name, email, password, username=""):
         name = name.strip()
@@ -51,17 +128,16 @@ class SocialMedia:
             print("Account already exists!")
             return None
 
-        if username != "":
-            for existing in self.users:
-                if existing.username == username:
-                    print("Username already taken!")
-                    return None
+        if username != "" and username.lower() in self.users_by_username:
+            print("Username already taken!")
+            return None
 
         user = User(self.next_user_id, name, email, password, username)
         self.next_user_id = self.next_user_id + 1
 
         self.users.append(user)
         self.users_by_email[email] = user
+        self._bind_user(user)
         self.friends.add_user(email)
         print("Account created successfully!")
         return user
@@ -187,15 +263,16 @@ class SocialMedia:
         post = Post(self.next_post_id, author, text, image, group_id, names, poll)
         self.next_post_id = self.next_post_id + 1
         self.posts.append(post)
+        self._bind_post(post)
         print("Post created!")
         return post
 
-    # linear search, the list is small for now
     def find_post(self, post_id):
-        for post in self.posts:
-            if post.post_id == post_id:
-                return post
-        return None
+        try:
+            post_id = int(post_id)
+        except (TypeError, ValueError):
+            return None
+        return self.posts_by_id.get(post_id)
 
     def add_comment(self, email, post_id, text):
         if email not in self.users_by_email:
@@ -244,7 +321,7 @@ class SocialMedia:
         if email in post.likes:
             return "You already liked this post."
 
-        post.likes.append(email)
+        post.likes.add(email)
         if post.author.email != email:
             me = self.users_by_email[email]
             self.notify(post.author.email, me.name + " liked your post", "like", self.post_href(post))
@@ -282,6 +359,7 @@ class SocialMedia:
             return "You can only delete your own posts."
 
         self.posts.remove(post)
+        self._unbind_post(post)
         return None
 
     def vote_poll(self, email, post_id, choice):
@@ -498,31 +576,34 @@ class SocialMedia:
             return None
         if key.lower() in self.users_by_email:
             return self.users_by_email[key.lower()]
-        for user in self.users:
-            if user.username.lower() == key.lower():
-                return user
-        return None
+        return self.users_by_username.get(key.lower())
 
     def follow_user(self, email, other_email):
         if email not in self.users_by_email or other_email not in self.users_by_email:
             return "User not found."
         if email == other_email:
             return "You cannot follow yourself."
-        if email not in self.following:
-            self.following[email] = []
-        if other_email in self.following[email]:
+        followed = self.following.get(email)
+        if not isinstance(followed, set):
+            followed = set(followed or [])
+            self.following[email] = followed
+        if other_email in followed:
             return "You already follow this person."
-        self.following[email].append(other_email)
+        followed.add(other_email)
+        self.follower_index.setdefault(other_email, set()).add(email)
         me = self.users_by_email[email]
         other = self.users_by_email[other_email]
         self.notify(other_email, me.name + " started following you", "follow", self.profile_href(me))
         return None
 
     def unfollow_user(self, email, other_email):
-        followed = self.following.get(email, [])
-        if other_email not in followed:
+        followed = self.following.get(email)
+        if not followed or other_email not in followed:
             return "You are not following this person."
-        followed.remove(other_email)
+        followed.discard(other_email)
+        bucket = self.follower_index.get(other_email)
+        if bucket is not None:
+            bucket.discard(email)
         return None
 
     def is_following(self, email, other_email):
@@ -549,10 +630,7 @@ class SocialMedia:
             group_id = int(group_id)
         except (TypeError, ValueError):
             return None
-        for group in self.groups:
-            if group.group_id == group_id:
-                return group
-        return None
+        return self.groups_by_id.get(group_id)
 
     def group_role(self, group, email):
         return group.members.get(email, "")
@@ -578,11 +656,11 @@ class SocialMedia:
         return None
 
     def posts_in_group(self, group_id):
-        rows = []
-        for post in self.posts:
-            if post.group_id == group_id:
-                rows.append(post)
-        return rows
+        try:
+            group_id = int(group_id)
+        except (TypeError, ValueError):
+            return []
+        return list(self.posts_by_group.get(group_id, ()))
 
     def clean_group_text(self, name, description):
         name = name.strip()
@@ -613,6 +691,7 @@ class SocialMedia:
         self.next_group_id = self.next_group_id + 1
         group.members[email] = "owner"
         self.groups.append(group)
+        self._bind_group(group)
         return group, None
 
     def update_group(self, email, group_id, name, description, photo=""):
@@ -821,20 +900,22 @@ class SocialMedia:
         names = []
         if group.photo != "":
             names.append(group.photo)
-        for post in self.posts:
-            if post.group_id == group.group_id:
-                for name in post.images:
-                    if name:
-                        names.append(name)
+        for post in self.posts_in_group(group.group_id):
+            for name in post.images:
+                if name:
+                    names.append(name)
         return names
 
     def drop_group(self, group):
         names = self.group_image_names(group)
         kept = []
         for post in self.posts:
-            if post.group_id != group.group_id:
+            if post.group_id == group.group_id:
+                self._unbind_post(post)
+            else:
                 kept.append(post)
         self.posts = kept
+        self._unbind_group(group)
         self.groups.remove(group)
         return names
 
@@ -940,10 +1021,7 @@ class SocialMedia:
             chat_id = int(chat_id)
         except (TypeError, ValueError):
             return None
-        for chat in self.chats:
-            if chat.chat_id == chat_id:
-                return chat
-        return None
+        return self.chats_by_id.get(chat_id)
 
     def clean_chat_name(self, name):
         name = "" if name is None else str(name).strip()
@@ -993,6 +1071,7 @@ class SocialMedia:
             chat.members[other_email] = 0
 
         self.chats.append(chat)
+        self._bind_chat(chat)
         self.append_chat_message(chat, None, creator.name + " created this chat", "", True)
         chat.members[email] = chat.messages[-1].message_id
         for other_email in list(chat.members):
@@ -1184,6 +1263,7 @@ class SocialMedia:
     def drop_chat(self, chat):
         names = self.chat_image_names(chat)
         self.chats.remove(chat)
+        self._unbind_chat(chat)
         return names
 
     def leave_chat(self, email, chat_id):
@@ -1321,10 +1401,7 @@ class SocialMedia:
             webinar_id = int(webinar_id)
         except (TypeError, ValueError):
             return None
-        for webinar in self.webinars:
-            if webinar.webinar_id == webinar_id:
-                return webinar
-        return None
+        return self.webinars_by_id.get(webinar_id)
 
     def finite_time(self, value):
         if isinstance(value, str):
@@ -1399,6 +1476,7 @@ class SocialMedia:
         webinar.created_at = time.time()
         webinar.invited = invites
         self.webinars.append(webinar)
+        self._bind_webinar(webinar)
         host = self.users_by_email[email]
         for other_email in invites:
             self.notify(other_email, host.name + " invited you to " + webinar.title, "webinar", "webinar.html?id=" + str(webinar.webinar_id))
@@ -1567,8 +1645,8 @@ class SocialMedia:
 
     def followers_of(self, email):
         found = []
-        for follower, others in self.following.items():
-            if email in others and follower in self.users_by_email and follower != email:
+        for follower in self.follower_index.get(email, ()):
+            if follower in self.users_by_email and follower != email:
                 found.append(follower)
         return found
 
@@ -1577,10 +1655,7 @@ class SocialMedia:
             blog_id = int(blog_id)
         except (TypeError, ValueError):
             return None
-        for blog in self.blogs:
-            if blog.blog_id == blog_id:
-                return blog
-        return None
+        return self.blogs_by_id.get(blog_id)
 
     def clean_blog(self, title, body):
         title = "" if title is None else str(title).strip()
@@ -1606,6 +1681,7 @@ class SocialMedia:
         blog = Blog(self.next_blog_id, author, title, body, cover, now)
         self.next_blog_id = self.next_blog_id + 1
         self.blogs.append(blog)
+        self._bind_blog(blog)
         label = title if len(title) <= 40 else title[:37].rstrip() + "..."
         for follower in self.followers_of(email):
             self.notify(follower, author.name + " published " + label, "blog", "blog.html?id=" + str(blog.blog_id))
@@ -1637,6 +1713,7 @@ class SocialMedia:
             return "You can only delete your own blogs.", ""
         cover = blog.cover
         self.blogs.remove(blog)
+        self._unbind_blog(blog)
         return None, cover
 
     def like_blog(self, email, blog_id):
@@ -1647,7 +1724,7 @@ class SocialMedia:
             return "Blog not found."
         if email in blog.likes:
             return "You already liked this blog."
-        blog.likes.append(email)
+        blog.likes.add(email)
         if blog.author.email != email:
             me = self.users_by_email[email]
             self.notify(blog.author.email, me.name + " liked your blog", "like", "blog.html?id=" + str(blog.blog_id))

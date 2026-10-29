@@ -11,9 +11,12 @@ from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from flask_socketio import SocketIO, disconnect, emit, join_room, leave_room
 
+from cache import read_cache
+from dbpool import ConnectionPool
 from mail import absolute_url, send_password_changed, send_password_reset, send_welcome
 from models import Blog, Chat, ChatMessage, Comment, Group, Post, User, Webinar, WebinarMessage
 from social_media import CHAT_REACTIONS, WEBINAR_ROOM_CAP, SocialMedia
+from workers import resize_upload
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("JWT_SECRET", "zivo-dev-secret-change-me-32b-secure-jwt")
@@ -40,8 +43,11 @@ JWT_EXPIRES_SECONDS = 7 * 24 * 60 * 60
 PREMIUM_PRICE_CENTS = 499
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_FILE = os.path.join(BASE_DIR, "data.json")
+DATA_ROOT = os.environ.get("ZIVO_DATA_DIR", BASE_DIR)
+DATA_FILE = os.path.join(DATA_ROOT, "data.json")
+DB_FILE = os.path.join(DATA_ROOT, "zivo.db")
 FRONTEND = os.path.abspath(os.path.join(BASE_DIR, "..", "Frontend"))
+db_pool = ConnectionPool(DB_FILE)
 UPLOAD_DIR = os.path.join(BASE_DIR, "temp")
 LEGACY_UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
 ALLOWED_IMAGES = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
@@ -203,7 +209,11 @@ def blog_rows():
 
 def save_data():
     with state_lock:
-        write_data()
+        text = write_data()
+        db_pool.save_payload(text)
+        with open(DATA_FILE, "w") as file:
+            file.write(text)
+        read_cache.clear()
 
 
 def write_data():
@@ -239,7 +249,7 @@ def write_data():
             "images": list(post.images),
             "poll": post.poll,
             "group_id": post.group_id,
-            "likes": post.likes,
+            "likes": list(post.likes),
             "comments": comments,
         })
 
@@ -276,7 +286,7 @@ def write_data():
         "posts": posts,
         "groups": groups,
         "reset_tokens": saved_resets,
-        "following": social.following,
+        "following": {email: list(others) for email, others in social.following.items()},
         "next_user_id": social.next_user_id,
         "next_post_id": social.next_post_id,
         "next_comment_id": social.next_comment_id,
@@ -291,8 +301,7 @@ def write_data():
         "next_blog_id": social.next_blog_id,
         "next_notification_id": social.next_notification_id,
     }
-    with open(DATA_FILE, "w") as file:
-        json.dump(data, file)
+    return json.dumps(data)
 
 
 def empty_room():
@@ -311,11 +320,17 @@ def clear_all_live_rooms():
 
 def load_data():
     clear_all_live_rooms()
-    if not os.path.exists(DATA_FILE):
+    db_pool.start()
+    stored = db_pool.load_payload()
+    data = None
+    if stored:
+        data = json.loads(stored)
+    elif os.path.exists(DATA_FILE):
+        with open(DATA_FILE) as file:
+            data = json.load(file)
+        db_pool.save_payload(json.dumps(data))
+    if data is None:
         return
-
-    with open(DATA_FILE) as file:
-        data = json.load(file)
 
     social.users = []
     social.users_by_email = {}
@@ -413,7 +428,7 @@ def load_data():
         )
         for email in row.get("likes", []):
             if email in social.users_by_email:
-                post.likes.append(email)
+                post.likes.add(email)
         for saved in row.get("comments", []):
             comment_author = social.users_by_email.get(saved.get("email"))
             if comment_author is None:
@@ -604,7 +619,7 @@ def load_data():
             blog.updated_at = created
         for email in row.get("likes", []):
             if email in social.users_by_email:
-                blog.likes.append(email)
+                blog.likes.add(email)
         for saved in row.get("comments", []):
             comment_author = social.users_by_email.get(saved.get("email"))
             if comment_author is None:
@@ -638,6 +653,8 @@ def load_data():
             saved_note_id = social.next_notification_id
         if saved_note_id > social.next_notification_id:
             social.next_notification_id = saved_note_id
+
+    social.reindex()
 
     if ended_on_load:
         save_data()
@@ -737,7 +754,9 @@ def save_upload(file_storage):
 
     os.makedirs(UPLOAD_DIR, exist_ok=True)
     name = secrets.token_hex(8) + ext
-    file_storage.save(os.path.join(UPLOAD_DIR, name))
+    path = os.path.join(UPLOAD_DIR, name)
+    file_storage.save(path)
+    resize_upload(path)
     return name
 
 
@@ -821,11 +840,7 @@ def photo_path(filename):
 
 
 def follower_count(email):
-    count = 0
-    for followed in social.following.values():
-        if email in followed:
-            count = count + 1
-    return count
+    return len(social.follower_index.get(email, ()))
 
 
 def profile_payload(user, viewer):
@@ -967,10 +982,8 @@ def signup_error(name, email, username, password):
         return "Password must be at least 8 characters."
     if email in social.users_by_email:
         return "Account already exists."
-    if username != "":
-        for existing in social.users:
-            if existing.username == username:
-                return "Username already taken."
+    if username != "" and username.lower() in social.users_by_username:
+        return "Username already taken."
     return None
 
 
@@ -1254,11 +1267,17 @@ def list_posts():
     if user is None:
         return jsonify({"ok": False, "message": "Please log in again."}), 401
 
+    cache_key = "posts:" + user.email
+    cached = read_cache.get(cache_key)
+    if cached is not None:
+        return jsonify(cached)
+
     rows = []
     for post in reversed(social.posts):
         if post.group_id != 0:
             continue
         rows.append(post_public(post, user.email))
+    read_cache.put(cache_key, rows)
     return jsonify(rows)
 
 
@@ -1421,11 +1440,17 @@ def list_users():
     if user is None:
         return jsonify({"ok": False, "message": "Please log in again."}), 401
 
+    cache_key = "users:" + user.email
+    cached = read_cache.get(cache_key)
+    if cached is not None:
+        return jsonify(cached)
+
     rows = []
     for other in social.users:
         if other.email == user.email:
             continue
         rows.append(user_public(other, user.email))
+    read_cache.put(cache_key, rows)
     return jsonify(rows)
 
 

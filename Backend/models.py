@@ -16,7 +16,7 @@ class Post(Content):
         self.post_id = post_id
         self.group_id = group_id
         self.comments = LinkedList()
-        self.likes = []
+        self.likes = set()
         self.images = []
         if images:
             for name in images:
@@ -126,7 +126,7 @@ class Blog:
         self.cover = cover
         self.created_at = created_at
         self.updated_at = created_at
-        self.likes = []
+        self.likes = set()
         self.comments = LinkedList()
 
 

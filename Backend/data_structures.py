@@ -1,3 +1,6 @@
+from collections import deque
+
+
 class Stack:
     def __init__(self):
         self.items = []
@@ -32,7 +35,7 @@ class Stack:
 
 class Queue:
     def __init__(self):
-        self.items = []
+        self.items = deque()
 
     def enqueue(self, item):
         self.items.append(item)
@@ -40,8 +43,7 @@ class Queue:
     def dequeue(self):
         if self.is_empty():
             return None
-        # front of the queue is index 0
-        return self.items.pop(0)
+        return self.items.popleft()
 
     def is_empty(self):
         return len(self.items) == 0
@@ -64,6 +66,7 @@ class Node:
 class LinkedList:
     def __init__(self):
         self.head = None
+        self.tail = None
 
     # new comments go at the end so the order stays the same
     def insert_at_end(self, data):
@@ -71,12 +74,11 @@ class LinkedList:
 
         if self.head is None:
             self.head = new_node
+            self.tail = new_node
             return
 
-        current = self.head
-        while current.next is not None:
-            current = current.next
-        current.next = new_node
+        self.tail.next = new_node
+        self.tail = new_node
 
     def traverse(self):
         items = []
@@ -95,6 +97,8 @@ class LinkedList:
                     self.head = current.next
                 else:
                     previous.next = current.next
+                if current is self.tail:
+                    self.tail = previous
                 return True
             previous = current
             current = current.next
@@ -112,16 +116,14 @@ class Graph:
 
     def add_user(self, email):
         if email not in self.adj:
-            self.adj[email] = []
+            self.adj[email] = set()
 
     def add_friend(self, email1, email2):
         if email1 not in self.adj or email2 not in self.adj:
             return
 
-        if email2 not in self.adj[email1]:
-            self.adj[email1].append(email2)
-        if email1 not in self.adj[email2]:
-            self.adj[email2].append(email1)
+        self.adj[email1].add(email2)
+        self.adj[email2].add(email1)
 
     def are_friends(self, email1, email2):
         if email1 not in self.adj:
@@ -131,4 +133,4 @@ class Graph:
     def get_friends(self, email):
         if email not in self.adj:
             return []
-        return self.adj[email]
+        return list(self.adj[email])
