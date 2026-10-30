@@ -16,11 +16,11 @@
   <div class="z-app">
     <header id="zTopbar" class="z-topbar"></header>
     <div class="z-columns">
-      <main class="z-center flex flex-col overflow-hidden !pb-0 sm:!pb-0">
-        <div class="flex min-h-0 flex-1 overflow-hidden">
-          <div class="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-            <div class="flex items-center gap-3 border-b border-x-line px-3 py-2">
-              <a href="chats.html" class="rounded-full p-2 hover:bg-x-hover" aria-label="Back">
+      <main class="z-center z-chat">
+        <div class="z-chat-stage">
+          <section class="z-chat-room">
+            <div class="z-chat-head">
+              <a href="chats.html" class="rounded-lg p-2 hover:bg-x-hover" aria-label="Back">
                 <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
               </a>
               <div id="chatMark" class="size-10 shrink-0"></div>
@@ -28,30 +28,30 @@
                 <h1 id="chatName" class="truncate text-[15px] font-extrabold">Chat</h1>
                 <p id="chatMeta" class="truncate text-[13px] text-x-muted"></p>
               </div>
-              <button id="peopleToggle" type="button" class="rounded-full px-3 py-1.5 text-[15px] font-bold hover:bg-x-hover lg:hidden">People</button>
+              <button id="peopleToggle" type="button" class="z-chat-people-btn lg:hidden">People</button>
             </div>
-            <div id="peoplePanel" class="hidden max-h-96 overflow-y-auto border-b border-x-line lg:hidden"></div>
-            <div id="thread" class="min-h-0 flex-1 overflow-y-auto px-4 py-3"></div>
-            <p id="closed" class="hidden px-4 py-6 text-[15px] text-x-muted">You are no longer in this chat.</p>
-            <form id="composer" class="border-t border-x-line px-3 py-2 pb-20 sm:pb-2">
-              <div id="composeContext" class="mb-2 hidden items-start gap-2 rounded-2xl bg-x-chip px-3 py-2"></div>
+            <div id="peoplePanel" class="z-chat-people-mobile hidden lg:hidden"></div>
+            <div id="thread" class="z-chat-thread"></div>
+            <p id="closed" class="hidden border-t border-x-line px-4 py-4 text-[15px] text-x-muted">You are no longer in this chat.</p>
+            <form id="composer" class="z-chat-composer">
+              <div id="composeContext" class="mb-2 hidden items-start gap-2 rounded-lg bg-x-chip px-3 py-2"></div>
               <div class="flex items-end gap-2">
                 <input id="photo" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
-                <label id="photoLabel" for="photo" class="mb-1 inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full text-x-blue hover:bg-x-blue/10" aria-label="Add photo">
+                <label id="photoLabel" for="photo" class="mb-0.5 inline-flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-lg text-x-blue hover:bg-x-blue/10" aria-label="Add photo">
                   <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.3"/><path stroke-linecap="round" stroke-linejoin="round" d="m21 15.5-4.2-4.2L8 19"/></svg>
                 </label>
                 <div class="min-w-0 flex-1">
-                  <img id="preview" alt="" class="mb-2 hidden max-h-32 rounded-2xl border border-x-line object-cover">
-                  <input id="text" type="text" maxlength="1000" placeholder="Message" class="h-10 w-full rounded-full bg-x-chip px-4 text-[15px] outline-none placeholder:text-x-muted focus:bg-x-panel focus:ring-1 focus:ring-x-blue">
+                  <img id="preview" alt="" class="mb-2 hidden max-h-32 rounded-lg border border-x-line object-cover">
+                  <input id="text" type="text" maxlength="1000" placeholder="Message" class="z-chat-input">
                 </div>
-                <button id="send" type="submit" class="mb-1 text-[15px] font-bold text-x-blue disabled:text-x-blue/40" disabled>Send</button>
+                <button id="send" type="submit" class="z-chat-send" disabled>Send</button>
               </div>
               <p id="notice" class="mt-1 hidden px-12 text-[13px] text-x-danger" role="status"></p>
             </form>
-          </div>
-          <aside id="peopleAside" class="hidden w-[clamp(260px,28vw,340px)] shrink-0 flex-col overflow-hidden border-l border-x-line lg:flex">
-            <h2 class="px-4 pt-4 text-lg font-extrabold">People</h2>
-            <div id="peopleDesk" class="mt-2 min-h-0 flex-1 overflow-y-auto px-2 pb-3"></div>
+          </section>
+          <aside id="peopleAside" class="z-chat-people">
+            <h2 class="px-4 pt-4 pb-1 text-[17px] font-extrabold">People</h2>
+            <div id="peopleDesk" class="min-h-0 flex-1 overflow-y-auto pb-2"></div>
           </aside>
         </div>
       </main>
@@ -155,13 +155,13 @@ var params = new URLSearchParams(location.search);
     function bubble(message, showName) {
       if (message.system) {
         var note = document.createElement('p');
-        note.className = 'py-2 text-center text-[13px] text-x-muted';
+        note.className = 'z-chat-system';
         note.textContent = message.text;
         return note;
       }
       var row = document.createElement('div');
       row.id = 'message-' + message.id;
-      row.className = 'flex items-end gap-2 py-0.5 ' + (message.mine ? 'justify-end' : '');
+      row.className = 'z-chat-row flex items-end gap-2 ' + (message.mine ? 'justify-end' : '');
       if (!message.mine) {
         if (showName) row.appendChild(picture(message.photo, (message.name || '?').charAt(0), 'size-7 text-xs'));
         else {
@@ -183,8 +183,8 @@ var params = new URLSearchParams(location.search);
       line.className = 'flex items-end gap-1 ' + (message.mine ? 'flex-row-reverse' : '');
       var body = document.createElement('div');
       body.className = message.mine
-        ? 'rounded-3xl rounded-br-md bg-x-blue px-3 py-2 text-[15px] leading-5 break-words whitespace-pre-wrap text-white'
-        : 'rounded-3xl rounded-bl-md bg-x-chip px-3 py-2 text-[15px] leading-5 break-words whitespace-pre-wrap text-x-ink';
+        ? 'z-chat-bubble z-chat-bubble-mine'
+        : 'z-chat-bubble z-chat-bubble-other';
       body.title = messageClock(message.created_at);
       if (message.reply) {
         var quote = document.createElement('button');
@@ -480,6 +480,9 @@ var params = new URLSearchParams(location.search);
       var box = document.getElementById('thread');
       var follow = stick || nearBottom(box);
       box.innerHTML = '';
+      var spacer = document.createElement('div');
+      spacer.className = 'z-chat-spacer';
+      box.appendChild(spacer);
       var previous = '';
       messages.forEach(function (message) {
         var key = message.system ? '' : message.email;
@@ -522,26 +525,26 @@ var params = new URLSearchParams(location.search);
         },
       });
       var rename = document.createElement('form');
-      rename.className = 'flex flex-col gap-2 border-b border-x-line px-3 py-3';
+      rename.className = 'flex flex-col gap-2 border-b border-x-line px-4 py-3';
       var nameInput = document.createElement('input');
       nameInput.type = 'text';
       nameInput.maxLength = 50;
       nameInput.value = chat.name || '';
       nameInput.setAttribute('aria-label', 'Chat name');
-      nameInput.className = 'h-9 rounded-full bg-x-chip px-3 text-[15px] outline-none placeholder:text-x-muted focus:bg-x-panel focus:ring-1 focus:ring-x-blue';
+      nameInput.className = 'h-10 rounded-lg border border-transparent bg-x-chip px-3 text-[15px] font-bold outline-none placeholder:text-x-muted focus:border-x-blue focus:bg-x-panel focus:ring-1 focus:ring-x-blue';
       var photoRow = document.createElement('div');
-      photoRow.className = 'flex items-center gap-3';
+      photoRow.className = 'flex items-center justify-between gap-3';
       var photoInput = document.createElement('input');
       photoInput.type = 'file';
       photoInput.accept = 'image/jpeg,image/png,image/gif,image/webp';
       photoInput.className = 'sr-only';
       var photoLabel = document.createElement('label');
-      photoLabel.className = 'cursor-pointer text-[15px] font-bold text-x-blue';
+      photoLabel.className = 'cursor-pointer text-[13px] font-bold text-x-blue';
       photoLabel.textContent = 'Change photo';
       photoLabel.appendChild(photoInput);
       var save = document.createElement('button');
       save.type = 'submit';
-      save.className = 'text-[15px] font-bold text-x-blue';
+      save.className = 'h-8 rounded-lg bg-x-ink px-3 text-[13px] font-bold text-x-bg';
       save.textContent = 'Save';
       photoRow.appendChild(photoLabel);
       photoRow.appendChild(save);
@@ -583,9 +586,14 @@ var params = new URLSearchParams(location.search);
         });
       });
 
+      var membersTitle = document.createElement('p');
+      membersTitle.className = 'px-4 pt-3 pb-1 text-[13px] font-bold text-x-muted';
+      membersTitle.textContent = 'In this chat';
+      box.appendChild(membersTitle);
+
       (chat.members || []).forEach(function (person) {
         var row = document.createElement('div');
-        row.className = 'flex items-center gap-3 px-3 py-2';
+        row.className = 'mx-2 flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-x-hover';
         var link = document.createElement('a');
         link.href = profileHref(person.username, person.email);
         link.className = 'flex min-w-0 flex-1 items-center gap-3';
@@ -637,7 +645,7 @@ var params = new URLSearchParams(location.search);
 
       var leave = document.createElement('button');
       leave.type = 'button';
-      leave.className = 'mx-3 mt-2 mb-4 rounded-full border border-x-border px-4 py-1.5 text-[15px] font-bold hover:border-[#f4212e] hover:bg-[#f4212e]/10 hover:text-x-danger';
+      leave.className = 'z-chat-leave';
       leave.textContent = 'Leave chat';
       leave.addEventListener('click', function () {
         var alone = (chat.member_count || 0) <= 1;

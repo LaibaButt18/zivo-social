@@ -26,7 +26,7 @@
           <button type="submit" form="settingsForm" class="x-btn-blue h-9 px-4 text-sm">Save</button>
         </div>
 
-        <form id="settingsForm" class="pb-12">
+        <form id="settingsForm" class="z-card mt-4 pb-12">
           <div class="relative isolate">
             <div class="relative z-0 h-40 overflow-hidden bg-x-chip sm:h-52">
               <img id="coverImage" alt="" class="hidden h-full w-full object-cover">
@@ -34,10 +34,10 @@
               <label for="cover" id="coverLabel" class="absolute top-3 right-4 z-20 cursor-pointer rounded-lg bg-black/70 px-4 py-1.5 text-[15px] font-bold text-white hover:bg-black/80">Add cover</label>
             </div>
             <div class="pointer-events-none relative z-10 -mt-12 flex items-end justify-between px-4 sm:-mt-14">
-              <div id="preview" class="pointer-events-auto rounded-full bg-x-bg p-1 ring-2 ring-x-bg"></div>
+              <div id="preview" class="pointer-events-auto rounded-full bg-x-panel p-1 ring-2 ring-x-panel"></div>
               <div class="pointer-events-auto mb-2 text-right">
                 <input id="photo" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
-                <label for="photo" class="inline-flex cursor-pointer rounded-lg border border-x-border bg-x-bg px-4 py-1.5 text-[15px] font-bold hover:bg-x-hover">Edit photo</label>
+                <label for="photo" class="inline-flex cursor-pointer rounded-lg border border-x-border bg-x-panel px-4 py-1.5 text-[15px] font-bold hover:bg-x-hover">Edit photo</label>
                 <p id="photoName" class="mt-1 max-w-48 text-xs break-all text-x-muted"></p>
                 <div id="photoSizes" class="hidden"></div>
               </div>

@@ -21,7 +21,7 @@
     document.documentElement.setAttribute("data-theme", theme);
     document.documentElement.style.colorScheme = theme;
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", theme === "dark" ? "#0f1419" : "#f7f9f9");
+    if (meta) meta.setAttribute("content", theme === "dark" ? "#0f1419" : "#ffffff");
     var buttons = document.querySelectorAll("[data-theme-toggle]");
     for (var i = 0; i < buttons.length; i++) {
       var button = buttons[i];

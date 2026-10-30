@@ -24,7 +24,7 @@
         </a>
         <h1 id="headerName" class="min-w-0 truncate text-xl font-bold">Group</h1>
       </div>
-      <div id="groupBody"></div>
+      <div id="groupBody" class="z-card mt-4"></div>
       <div id="missing" class="hidden px-8 py-16">
         <h2 class="text-[31px] leading-9 font-extrabold">This group doesn’t exist</h2>
         <p class="mt-2 text-[15px] text-x-muted">It may have been deleted.</p>
@@ -703,7 +703,7 @@ var params = new URLSearchParams(location.search);
       var top = document.createElement('div');
       top.className = 'flex items-end justify-between';
       var mark = document.createElement('div');
-      mark.className = '-mt-12 overflow-hidden rounded-2xl border-4 border-x-bg bg-x-bg sm:-mt-16';
+      mark.className = '-mt-12 overflow-hidden rounded-2xl border-4 border-x-panel bg-x-panel sm:-mt-16';
       mark.appendChild(picture(group.photo, (group.name || 'G').charAt(0), 'size-28 text-3xl sm:size-32', false));
       top.appendChild(mark);
       var actions = document.createElement('div');

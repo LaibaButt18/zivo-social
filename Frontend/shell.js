@@ -77,7 +77,7 @@
       if (key === "notifications") a.dataset.nav = "notifications";
       if (key === nav) a.setAttribute("aria-current", "page");
       a.setAttribute("aria-label", label);
-      a.innerHTML = icon + "<span>" + label + "</span>";
+      a.innerHTML = '<span class="z-top-glyph">' + icon + "</span><span>" + label + "</span>";
       return a;
     }
 
@@ -160,7 +160,7 @@
       "</div>" +
       '<a href="profile.html" class="x-btn-blue mt-3 h-9 w-full text-[14px]">My Profile</a>' +
       "</div></section>" +
-      '<section class="z-card mt-3" aria-labelledby="people-heading">' +
+      '<section class="z-card mt-4" aria-labelledby="people-heading">' +
       '<h2 id="people-heading" class="px-4 pt-3 pb-1 text-base font-extrabold">Who to follow</h2>' +
       '<div id="people"></div>' +
       "</section>" +
@@ -174,7 +174,7 @@
       '<p class="mt-1 text-[14px] leading-5 text-x-muted">A blue star on your profile and posts.</p>' +
       '<a href="premium.html" class="x-btn-blue mt-3 h-9 w-full text-[14px]">Subscribe</a>' +
       "</section>" +
-      '<section class="z-card mt-3" aria-labelledby="trends-heading">' +
+      '<section class="z-card mt-4" aria-labelledby="trends-heading">' +
       '<h2 id="trends-heading" class="px-4 pt-3 pb-1 text-base font-extrabold">Trend for you</h2>' +
       '<div id="trends" class="px-4 pb-3"></div>' +
       "</section>";
@@ -198,7 +198,7 @@
       a.setAttribute("aria-label", item[2]);
       if (item[0] === "notifications") a.dataset.nav = "notifications";
       if (item[0] === nav) a.setAttribute("aria-current", "page");
-      a.innerHTML = item[3];
+      a.innerHTML = '<span class="z-top-glyph">' + item[3] + "</span>";
       root.appendChild(a);
     });
   }

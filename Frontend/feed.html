@@ -19,26 +19,20 @@
       <aside id="zLeft" class="z-rail z-rail-left"></aside>
 
       <main class="z-center">
-        <div class="sticky top-0 z-20 border-b border-x-line bg-x-bg/90 backdrop-blur-md">
-          <div class="flex items-center px-4 py-3 sm:hidden">
-            <span class="inline-flex items-center gap-2">
-              <img src="./assets/logo-mark.svg" alt="" class="size-7">
-              <span class="text-[17px] font-extrabold tracking-[-0.03em]">Zivo</span>
-            </span>
-          </div>
+        <div class="sticky top-0 z-20 bg-x-bg pb-4">
           <div class="flex">
-            <button id="tabForYou" type="button" class="relative flex-1 py-3.5 text-[15px] font-bold hover:bg-x-hover">
+            <button id="tabForYou" type="button" class="relative flex-1 py-3 text-[15px] font-bold hover:bg-x-hover">
               For you
               <span id="forYouBar" class="absolute bottom-0 left-1/2 h-1 w-14 -translate-x-1/2 rounded-full bg-x-blue"></span>
             </button>
-            <button id="tabFollowing" type="button" class="relative flex-1 py-3.5 text-[15px] font-medium text-x-muted hover:bg-x-hover">
+            <button id="tabFollowing" type="button" class="relative flex-1 py-3 text-[15px] font-medium text-x-muted hover:bg-x-hover">
               Following
               <span id="followingBar" class="absolute bottom-0 left-1/2 hidden h-1 w-16 -translate-x-1/2 rounded-full bg-x-blue"></span>
             </button>
           </div>
         </div>
 
-        <form id="postForm" class="z-card mx-3 mt-3 p-4 sm:mx-4">
+        <form id="postForm" class="z-card p-4">
           <div class="flex gap-3">
             <div id="composerPhoto" class="size-10 shrink-0"></div>
             <div class="min-w-0 flex-1">
@@ -56,8 +50,8 @@
           </div>
         </form>
 
-        <p id="resultsLabel" class="mx-3 mt-3 hidden px-1 text-[15px] text-x-muted sm:mx-4"></p>
-        <div id="posts" class="mx-3 mt-3 space-y-3 pb-4 sm:mx-4"></div>
+        <p id="resultsLabel" class="mt-3 hidden px-1 text-[15px] text-x-muted"></p>
+        <div id="posts" class="z-stack mt-4 pb-1"></div>
       </main>
 
       <aside id="zRight" class="z-rail z-rail-right"></aside>

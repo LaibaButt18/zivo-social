@@ -623,11 +623,14 @@ function refreshNotifyBadge() {
     var count = result.data.unread || 0;
     links.forEach(function (link) {
       var badge = link.querySelector("[data-notify-count]");
+      var host = link.querySelector(".z-top-glyph") || link;
       if (!badge) {
         badge = document.createElement("span");
         badge.setAttribute("data-notify-count", "");
         badge.className = "notify-count";
-        link.appendChild(badge);
+        host.appendChild(badge);
+      } else if (badge.parentNode !== host) {
+        host.appendChild(badge);
       }
       if (count > 0) {
         badge.textContent = count > 9 ? "9+" : String(count);
