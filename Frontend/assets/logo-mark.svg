@@ -1,6 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Zivo">
-  <rect width="32" height="32" rx="8" fill="#0F1419"/>
-  <g transform="translate(6.858,25.800) scale(0.01315,-0.01315)" fill="#FFFFFF">
-    <path d="M109 0V202L688 1000Q748 1083 821.5 1165.5Q895 1248 970 1330L994 1216Q891 1206 787.5 1204.0Q684 1202 580 1202H108V1490H1281V1287L713 504Q650 418 573.5 332.0Q497 246 419 160L395 274Q506 284 615.5 286.0Q725 288 835 288H1282V0Z"/>
-  </g>
+  <title>Zivo</title>
+  <rect width="32" height="32" rx="6" fill="#1d9bf0"/>
+  <path d="M8.6 10.2h14.8L8.6 21.8h14.8" fill="none" stroke="#fff" stroke-width="3.15" stroke-linecap="square" stroke-linejoin="round"/>
 </svg>

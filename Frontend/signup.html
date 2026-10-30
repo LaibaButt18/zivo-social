@@ -2,20 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script src="./theme.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Join | Zivo</title>
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#0f1419">
   <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./dist/output.css">
 </head>
-<body class="x-page">
+<body class="x-page z-shell">
   <div class="mx-auto flex min-h-svh w-full max-w-[600px] flex-col px-8 py-6 sm:px-16">
-    <a href="homepage.html" class="mb-8 inline-flex w-fit rounded-xl p-1 hover:bg-black/5" aria-label="Zivo">
-      <img src="./assets/logo.svg" alt="" class="h-8 w-auto">
-    </a>
+    <div class="mb-8 flex items-center justify-between" data-theme-host>
+      <a href="homepage.html" class="inline-flex w-fit items-center gap-2.5 rounded-xl p-1 hover:bg-x-hover" aria-label="Zivo">
+        <img src="./assets/logo-mark.svg" alt="" class="size-8">
+        <span class="text-[22px] font-extrabold leading-none tracking-[-0.03em]">Zivo</span>
+      </a>
+    </div>
     <h1 class="text-[31px] leading-9 font-extrabold">Create your account</h1>
     <form id="signupForm" class="mt-8 space-y-5">
       <label class="block">
@@ -45,6 +49,7 @@
   </div>
   <script src="./api.js"></script>
   <script>
+    requireGuest();
     document.getElementById('signupForm').addEventListener('submit', function (e) {
       e.preventDefault();
       const notice = document.getElementById('notice');

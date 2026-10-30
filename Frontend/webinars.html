@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="./theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Webinars | Zivo</title>
+  <meta name="theme-color" content="#0f1419">
+  <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="x-page z-shell app-lock" data-nav="webinars">
+  <div class="z-app">
+    <header id="zTopbar" class="z-topbar"></header>
+    <div class="z-columns">
+      <aside id="zLeft" class="z-rail z-rail-left"></aside>
+      <main class="z-center">
+      <div class="sticky top-0 z-20 border-b border-x-line bg-x-bg/90 px-4 py-3 backdrop-blur-md">
+        <div class="flex items-center justify-between gap-3">
+          <h1 class="text-xl font-extrabold">Webinars</h1>
+          <button id="newWebinar" type="button" class="x-btn-blue h-9 px-4 text-[15px]">Host</button>
+        </div>
+        <label class="mt-3 block">
+          <span class="sr-only">Search webinars</span>
+          <input id="webinarSearch" type="search" placeholder="Search webinars" class="h-10 w-full rounded-full border border-transparent bg-x-chip px-4 text-[15px] outline-none placeholder:text-x-muted focus:border-x-blue focus:bg-x-panel">
+        </label>
+      </div>
+
+      <form id="createForm" class="z-list mt-4 hidden px-4 py-4">
+        <h2 class="text-[17px] font-extrabold">Host a webinar</h2>
+        <p class="mt-1 text-[15px] leading-5 text-x-muted">You present. Everyone else joins to listen, up to 15 people.</p>
+        <label class="mt-4 block">
+          <span class="mb-1.5 block text-[13px] text-x-muted">Title</span>
+          <input id="webinarTitle" type="text" maxlength="80" class="x-input" placeholder="What is this webinar about?">
+        </label>
+        <label class="mt-4 block">
+          <span class="mb-1.5 block text-[13px] text-x-muted">Description</span>
+          <textarea id="webinarDescription" rows="3" maxlength="300" class="x-input h-auto py-3" placeholder="Optional details"></textarea>
+        </label>
+        <label class="mt-4 block">
+          <span class="mb-1.5 block text-[13px] text-x-muted">Start time</span>
+          <input id="webinarWhen" type="datetime-local" class="x-input">
+        </label>
+        <label class="mt-4 block">
+          <span class="mb-1.5 block text-[13px] text-x-muted">Who can find it</span>
+          <select id="webinarVisibility" class="x-input">
+            <option value="public">Public</option>
+            <option value="unlisted">Unlisted, link only</option>
+          </select>
+        </label>
+        <div class="mt-4" id="invitePicker"></div>
+        <div class="mt-4 flex items-center gap-3">
+          <input id="webinarPhoto" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
+          <label for="webinarPhoto" class="inline-flex cursor-pointer rounded-full border border-x-border px-4 py-1.5 text-[15px] font-bold hover:bg-x-hover">Add cover</label>
+          <span id="webinarPhotoName" class="min-w-0 truncate text-[13px] text-x-muted"></span>
+        </div>
+        <img id="webinarPhotoPreview" alt="" class="mt-3 hidden h-32 w-full rounded-2xl border border-x-line object-cover">
+        <div class="mt-4 flex items-center gap-2">
+          <button id="createSubmit" type="submit" class="x-btn-blue h-9 px-4 text-[15px]">Create</button>
+          <button id="createCancel" type="button" class="rounded-full px-4 py-1.5 text-[15px] font-bold text-x-muted hover:bg-x-hover">Cancel</button>
+        </div>
+        <p id="createNotice" class="mt-3 hidden text-[13px] text-x-danger" role="status"></p>
+      </form>
+
+      <div class="z-list mt-4">
+      <section class="border-b border-x-line">
+        <h2 class="px-4 pt-4 pb-2 text-[17px] font-extrabold">Live</h2>
+        <div id="live"></div>
+      </section>
+      <section class="border-b border-x-line">
+        <h2 class="px-4 pt-4 pb-2 text-[17px] font-extrabold">Upcoming</h2>
+        <div id="upcoming"></div>
+      </section>
+      <section class="border-b border-x-line">
+        <h2 class="px-4 pt-4 pb-2 text-[17px] font-extrabold">Yours</h2>
+        <div id="mine"></div>
+      </section>
+      <section class="border-b border-x-line">
+        <h2 class="px-4 pt-4 pb-2 text-[17px] font-extrabold">Invited</h2>
+        <div id="invited"></div>
+      </section>
+      <section>
+        <h2 class="px-4 pt-4 pb-2 text-[17px] font-extrabold">Ended</h2>
+        <div id="ended"></div>
+      </section>
+      </div>
+    </main>
+      <aside id="zRight" class="z-rail z-rail-right"></aside>
+    </div>
+  </div>
+
+  <nav id="zBottom" class="z-bottom" aria-label="Mobile"></nav>
+<script src="./api.js"></script>
+  <script src="./image-file.js"></script>
+  <script src="./shell.js"></script>
+  <script>
+    
+    var shell = initShell({ nav: 'webinars' });
+var lists = { live: [], upcoming: [], mine: [], invited: [], ended: [] };
+    var query = "";
+    var invitePicker = null;
+
+    function picture(src, letter, sizeClass, round) {
+      var shape = round === false ? "rounded-2xl" : "rounded-full";
+      if (src) {
+        var img = document.createElement("img");
+        img.src = API + src;
+        img.alt = "";
+        img.className = "shrink-0 object-cover " + shape + " " + sizeClass;
+        return img;
+      }
+      var fallback = document.createElement("span");
+      fallback.className = "flex shrink-0 items-center justify-center bg-x-blue text-sm font-bold text-white " + shape + " " + sizeClass;
+      fallback.textContent = (letter || "W").toUpperCase();
+      return fallback;
+    }
+
+    function imageProblem(file) {
+      return imageFileProblem(file);
+    }
+
+    function showCreateNotice(text) {
+      var notice = document.getElementById("createNotice");
+      if (!text) {
+        notice.classList.add("hidden");
+        notice.textContent = "";
+        return;
+      }
+      notice.classList.remove("hidden");
+      notice.textContent = text;
+    }
+
+    function whenText(unix) {
+      if (!unix) return "No set time";
+      var date = new Date(unix * 1000);
+      if (isNaN(date.getTime())) return "No set time";
+      return date.toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+    }
+
+    function statusWord(item) {
+      if (item.status === "live") return "Live";
+      if (item.status === "ended") return "Ended";
+      return "Upcoming";
+    }
+
+    function matches(item) {
+      if (!query) return true;
+      var title = (item.title || "").toLowerCase();
+      var host = item.host && item.host.name ? item.host.name.toLowerCase() : "";
+      return title.indexOf(query) !== -1 || host.indexOf(query) !== -1;
+    }
+
+    function paintList(id, rows, emptyText) {
+      var box = document.getElementById(id);
+      box.innerHTML = "";
+      var visible = (rows || []).filter(matches);
+      if (!visible.length) {
+        var empty = document.createElement("p");
+        empty.className = "px-4 pb-4 text-[15px] text-x-muted";
+        empty.textContent = emptyText;
+        box.appendChild(empty);
+        return;
+      }
+      visible.forEach(function (item) {
+        var link = document.createElement("a");
+        link.href = "webinar.html?id=" + encodeURIComponent(item.id);
+        link.className = "flex items-center gap-3 px-4 py-3 hover:bg-x-hover";
+        link.appendChild(picture(item.cover, (item.title || "W").charAt(0), "size-12", false));
+        var copy = document.createElement("div");
+        copy.className = "min-w-0 flex-1";
+        var name = document.createElement("p");
+        name.className = "truncate text-[15px] font-bold";
+        name.textContent = item.title || "Webinar";
+        var meta = document.createElement("p");
+        meta.className = "truncate text-[15px] text-x-muted";
+        var host = item.host && item.host.name ? item.host.name : "Someone";
+        var line = statusWord(item) + " · " + host;
+        if (item.status === "live") line += " · " + (item.listener_count || 0) + " here";
+        else if (item.starts_at) line += " · " + whenText(item.starts_at);
+        if (item.visibility === "unlisted") line += " · Unlisted";
+        meta.textContent = line;
+        copy.appendChild(name);
+        copy.appendChild(meta);
+        link.appendChild(copy);
+        box.appendChild(link);
+      });
+    }
+
+    function paint() {
+      paintList("live", lists.live, query ? "No live webinars match that search." : "Nothing is live right now.");
+      paintList("upcoming", lists.upcoming, query ? "No upcoming webinars match that search." : "No public webinars are scheduled.");
+      paintList("mine", lists.mine, query ? "None of yours match that search." : "You have not hosted a webinar yet.");
+      paintList("invited", lists.invited, query ? "No invites match that search." : "You have no invites.");
+      paintList("ended", lists.ended, query ? "No ended webinars match that search." : "No public webinars have ended.");
+    }
+
+    function loadWebinars() {
+      return apiFetch("/webinars").then(function (result) {
+        if (result.status === 401) return;
+        if (!result.ok) return;
+        lists.live = result.data.live || [];
+        lists.upcoming = result.data.upcoming || [];
+        lists.mine = result.data.mine || [];
+        lists.invited = result.data.invited || [];
+        lists.ended = result.data.ended || [];
+        paint();
+      });
+    }
+
+    function resetCreate() {
+      document.getElementById("webinarTitle").value = "";
+      document.getElementById("webinarDescription").value = "";
+      document.getElementById("webinarWhen").value = "";
+      document.getElementById("webinarVisibility").value = "public";
+      document.getElementById("webinarPhoto").value = "";
+      document.getElementById("webinarPhotoName").textContent = "";
+      var preview = document.getElementById("webinarPhotoPreview");
+      preview.classList.add("hidden");
+      preview.removeAttribute("src");
+      if (invitePicker) invitePicker.clear();
+      showCreateNotice("");
+    }
+
+    if (!requireAuth()) {
+      // redirected to sign in
+    } else {
+      apiFetch("/me").then(function (result) {
+        if (!result.ok) return;
+        shell.paintProfile(result.data);
+        if (result.data.username) document.getElementById("handle").textContent = "@" + result.data.username;
+        invitePicker = mountUserSearch(document.getElementById("invitePicker"), {
+          placeholder: "Invite by name",
+          multiple: true,
+          max: 50,
+          maxMessage: "You can invite 50 people at most.",
+          inset: false,
+        });
+        return loadWebinars();
+      }).catch(function () {
+        window.location.href = "loginpage.html";
+      });
+    }
+
+    document.getElementById("webinarSearch").addEventListener("input", function () {
+      query = this.value.trim().toLowerCase();
+      paint();
+    });
+
+    document.getElementById("newWebinar").addEventListener("click", function () {
+      var form = document.getElementById("createForm");
+      form.classList.toggle("hidden");
+      if (!form.classList.contains("hidden")) document.getElementById("webinarTitle").focus();
+    });
+
+    document.getElementById("createCancel").addEventListener("click", function () {
+      document.getElementById("createForm").classList.add("hidden");
+      resetCreate();
+    });
+
+    document.getElementById("webinarPhoto").addEventListener("change", function () {
+      var file = this.files[0];
+      var preview = document.getElementById("webinarPhotoPreview");
+      document.getElementById("webinarPhotoName").textContent = file ? file.name : "";
+      var problem = imageProblem(file);
+      if (problem) {
+        this.value = "";
+        document.getElementById("webinarPhotoName").textContent = "";
+        preview.classList.add("hidden");
+        preview.removeAttribute("src");
+        showCreateNotice(problem);
+        return;
+      }
+      showCreateNotice("");
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.classList.remove("hidden");
+      } else {
+        preview.classList.add("hidden");
+        preview.removeAttribute("src");
+      }
+    });
+
+    document.getElementById("createForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+      var title = document.getElementById("webinarTitle").value.trim();
+      var description = document.getElementById("webinarDescription").value.trim();
+      var file = document.getElementById("webinarPhoto").files[0];
+      if (!title) {
+        showCreateNotice("Webinar title cannot be empty.");
+        return;
+      }
+      if (title.length > 80) {
+        showCreateNotice("Webinar title can be 80 characters at most.");
+        return;
+      }
+      if (description.length > 300) {
+        showCreateNotice("Description can be 300 characters at most.");
+        return;
+      }
+      var problem = imageProblem(file);
+      if (problem) {
+        showCreateNotice(problem);
+        return;
+      }
+      var starts = 0;
+      var rawWhen = document.getElementById("webinarWhen").value;
+      if (rawWhen) {
+        var parsed = new Date(rawWhen).getTime();
+        if (isNaN(parsed)) {
+          showCreateNotice("Choose a valid start time.");
+          return;
+        }
+        starts = Math.floor(parsed / 1000);
+      }
+      var body = new FormData();
+      body.append("title", title);
+      body.append("description", description);
+      body.append("visibility", document.getElementById("webinarVisibility").value);
+      body.append("starts_at", String(starts));
+      var emails = invitePicker ? invitePicker.getSelected().map(function (person) { return person.email; }) : [];
+      body.append("invites", emails.join(","));
+      if (file) body.append("photo", file);
+      var button = document.getElementById("createSubmit");
+      button.disabled = true;
+      apiForm("/webinars", body).then(function (result) {
+        button.disabled = false;
+        if (!result.ok) {
+          showCreateNotice(result.data.message || "Could not create that webinar.");
+          return;
+        }
+        window.location.href = "webinar.html?id=" + encodeURIComponent(result.data.id);
+      }).catch(function () {
+        button.disabled = false;
+        showCreateNotice("Cannot reach the server.");
+      });
+    });
+</script>
+</body>
+</html>

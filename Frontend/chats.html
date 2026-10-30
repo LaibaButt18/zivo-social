@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="./theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chats | Zivo</title>
+  <meta name="theme-color" content="#0f1419">
+  <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="x-page z-shell app-lock" data-nav="chats">
+  <div class="z-app">
+    <header id="zTopbar" class="z-topbar"></header>
+    <div class="z-columns">
+      <aside id="zLeft" class="z-rail z-rail-left"></aside>
+      <main class="z-center">
+      <div class="sticky top-0 z-20 border-b border-x-line bg-x-bg/90 px-4 py-3 backdrop-blur-md">
+        <div class="flex items-center justify-between gap-3">
+          <h1 class="text-xl font-extrabold">Chats</h1>
+          <button id="newChat" type="button" class="x-btn-blue h-9 px-4 text-[15px]">New chat</button>
+        </div>
+      </div>
+
+      <form id="createForm" class="z-list mt-4 hidden px-4 py-4">
+        <h2 class="text-[17px] font-extrabold">New group chat</h2>
+        <p class="mt-1 text-[15px] leading-5 text-x-muted">Only people in the chat can read the messages.</p>
+        <label class="mt-4 block">
+          <span class="mb-1.5 block text-[13px] text-x-muted">Name</span>
+          <input id="chatName" type="text" maxlength="50" class="x-input" placeholder="Group name">
+        </label>
+        <div class="mt-4">
+          <span class="mb-1.5 block text-[13px] text-x-muted">People</span>
+          <div id="chatPeoplePicker"></div>
+        </div>
+        <div class="mt-4 flex items-center gap-3">
+          <input id="chatPhoto" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
+          <label for="chatPhoto" class="inline-flex cursor-pointer rounded-full border border-x-border px-4 py-1.5 text-[15px] font-bold hover:bg-x-hover">Add photo</label>
+          <span id="chatPhotoName" class="min-w-0 truncate text-[13px] text-x-muted"></span>
+        </div>
+        <div class="mt-4 flex items-center gap-2">
+          <button id="createSubmit" type="submit" class="x-btn-blue h-9 px-4 text-[15px]">Create</button>
+          <button id="createCancel" type="button" class="rounded-full px-4 py-1.5 text-[15px] font-bold text-x-muted hover:bg-x-hover">Cancel</button>
+        </div>
+        <p id="createNotice" class="mt-3 hidden text-[13px] text-x-danger" role="status"></p>
+      </form>
+
+      <div id="chats" class="z-list mt-4"></div>
+    </main>
+      <aside id="zRight" class="z-rail z-rail-right"></aside>
+    </div>
+  </div>
+
+  <nav id="zBottom" class="z-bottom" aria-label="Mobile"></nav>
+<script src="./api.js"></script>
+  <script src="./image-file.js"></script>
+  <script src="./shell.js"></script>
+  <script>
+    
+    var shell = initShell({ nav: 'chats' });
+var chats = [];
+    var peoplePicker = mountUserSearch(document.getElementById('chatPeoplePicker'), {
+      multiple: true,
+      max: 31,
+      inset: false,
+      placeholder: 'Search by name or username',
+    });
+
+    function picture(src, letter, sizeClass) {
+      if (src) {
+        var img = document.createElement('img');
+        img.src = API + src;
+        img.alt = '';
+        img.className = 'shrink-0 rounded-full object-cover ' + sizeClass;
+        return img;
+      }
+      var fallback = document.createElement('span');
+      fallback.className = 'flex shrink-0 items-center justify-center rounded-full bg-x-blue text-sm font-bold text-white ' + sizeClass;
+      fallback.textContent = (letter || 'C').toUpperCase();
+      return fallback;
+    }
+
+    function imageProblem(file) {
+      return imageFileProblem(file);
+    }
+
+    function showNotice(text) {
+      var notice = document.getElementById('createNotice');
+      if (!text) {
+        notice.classList.add('hidden');
+        notice.textContent = '';
+        return;
+      }
+      notice.classList.remove('hidden');
+      notice.textContent = text;
+    }
+
+    function paint() {
+      var box = document.getElementById('chats');
+      box.innerHTML = '';
+      if (!chats.length) {
+        var empty = document.createElement('div');
+        empty.className = 'px-8 py-12';
+        var title = document.createElement('h2');
+        title.className = 'text-[31px] leading-9 font-extrabold';
+        title.textContent = 'No chats yet';
+        var copy = document.createElement('p');
+        copy.className = 'mt-2 max-w-sm text-[15px] leading-5 text-x-muted';
+        copy.textContent = 'Start a group chat and message the people in it.';
+        empty.appendChild(title);
+        empty.appendChild(copy);
+        box.appendChild(empty);
+        return;
+      }
+      chats.forEach(function (chat) {
+        var link = document.createElement('a');
+        link.href = 'chat.html?id=' + encodeURIComponent(chat.id);
+        link.className = 'flex items-center gap-3 border-b border-x-line px-4 py-3 hover:bg-x-hover';
+        link.appendChild(picture(chat.photo, (chat.name || 'C').charAt(0), 'size-14'));
+        var copy = document.createElement('div');
+        copy.className = 'min-w-0 flex-1';
+        var row = document.createElement('div');
+        row.className = 'flex items-center gap-2';
+        var name = document.createElement('p');
+        name.className = 'min-w-0 flex-1 truncate text-[15px] ' + (chat.unread ? 'font-extrabold' : 'font-bold');
+        name.textContent = chat.name;
+        row.appendChild(name);
+        if (chat.unread) {
+          var badge = document.createElement('span');
+          badge.className = 'inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-x-blue px-1.5 text-[12px] font-bold text-white';
+          badge.textContent = String(chat.unread);
+          row.appendChild(badge);
+        }
+        var preview = document.createElement('p');
+        preview.className = 'truncate text-[15px] ' + (chat.unread ? 'font-bold text-x-ink' : 'text-x-muted');
+        var last = chat.last_message;
+        if (!last) preview.textContent = chat.member_count + (chat.member_count === 1 ? ' person' : ' people');
+        else if (last.system) preview.textContent = last.preview;
+        else preview.textContent = (last.mine ? 'You: ' : last.name + ': ') + last.preview;
+        copy.appendChild(row);
+        copy.appendChild(preview);
+        link.appendChild(copy);
+        box.appendChild(link);
+      });
+    }
+
+    function loadChats() {
+      return apiFetch('/chats').then(function (result) {
+        if (result.status === 401) return;
+        chats = Array.isArray(result.data) ? result.data : [];
+        paint();
+      });
+    }
+
+    if (!requireAuth()) {
+      // redirected to sign in
+    } else {
+      apiFetch('/me').then(function (result) {
+        if (!result.ok) return;
+        shell.paintProfile(result.data);
+        if (result.data.username) document.getElementById('handle').textContent = '@' + result.data.username;
+        return loadChats();
+      }).catch(function () {
+        window.location.href = 'loginpage.html';
+      });
+    }
+
+    document.getElementById('newChat').addEventListener('click', function () {
+      var form = document.getElementById('createForm');
+      form.classList.toggle('hidden');
+      if (!form.classList.contains('hidden')) document.getElementById('chatName').focus();
+    });
+    document.getElementById('createCancel').addEventListener('click', function () {
+      document.getElementById('createForm').classList.add('hidden');
+      document.getElementById('chatName').value = '';
+      peoplePicker.clear();
+      document.getElementById('chatPhoto').value = '';
+      document.getElementById('chatPhotoName').textContent = '';
+      showNotice('');
+    });
+    document.getElementById('chatPhoto').addEventListener('change', function () {
+      var file = this.files[0];
+      var problem = imageProblem(file);
+      if (problem) {
+        this.value = '';
+        document.getElementById('chatPhotoName').textContent = '';
+        showNotice(problem);
+        return;
+      }
+      showNotice('');
+      document.getElementById('chatPhotoName').textContent = file ? file.name : '';
+    });
+    document.getElementById('createForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      var name = document.getElementById('chatName').value.trim();
+      var people = peoplePicker.getSelected().map(function (person) { return person.email; }).join(', ');
+      var file = document.getElementById('chatPhoto').files[0];
+      if (!name) {
+        showNotice('Chat name cannot be empty.');
+        return;
+      }
+      if (name.length > 50) {
+        showNotice('Chat name can be 50 characters at most.');
+        return;
+      }
+      var problem = imageProblem(file);
+      if (problem) {
+        showNotice(problem);
+        return;
+      }
+      var body = new FormData();
+      body.append('name', name);
+      body.append('members', people);
+      if (file) body.append('photo', file);
+      var button = document.getElementById('createSubmit');
+      button.disabled = true;
+      apiForm('/chats', body).then(function (result) {
+        button.disabled = false;
+        if (!result.ok) {
+          showNotice(result.data.message || 'Could not create that chat.');
+          return;
+        }
+        window.location.href = 'chat.html?id=' + encodeURIComponent(result.data.id);
+      }).catch(function () {
+        button.disabled = false;
+        showNotice('Cannot reach the server.');
+      });
+    });
+</script>
+</body>
+</html>

@@ -2,123 +2,83 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script src="./theme.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile | Zivo</title>
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#0f1419">
   <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./dist/output.css">
 </head>
-<body class="x-page app-lock">
-  <div class="flex h-svh w-full min-w-0 max-w-full overflow-hidden">
-    <header class="sticky top-0 hidden h-svh w-[64px] min-w-0 shrink-0 flex-col overflow-x-hidden px-1 sm:flex lg:w-[220px] lg:px-2">
-      <div class="flex flex-col items-start">
-        <a href="feed.html" class="inline-flex rounded-xl p-2 hover:bg-black/10" aria-label="Zivo">
-          <img src="./assets/logo-mark.svg" alt="" class="size-7 lg:hidden">
-          <img src="./assets/logo.svg" alt="" class="hidden h-7 w-auto lg:block">
-        </a>
-        <nav class="mt-1 flex flex-col gap-1">
-          <a href="feed.html" class="x-nav">
-            <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linejoin="round" d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg>
-            <span class="hidden text-[15px] lg:inline">Home</span>
+<body class="x-page z-shell app-lock" data-nav="settings">
+  <div class="z-app">
+    <header id="zTopbar" class="z-topbar"></header>
+    <div class="z-columns">
+      <aside id="zLeft" class="z-rail z-rail-left"></aside>
+      <main class="z-center">
+        <div class="sticky top-0 z-30 flex items-center gap-4 border-b border-x-line bg-x-bg px-3 py-2">
+          <a href="profile.html" class="rounded-lg p-2 hover:bg-x-hover" aria-label="Back">
+            <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           </a>
-          <a href="profile.html" class="x-nav font-bold" aria-current="page">
-            <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><circle cx="12" cy="8" r="3.4" fill="currentColor"/><path fill="currentColor" d="M5 19.6c1.6-3 4.1-4.5 7-4.5s5.4 1.5 7 4.5c.2.4 0 .9-.5.9H5.5c-.5 0-.7-.5-.5-.9z"/></svg>
-            <span class="hidden text-[15px] lg:inline">Profile</span>
-          </a>
-        </nav>
-        <a href="feed.html#compose" class="x-btn-blue mt-2 size-11 lg:h-9 lg:w-[156px]" aria-label="Post">
-          <svg viewBox="0 0 24 24" class="size-6 lg:hidden" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
-          <span class="hidden text-[15px] lg:inline">Post</span>
-        </a>
-      </div>
-
-      <div class="relative mt-auto mb-3">
-        <button id="accountToggle" type="button" class="flex w-full items-center gap-2 rounded-full p-2 text-left hover:bg-black/10">
-          <div id="navPhoto" class="size-10 shrink-0"></div>
-          <span class="hidden min-w-0 flex-1 lg:block">
-            <span id="navName" class="block truncate text-[15px] font-bold">Account</span>
-            <span id="navHandle" class="block truncate text-[15px] text-x-muted"></span>
-          </span>
-          <svg viewBox="0 0 24 24" class="hidden size-5 shrink-0 lg:block" aria-hidden="true"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></svg>
-        </button>
-        <div id="accountPopover" class="menu-pop absolute bottom-full left-0 z-30 mb-2 hidden w-[260px] overflow-hidden rounded-2xl bg-white py-2">
-          <a href="profile.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">View profile</a>
-          <button id="logout" type="button" class="w-full px-4 py-3 text-left text-[15px] font-bold hover:bg-x-hover">Log out</button>
+          <h1 class="flex-1 text-xl font-bold">Edit profile</h1>
+          <button type="submit" form="settingsForm" class="x-btn-blue h-9 px-4 text-sm">Save</button>
         </div>
-      </div>
-    </header>
 
-    <main class="h-svh min-w-0 flex-1 overflow-y-auto overscroll-none border-x-line pb-20 sm:border-x sm:pb-12">
-      <div class="sticky top-0 z-20 flex items-center gap-6 border-b border-x-line bg-white/85 px-3 py-2 backdrop-blur-md">
-        <a href="profile.html" class="rounded-full p-2 hover:bg-black/10" aria-label="Back">
-          <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        </a>
-        <h1 class="flex-1 text-xl font-bold">Edit profile</h1>
-        <button type="submit" form="settingsForm" class="rounded-full bg-x-ink px-4 py-1.5 text-sm font-bold text-white hover:bg-[#272c30]">Save</button>
-      </div>
-
-      <form id="settingsForm">
-        <div class="relative h-40 overflow-hidden bg-[#cfd9de] sm:h-56">
-          <img id="coverImage" alt="" class="hidden h-full w-full object-cover">
-          <input id="cover" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
-          <label for="cover" id="coverLabel" class="absolute right-4 bottom-4 cursor-pointer rounded-full bg-black/70 px-4 py-1.5 text-[15px] font-bold text-white hover:bg-black/80">Add cover</label>
-        </div>
-        <div class="px-4 pb-12">
-          <div class="-mt-12 flex items-end justify-between sm:-mt-16">
-            <div id="preview" class="rounded-full bg-white p-1"></div>
-            <div class="mb-3 text-right">
-              <input id="photo" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
-              <label for="photo" class="inline-flex cursor-pointer rounded-full border border-x-border px-4 py-1.5 text-[15px] font-bold hover:bg-x-hover">Edit photo</label>
-              <p id="photoName" class="mt-1 max-w-48 text-xs break-all text-x-muted"></p>
+        <form id="settingsForm" class="z-card mt-4 pb-12">
+          <div class="relative isolate">
+            <div class="relative z-0 h-40 overflow-hidden bg-x-chip sm:h-52">
+              <img id="coverImage" alt="" class="hidden h-full w-full object-cover">
+              <input id="cover" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
+              <label for="cover" id="coverLabel" class="absolute top-3 right-4 z-20 cursor-pointer rounded-lg bg-black/70 px-4 py-1.5 text-[15px] font-bold text-white hover:bg-black/80">Add cover</label>
+            </div>
+            <div class="pointer-events-none relative z-10 -mt-12 flex items-end justify-between px-4 sm:-mt-14">
+              <div id="preview" class="pointer-events-auto rounded-full bg-x-panel p-1 ring-2 ring-x-panel"></div>
+              <div class="pointer-events-auto mb-2 text-right">
+                <input id="photo" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
+                <label for="photo" class="inline-flex cursor-pointer rounded-lg border border-x-border bg-x-panel px-4 py-1.5 text-[15px] font-bold hover:bg-x-hover">Edit photo</label>
+                <p id="photoName" class="mt-1 max-w-48 text-xs break-all text-x-muted"></p>
+                <div id="photoSizes" class="hidden"></div>
+              </div>
             </div>
           </div>
 
-          <label class="mt-6 block">
-            <span class="mb-1.5 block text-[13px] text-x-muted">Name</span>
-            <input id="name" type="text" required class="x-input">
-          </label>
-          <label class="mt-4 block">
-            <span class="mb-1.5 block text-[13px] text-x-muted">Bio</span>
-            <textarea id="bio" rows="3" maxlength="160" class="x-input h-auto py-3" placeholder="Bio"></textarea>
-            <span class="mt-1 block text-right text-[13px] text-x-muted"><span id="bioCount">0</span>/160</span>
-          </label>
-          <label class="mt-2 block">
-            <span class="mb-1.5 block text-[13px] text-x-muted">Username</span>
-            <input id="username" type="text" readonly class="x-input cursor-default bg-x-hover text-x-muted">
-          </label>
-          <label class="mt-4 block">
-            <span class="mb-1.5 block text-[13px] text-x-muted">Email</span>
-            <input id="email" type="email" readonly class="x-input cursor-default bg-x-hover text-x-muted">
-          </label>
-          <p id="notice" class="mt-4 hidden text-[15px]" role="status"></p>
-        </div>
-      </form>
-    </main>
-
-    <aside class="sticky top-0 hidden h-svh w-[clamp(280px,32vw,400px)] min-w-0 shrink overflow-y-auto overscroll-none px-3 pt-3 lg:block">
-      <section class="x-card">
-        <h2 class="px-4 pt-3 pb-2 text-base font-extrabold">Your profile</h2>
-        <p class="px-4 pb-4 text-[15px] leading-5 text-x-ink">Your cover, photo, name, and bio appear on your profile.</p>
-      </section>
-      <p class="px-4 py-4 text-[13px] text-x-muted">© 2026 Zivo</p>
-    </aside>
+          <div id="coverSizes" class="hidden px-4"></div>
+          <div class="px-4">
+            <label class="mt-6 block">
+              <span class="mb-1.5 block text-[13px] text-x-muted">Name</span>
+              <input id="name" type="text" required class="x-input">
+            </label>
+            <label class="mt-4 block">
+              <span class="mb-1.5 block text-[13px] text-x-muted">Bio</span>
+              <textarea id="bio" rows="3" maxlength="160" class="x-input h-auto py-3" placeholder="Bio"></textarea>
+              <span class="mt-1 block text-right text-[13px] text-x-muted"><span id="bioCount">0</span>/160</span>
+            </label>
+            <label class="mt-2 block">
+              <span class="mb-1.5 block text-[13px] text-x-muted">Username</span>
+              <input id="username" type="text" readonly class="x-input cursor-default bg-x-hover text-x-muted">
+            </label>
+            <label class="mt-4 block">
+              <span class="mb-1.5 block text-[13px] text-x-muted">Email</span>
+              <input id="email" type="email" readonly class="x-input cursor-default bg-x-hover text-x-muted">
+            </label>
+            <p id="notice" class="mt-4 hidden text-[15px]" role="status"></p>
+          </div>
+        </form>
+      </main>
+      <aside id="zRight" class="z-rail z-rail-right"></aside>
+    </div>
   </div>
 
-  <nav class="fixed inset-x-0 bottom-0 z-30 flex h-14 items-center justify-around border-t border-x-line bg-white sm:hidden">
-    <a href="feed.html" class="rounded-full p-3" aria-label="Home">
-      <svg viewBox="0 0 24 24" class="size-6" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path stroke-linejoin="round" d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1z"/></svg>
-    </a>
-    <a href="profile.html" class="rounded-full p-3" aria-label="Profile" aria-current="page">
-      <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><circle cx="12" cy="8" r="3.4" fill="currentColor"/><path fill="currentColor" d="M5 19.6c1.6-3 4.1-4.5 7-4.5s5.4 1.5 7 4.5c.2.4 0 .9-.5.9H5.5c-.5 0-.7-.5-.5-.9z"/></svg>
-    </a>
-  </nav>
-
-  <script src="./api.js"></script>
+  <nav id="zBottom" class="z-bottom" aria-label="Mobile"></nav>
+<script src="./api.js"></script>
+  <script src="./image-file.js"></script>
+  <script src="./shell.js"></script>
   <script>
-    const preview = document.getElementById('preview');
+    
+    var shell = initShell({ nav: 'settings' });
+const preview = document.getElementById('preview');
     const notice = document.getElementById('notice');
 
     function picture(src, letter) {
@@ -152,23 +112,6 @@
       label.textContent = 'Edit cover';
     }
 
-    function navPicture(src, letter) {
-      const box = document.getElementById('navPhoto');
-      box.innerHTML = '';
-      if (src) {
-        const img = document.createElement('img');
-        img.src = API + src;
-        img.alt = '';
-        img.className = 'size-10 rounded-full object-cover';
-        box.appendChild(img);
-        return;
-      }
-      const fallback = document.createElement('span');
-      fallback.className = 'flex size-10 items-center justify-center rounded-full bg-x-blue text-sm font-bold text-white';
-      fallback.textContent = (letter || '?').toUpperCase();
-      box.appendChild(fallback);
-    }
-
     function showNotice(text, ok) {
       notice.classList.remove('hidden');
       notice.className = ok ? 'mt-4 text-[15px] font-medium text-x-blue' : 'mt-4 text-[15px] font-medium text-x-danger';
@@ -179,26 +122,18 @@
       document.getElementById('bioCount').textContent = String(document.getElementById('bio').value.length);
     }
 
-    if (!localStorage.getItem('zivo_token')) {
-      window.location.href = 'loginpage.html';
+    if (!requireAuth()) {
+      // redirected to sign in
     } else {
       apiFetch('/me')
         .then(function (result) {
-          if (!result.ok) {
-            clearToken();
-            window.location.href = 'loginpage.html';
-            return;
-          }
+          if (!result.ok) return;
           document.getElementById('name').value = result.data.name;
           document.getElementById('bio').value = result.data.bio || '';
           document.getElementById('username').value = result.data.username ? '@' + result.data.username : '';
           document.getElementById('email').value = result.data.email || '';
-          document.getElementById('navName').textContent = result.data.name;
-          if (result.data.username) {
-            document.getElementById('navHandle').textContent = '@' + result.data.username;
-          }
+          shell.paintProfile(result.data);
           picture(result.data.photo, result.data.name.charAt(0));
-          navPicture(result.data.photo, result.data.name.charAt(0));
           showCover(result.data.cover);
           updateCount();
         })
@@ -209,35 +144,126 @@
 
     document.getElementById('bio').addEventListener('input', updateCount);
 
+    var photoOriginal = null;
+    var photoPrepared = null;
+    var photoJob = Promise.resolve();
+    var photoToken = 0;
+    var coverOriginal = null;
+    var coverPrepared = null;
+    var coverJob = Promise.resolve();
+    var coverToken = 0;
+
+    function cropAction(box, onClick) {
+      box.className = 'mt-2';
+      box.innerHTML = '';
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = 'Crop';
+      button.style.cssText = 'height:32px;padding:0 12px;border-radius:999px;border:1px solid var(--color-x-border);background:transparent;color:var(--color-x-ink);font:700 13px/1 Inter,sans-serif;cursor:pointer;';
+      button.addEventListener('click', onClick);
+      box.appendChild(button);
+    }
+
+    function cropPhoto() {
+      if (!photoOriginal || imageKind(photoOriginal) === 'image/gif') return Promise.resolve();
+      return openImageCrop(photoOriginal, { title: 'Crop photo', circle: true }).then(function (file) {
+        if (!file) return;
+        photoPrepared = file;
+        document.getElementById('photoName').textContent = file.name;
+        picture(URL.createObjectURL(file), '');
+      });
+    }
+
+    function cropCoverImage() {
+      if (!coverOriginal || imageKind(coverOriginal) === 'image/gif') return Promise.resolve();
+      return openImageCrop(coverOriginal, {
+        title: 'Crop cover',
+        aspects: [
+          { id: 'wide', label: 'Wide', ratio: 3 },
+          { id: 'original', label: 'Original' },
+        ],
+      }).then(function (file) {
+        if (!file) return;
+        coverPrepared = file;
+        showCover(URL.createObjectURL(file));
+      });
+    }
+
+    function fitPhoto() {
+      var token = photoToken + 1;
+      photoToken = token;
+      var box = document.getElementById('photoSizes');
+      if (!photoOriginal || imageKind(photoOriginal) === 'image/gif') {
+        box.classList.add('hidden');
+        box.innerHTML = '';
+        photoPrepared = photoOriginal;
+        photoJob = Promise.resolve();
+        if (photoOriginal) picture(URL.createObjectURL(photoOriginal), '');
+        return Promise.resolve();
+      }
+      cropAction(box, function () { cropPhoto(); });
+      photoJob = resizeImageFile(photoOriginal, 1600).then(function (file) {
+        if (token !== photoToken) return;
+        photoPrepared = file;
+        document.getElementById('photoName').textContent = file.name;
+        picture(URL.createObjectURL(file), '');
+        return cropPhoto();
+      });
+      return photoJob;
+    }
+
+    function fitCover() {
+      var token = coverToken + 1;
+      coverToken = token;
+      var box = document.getElementById('coverSizes');
+      if (!coverOriginal || imageKind(coverOriginal) === 'image/gif') {
+        box.classList.add('hidden');
+        box.innerHTML = '';
+        coverPrepared = coverOriginal;
+        coverJob = Promise.resolve();
+        if (coverOriginal) showCover(URL.createObjectURL(coverOriginal));
+        return Promise.resolve();
+      }
+      cropAction(box, function () { cropCoverImage(); });
+      coverJob = resizeImageFile(coverOriginal, 1600).then(function (file) {
+        if (token !== coverToken) return;
+        coverPrepared = file;
+        showCover(URL.createObjectURL(file));
+        return cropCoverImage();
+      });
+      return coverJob;
+    }
+
     document.getElementById('cover').addEventListener('change', function () {
       const file = this.files[0];
       if (!file) return;
-      showCover(URL.createObjectURL(file));
+      var problem = imageFileProblem(file);
+      if (problem) {
+        this.value = '';
+        showNotice(problem, false);
+        return;
+      }
+      coverOriginal = file;
+      showNotice('', true);
+      document.getElementById('notice').classList.add('hidden');
+      fitCover();
     });
 
     document.getElementById('photo').addEventListener('change', function () {
       const file = this.files[0];
       if (!file) return;
-      document.getElementById('photoName').textContent = file.name;
-      picture(URL.createObjectURL(file), '');
-    });
-
-    document.addEventListener('click', function (e) {
-      const pop = document.getElementById('accountPopover');
-      const toggle = document.getElementById('accountToggle');
-      if (toggle.contains(e.target)) {
-        pop.classList.toggle('hidden');
+      var problem = imageFileProblem(file);
+      if (problem) {
+        this.value = '';
+        document.getElementById('photoName').textContent = '';
+        showNotice(problem, false);
         return;
       }
-      if (!pop.contains(e.target)) pop.classList.add('hidden');
-    });
-
-    document.getElementById('logout').addEventListener('click', function () {
-      apiFetch('/logout', { method: 'POST', body: '{}' })
-        .finally(function () {
-          clearToken();
-          window.location.href = 'loginpage.html';
-        });
+      document.getElementById('photoName').textContent = file.name;
+      photoOriginal = file;
+      showNotice('', true);
+      document.getElementById('notice').classList.add('hidden');
+      fitPhoto();
     });
 
     document.getElementById('settingsForm').addEventListener('submit', function (e) {
@@ -245,25 +271,31 @@
       const form = new FormData();
       form.append('name', document.getElementById('name').value);
       form.append('bio', document.getElementById('bio').value);
-      const file = document.getElementById('photo').files[0];
-      const cover = document.getElementById('cover').files[0];
-      if (file) form.append('photo', file);
-      if (cover) form.append('cover', cover);
+      const photoProblem = imageFileProblem(document.getElementById('photo').files[0]);
+      const coverProblem = imageFileProblem(document.getElementById('cover').files[0]);
+      if (photoProblem || coverProblem) {
+        showNotice(photoProblem || coverProblem, false);
+        return;
+      }
 
-      apiForm('/settings', form)
+      Promise.all([photoJob, coverJob]).then(function () {
+      if (photoPrepared) form.append('photo', photoPrepared);
+      if (coverPrepared) form.append('cover', coverPrepared);
+
+      return apiForm('/settings', form)
         .then(function (result) {
           if (!result.ok) {
             showNotice(result.data.message || 'Could not save that.', false);
             return;
           }
           picture(result.data.photo, result.data.name.charAt(0));
-          navPicture(result.data.photo, result.data.name.charAt(0));
-          document.getElementById('navName').textContent = result.data.name;
+          shell.paintProfile(result.data);
           window.location.href = 'profile.html';
         })
         .catch(function () {
           showNotice('Cannot reach the server.', false);
         });
+      });
     });
   </script>
 </body>

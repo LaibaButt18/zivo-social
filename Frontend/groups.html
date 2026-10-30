@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="./theme.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Groups | Zivo</title>
+  <meta name="theme-color" content="#0f1419">
+  <link rel="icon" href="./assets/logo-mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dist/output.css">
+</head>
+<body class="x-page z-shell app-lock" data-nav="groups">
+  <div class="z-app">
+    <header id="zTopbar" class="z-topbar"></header>
+    <div class="z-columns">
+      <aside id="zLeft" class="z-rail z-rail-left"></aside>
+      <main class="z-center">
+      <div class="sticky top-0 z-20 border-b border-x-line bg-x-bg/90 px-4 py-3 backdrop-blur-md">
+        <div class="flex items-center justify-between gap-3">
+          <h1 class="text-xl font-extrabold">Groups</h1>
+          <button id="newGroup" type="button" class="x-btn-blue h-9 px-4 text-[15px]">New group</button>
+        </div>
+        <label class="mt-3 block">
+          <span class="sr-only">Search groups</span>
+          <input id="groupSearch" type="search" placeholder="Search groups" class="h-10 w-full rounded-full border border-transparent bg-x-chip px-4 text-[15px] outline-none placeholder:text-x-muted focus:border-x-blue focus:bg-x-panel">
+        </label>
+      </div>
+
+      <form id="createForm" class="z-list mt-4 hidden px-4 py-4">
+        <h2 class="text-[17px] font-extrabold">Create a group</h2>
+        <p class="mt-1 text-[15px] leading-5 text-x-muted">Posts stay inside the group. Only members can see them.</p>
+        <label class="mt-4 block">
+          <span class="mb-1.5 block text-[13px] text-x-muted">Name</span>
+          <input id="groupName" type="text" maxlength="60" class="x-input" placeholder="Group name">
+        </label>
+        <label class="mt-4 block">
+          <span class="mb-1.5 block text-[13px] text-x-muted">Description</span>
+          <textarea id="groupDescription" rows="3" maxlength="300" class="x-input h-auto py-3" placeholder="What is this group about?"></textarea>
+        </label>
+        <div class="mt-4 flex items-center gap-3">
+          <input id="groupPhoto" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
+          <label for="groupPhoto" class="inline-flex cursor-pointer rounded-full border border-x-border px-4 py-1.5 text-[15px] font-bold hover:bg-x-hover">Add photo</label>
+          <span id="groupPhotoName" class="min-w-0 truncate text-[13px] text-x-muted"></span>
+        </div>
+        <img id="groupPhotoPreview" alt="" class="mt-3 hidden h-32 w-full rounded-2xl border border-x-line object-cover">
+        <div class="mt-4 flex items-center gap-2">
+          <button id="createSubmit" type="submit" class="x-btn-blue h-9 px-4 text-[15px]">Create</button>
+          <button id="createCancel" type="button" class="rounded-full px-4 py-1.5 text-[15px] font-bold text-x-muted hover:bg-x-hover">Cancel</button>
+        </div>
+        <p id="createNotice" class="mt-3 hidden text-[13px] text-x-danger" role="status"></p>
+      </form>
+
+      <div class="z-list mt-4">
+      <section class="border-b border-x-line">
+        <h2 class="px-4 pt-4 pb-2 text-[17px] font-extrabold">Your groups</h2>
+        <div id="mine"></div>
+      </section>
+      <section>
+        <h2 class="px-4 pt-4 pb-2 text-[17px] font-extrabold">Discover</h2>
+        <div id="discover"></div>
+      </section>
+      </div>
+    </main>
+      <aside id="zRight" class="z-rail z-rail-right"></aside>
+    </div>
+  </div>
+
+  <nav id="zBottom" class="z-bottom" aria-label="Mobile"></nav>
+<script src="./api.js"></script>
+  <script src="./image-file.js"></script>
+  <script src="./shell.js"></script>
+  <script>
+    
+    var shell = initShell({ nav: 'groups' });
+var mineGroups = [];
+    var discoverGroups = [];
+    var query = '';
+
+    function picture(src, letter, sizeClass, round) {
+      var shape = round === false ? 'rounded-2xl' : 'rounded-full';
+      if (src) {
+        var img = document.createElement('img');
+        img.src = API + src;
+        img.alt = '';
+        img.className = 'shrink-0 object-cover ' + shape + ' ' + sizeClass;
+        return img;
+      }
+      var fallback = document.createElement('span');
+      fallback.className = 'flex shrink-0 items-center justify-center bg-x-blue text-sm font-bold text-white ' + shape + ' ' + sizeClass;
+      fallback.textContent = (letter || 'G').toUpperCase();
+      return fallback;
+    }
+
+    function imageProblem(file) {
+      return imageFileProblem(file);
+    }
+
+    function showCreateNotice(text) {
+      var notice = document.getElementById('createNotice');
+      if (!text) {
+        notice.classList.add('hidden');
+        notice.textContent = '';
+        return;
+      }
+      notice.classList.remove('hidden');
+      notice.textContent = text;
+    }
+
+    function memberLine(group) {
+      var count = group.member_count || 0;
+      var line = count === 1 ? '1 member' : count + ' members';
+      if (group.pending) line += ' · Request pending';
+      return line;
+    }
+
+    function matches(group) {
+      if (!query) return true;
+      return (group.name || '').toLowerCase().indexOf(query) !== -1;
+    }
+
+    function paintList(box, groups, emptyText) {
+      box.innerHTML = '';
+      var visible = groups.filter(matches);
+      if (!visible.length) {
+        var empty = document.createElement('p');
+        empty.className = 'px-4 pb-4 text-[15px] text-x-muted';
+        empty.textContent = emptyText;
+        box.appendChild(empty);
+        return;
+      }
+      visible.forEach(function (group) {
+        var link = document.createElement('a');
+        link.href = 'group.html?id=' + encodeURIComponent(group.id);
+        link.className = 'flex items-center gap-3 px-4 py-3 hover:bg-x-hover';
+        link.appendChild(picture(group.photo, (group.name || 'G').charAt(0), 'size-12', false));
+        var copy = document.createElement('div');
+        copy.className = 'min-w-0 flex-1';
+        var name = document.createElement('p');
+        name.className = 'truncate text-[15px] font-bold';
+        name.textContent = group.name;
+        var meta = document.createElement('p');
+        meta.className = 'truncate text-[15px] text-x-muted';
+        meta.textContent = memberLine(group);
+        copy.appendChild(name);
+        copy.appendChild(meta);
+        link.appendChild(copy);
+        box.appendChild(link);
+      });
+    }
+
+    function paint() {
+      paintList(document.getElementById('mine'), mineGroups, query ? 'No groups of yours match that search.' : 'You have not joined a group yet.');
+      paintList(document.getElementById('discover'), discoverGroups, query ? 'No groups match that search.' : 'No other groups yet.');
+    }
+
+    function loadGroups() {
+      return apiFetch('/groups').then(function (result) {
+        if (result.status === 401) return;
+        if (!result.ok) return;
+        mineGroups = result.data.mine || [];
+        discoverGroups = result.data.discover || [];
+        paint();
+      });
+    }
+
+    function resetCreate() {
+      document.getElementById('groupName').value = '';
+      document.getElementById('groupDescription').value = '';
+      document.getElementById('groupPhoto').value = '';
+      document.getElementById('groupPhotoName').textContent = '';
+      var preview = document.getElementById('groupPhotoPreview');
+      preview.classList.add('hidden');
+      preview.removeAttribute('src');
+      showCreateNotice('');
+    }
+
+    if (!requireAuth()) {
+      // redirected to sign in
+    } else {
+      apiFetch('/me').then(function (result) {
+        if (!result.ok) return;
+        shell.paintProfile(result.data);
+        if (result.data.username) document.getElementById('handle').textContent = '@' + result.data.username;
+        return loadGroups();
+      }).catch(function () {
+        window.location.href = 'loginpage.html';
+      });
+    }
+
+    document.getElementById('groupSearch').addEventListener('input', function () {
+      query = this.value.trim().toLowerCase();
+      paint();
+    });
+
+    document.getElementById('newGroup').addEventListener('click', function () {
+      var form = document.getElementById('createForm');
+      form.classList.toggle('hidden');
+      if (!form.classList.contains('hidden')) document.getElementById('groupName').focus();
+    });
+
+    document.getElementById('createCancel').addEventListener('click', function () {
+      document.getElementById('createForm').classList.add('hidden');
+      resetCreate();
+    });
+
+    document.getElementById('groupPhoto').addEventListener('change', function () {
+      var file = this.files[0];
+      var preview = document.getElementById('groupPhotoPreview');
+      document.getElementById('groupPhotoName').textContent = file ? file.name : '';
+      var problem = imageProblem(file);
+      if (problem) {
+        this.value = '';
+        document.getElementById('groupPhotoName').textContent = '';
+        preview.classList.add('hidden');
+        preview.removeAttribute('src');
+        showCreateNotice(problem);
+        return;
+      }
+      showCreateNotice('');
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.classList.remove('hidden');
+      } else {
+        preview.classList.add('hidden');
+        preview.removeAttribute('src');
+      }
+    });
+
+    document.getElementById('createForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      var name = document.getElementById('groupName').value.trim();
+      var description = document.getElementById('groupDescription').value.trim();
+      var file = document.getElementById('groupPhoto').files[0];
+      if (!name) {
+        showCreateNotice('Group name cannot be empty.');
+        return;
+      }
+      if (name.length > 60) {
+        showCreateNotice('Group name can be 60 characters at most.');
+        return;
+      }
+      if (description.length > 300) {
+        showCreateNotice('Description can be 300 characters at most.');
+        return;
+      }
+      var problem = imageProblem(file);
+      if (problem) {
+        showCreateNotice(problem);
+        return;
+      }
+      var body = new FormData();
+      body.append('name', name);
+      body.append('description', description);
+      if (file) body.append('photo', file);
+      var button = document.getElementById('createSubmit');
+      button.disabled = true;
+      apiForm('/groups', body).then(function (result) {
+        button.disabled = false;
+        if (!result.ok) {
+          showCreateNotice(result.data.message || 'Could not create that group.');
+          return;
+        }
+        window.location.href = 'group.html?id=' + encodeURIComponent(result.data.id);
+      }).catch(function () {
+        button.disabled = false;
+        showCreateNotice('Cannot reach the server.');
+      });
+    });
+</script>
+</body>
+</html>

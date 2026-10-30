@@ -1,3 +1,7 @@
 .venv/
 data.json
 uploads/
+temp/
+.env
+zivo.db
+zivo.db-*
