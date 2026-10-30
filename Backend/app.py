@@ -51,7 +51,7 @@ db_pool = ConnectionPool(DB_FILE)
 UPLOAD_DIR = os.path.join(BASE_DIR, "temp")
 LEGACY_UPLOAD_DIR = os.path.join(BASE_DIR, "uploads")
 ALLOWED_IMAGES = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
-MAX_IMAGE_BYTES = 2 * 1024 * 1024
+MAX_IMAGE_BYTES = 12 * 1024 * 1024
 
 
 def load_env():
@@ -963,7 +963,7 @@ def collect_post_uploads():
         name = save_upload(storage)
         if name is None:
             discard_uploads(names)
-            return text, [], poll_raw, "Use a jpg, png, gif, or webp under 2 MB."
+            return text, [], poll_raw, "Use a jpg, png, gif, or webp under 12 MB."
         if name == "":
             continue
         names.append(name)
@@ -1503,7 +1503,7 @@ def settings():
     photo_name = save_upload(request.files.get("photo"))
     cover_name = save_upload(request.files.get("cover"))
     if photo_name is None or cover_name is None:
-        return jsonify({"ok": False, "message": "Use a jpg, png, gif, or webp under 2 MB."}), 400
+        return jsonify({"ok": False, "message": "Use a jpg, png, gif, or webp under 12 MB."}), 400
 
     message = social.update_profile(user.email, name, bio, photo_name, cover_name)
     if message is not None:
@@ -1611,7 +1611,7 @@ def group_payload(group, viewer, detailed=False):
 def read_group_photo():
     photo_name = save_upload(request.files.get("photo"))
     if photo_name is None:
-        return "", "Use a jpg, png, gif, or webp under 2 MB."
+        return "", "Use a jpg, png, gif, or webp under 12 MB."
     return photo_name, None
 
 
@@ -2181,7 +2181,7 @@ def add_chat_message(chat_id):
         raw_reply = request.form.get("reply_to", 0)
         image_name = save_upload(request.files.get("image"))
         if image_name is None:
-            return jsonify({"ok": False, "message": "Use a jpg, png, gif, or webp under 2 MB."}), 400
+            return jsonify({"ok": False, "message": "Use a jpg, png, gif, or webp under 12 MB."}), 400
     else:
         data = request.get_json(silent=True) or {}
         text = data.get("text", "")
@@ -3301,7 +3301,7 @@ def add_blog():
         body = request.form.get("body", "")
         cover = save_upload(request.files.get("cover"))
         if cover is None:
-            return jsonify({"ok": False, "message": "Use a jpg, png, gif, or webp under 2 MB."}), 400
+            return jsonify({"ok": False, "message": "Use a jpg, png, gif, or webp under 12 MB."}), 400
     blog, message = social.create_blog(user.email, title, body, cover)
     if message is not None:
         discard_upload(cover)
@@ -3339,7 +3339,7 @@ def edit_blog(blog_id):
             cover = ""
         uploaded = save_upload(request.files.get("cover"))
         if uploaded is None:
-            return jsonify({"ok": False, "message": "Use a jpg, png, gif, or webp under 2 MB."}), 400
+            return jsonify({"ok": False, "message": "Use a jpg, png, gif, or webp under 12 MB."}), 400
         if uploaded:
             cover = uploaded
     message, old_cover = social.update_blog(user.email, blog_id, title, body, cover)

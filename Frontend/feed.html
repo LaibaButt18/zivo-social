@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script src="./theme.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home | Zivo</title>
   <meta name="theme-color" content="#0f1419">
@@ -69,6 +70,7 @@
   </a>
 
   <script src="./api.js"></script>
+  <script src="./image-file.js"></script>
   <script src="./posts.js"></script>
   <script src="./shell.js"></script>
   <script>
@@ -383,11 +385,14 @@
         return;
       }
 
+      const button = document.getElementById('postSubmit');
+      button.disabled = true;
+      composer.whenReady().then(function () {
       const form = new FormData();
       form.append('text', text);
       composer.fill(form);
 
-      apiForm('/posts', form)
+      return apiForm('/posts', form)
         .then(function (result) {
           if (!result.ok) {
             showNotice(result.data.message || 'Could not post that.');
@@ -398,7 +403,11 @@
         })
         .catch(function () {
           showNotice('Cannot reach the server.');
+        })
+        .then(function () {
+          syncPostButton();
         });
+      });
     });
 
     syncPostButton();

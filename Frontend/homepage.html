@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script src="./theme.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zivo</title>
   <meta name="description" content="See what's happening. Post a note or a photo and follow people you know.">
@@ -15,12 +16,12 @@
     .home-stage {
       background:
         radial-gradient(1200px 600px at 15% 20%, rgb(29 155 240 / 0.18), transparent 55%),
-        radial-gradient(900px 500px at 85% 80%, rgb(21 32 43 / 0.9), transparent 50%),
-        linear-gradient(165deg, #0f1419 0%, #15202b 48%, #0f1419 100%);
+        radial-gradient(900px 500px at 85% 80%, color-mix(in srgb, var(--color-x-panel) 90%, transparent), transparent 50%),
+        linear-gradient(165deg, var(--color-x-bg) 0%, var(--color-x-panel) 48%, var(--color-x-bg) 100%);
     }
     .home-panel {
       border: 1px solid var(--color-x-line);
-      background: rgb(21 32 43 / 0.72);
+      background: color-mix(in srgb, var(--color-x-panel) 72%, transparent);
       backdrop-filter: blur(14px);
       border-radius: var(--radius-card);
     }
@@ -43,7 +44,7 @@
   </style>
 </head>
 <body class="x-page z-shell home-stage flex min-h-svh flex-col">
-  <header class="flex items-center justify-between px-5 py-4 sm:px-8">
+  <header class="flex items-center justify-between px-5 py-4 sm:px-8" data-theme-host>
     <a href="homepage.html" class="inline-flex items-center gap-2.5" aria-label="Zivo">
       <img src="./assets/logo-mark.svg" alt="" class="size-8">
       <span class="text-[20px] font-extrabold tracking-[-0.03em]">Zivo</span>

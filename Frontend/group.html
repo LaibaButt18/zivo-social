@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script src="./theme.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Group | Zivo</title>
   <meta name="theme-color" content="#0f1419">
@@ -36,6 +37,7 @@
 
   <nav id="zBottom" class="z-bottom" aria-label="Mobile"></nav>
 <script src="./api.js"></script>
+  <script src="./image-file.js"></script>
   <script src="./shell.js"></script>
   <script src="./posts.js"></script>
   <script>
@@ -73,12 +75,7 @@ var params = new URLSearchParams(location.search);
     }
 
     function imageProblem(file) {
-      if (!file) return '';
-      var types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-      if (types.indexOf(file.type) === -1 || file.size === 0 || file.size > 2 * 1024 * 1024) {
-        return 'Use a jpg, png, gif, or webp under 2 MB.';
-      }
-      return '';
+      return imageFileProblem(file);
     }
 
     function roleLabel(role) {
@@ -660,11 +657,13 @@ var params = new URLSearchParams(location.search);
           reveal(notice, 'Write something, add a photo, or start a poll.');
           return;
         }
+        submit.disabled = true;
+        composer.whenReady().then(function () {
         var body = new FormData();
         body.append('text', text);
         composer.fill(body);
-        submit.disabled = true;
-        apiForm('/groups/' + encodeURIComponent(groupId) + '/posts', body).then(function (result) {
+        return apiForm('/groups/' + encodeURIComponent(groupId) + '/posts', body);
+        }).then(function (result) {
           sync();
           if (!result.ok) {
             reveal(notice, result.data.message || 'Could not post that.');
@@ -689,7 +688,7 @@ var params = new URLSearchParams(location.search);
       var hero = document.createElement('div');
       hero.className = 'border-b border-x-line';
       var cover = document.createElement('div');
-      cover.className = 'h-40 overflow-hidden bg-[#cfd9de] sm:h-56';
+      cover.className = 'h-40 overflow-hidden bg-x-chip sm:h-56';
       if (group.photo) {
         var coverImg = document.createElement('img');
         coverImg.src = API + group.photo;

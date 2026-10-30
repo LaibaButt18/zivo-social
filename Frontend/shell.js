@@ -1,4 +1,4 @@
-/* Shared dark app chrome: top bar, rails, account menu, badges. */
+/* Shared app chrome: top bar, rails, account menu, badges. */
 (function () {
   var STOP = {
     a: 1, an: 1, the: 1, and: 1, or: 1, but: 1, if: 1, in: 1, on: 1, at: 1, to: 1, for: 1,
@@ -109,6 +109,12 @@
     navBar.appendChild(moreWrap);
     root.appendChild(navBar);
 
+    var themeBtn = el("button", "z-theme-btn");
+    themeBtn.type = "button";
+    themeBtn.setAttribute("aria-label", "Switch theme");
+    root.appendChild(themeBtn);
+    if (window.ZivoTheme) window.ZivoTheme.bind(themeBtn);
+
     var account = el("button", "z-account-chip");
     account.type = "button";
     account.id = "accountToggle";
@@ -123,11 +129,13 @@
     var pop = el("div", "menu-pop absolute right-3 top-[3.6rem] z-50 hidden w-[220px] overflow-hidden rounded-2xl py-2");
     pop.id = "accountPopover";
     pop.innerHTML =
+      '<button type="button" data-theme-label class="w-full px-4 py-3 text-left text-[15px] font-bold hover:bg-x-hover">Appearance</button>' +
       '<a href="profile.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">View profile</a>' +
       '<a href="settings.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">Settings</a>' +
       '<a href="premium.html" class="block px-4 py-3 text-[15px] font-bold hover:bg-x-hover">Premium</a>' +
       '<button id="logout" type="button" class="w-full px-4 py-3 text-left text-[15px] font-bold hover:bg-x-hover">Log out</button>';
     root.appendChild(pop);
+    if (window.ZivoTheme) window.ZivoTheme.bind(pop.querySelector("[data-theme-label]"));
 
     moreBtn.addEventListener("click", function (e) {
       e.stopPropagation();
@@ -446,9 +454,6 @@
     if (options.rails === false || options.rails === "off") {
       body.setAttribute("data-rails", "off");
     }
-
-    var theme = document.querySelector('meta[name="theme-color"]');
-    if (theme) theme.setAttribute("content", "#0f1419");
 
     var top = document.getElementById("zTopbar");
     if (top) fillTopbar(top, nav);

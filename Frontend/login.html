@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script src="./theme.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Log in | Zivo</title>
   <meta name="theme-color" content="#0f1419">
@@ -14,10 +15,12 @@
 </head>
 <body class="x-page z-shell">
   <div class="mx-auto flex min-h-svh w-full max-w-[600px] flex-col px-8 py-6 sm:px-16">
-    <a href="homepage.html" class="mb-8 inline-flex w-fit items-center gap-2.5 rounded-xl p-1 hover:bg-x-hover" aria-label="Zivo">
-      <img src="./assets/logo-mark.svg" alt="" class="size-8">
-      <span class="text-[22px] font-extrabold leading-none tracking-[-0.03em]">Zivo</span>
-    </a>
+    <div class="mb-8 flex items-center justify-between" data-theme-host>
+      <a href="homepage.html" class="inline-flex w-fit items-center gap-2.5 rounded-xl p-1 hover:bg-x-hover" aria-label="Zivo">
+        <img src="./assets/logo-mark.svg" alt="" class="size-8">
+        <span class="text-[22px] font-extrabold leading-none tracking-[-0.03em]">Zivo</span>
+      </a>
+    </div>
     <h1 class="text-[31px] leading-9 font-extrabold">Sign in to Zivo</h1>
     <form id="loginForm" class="mt-8 space-y-5">
       <label class="block">

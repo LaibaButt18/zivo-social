@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script src="./theme.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blogs | Zivo</title>
   <meta name="theme-color" content="#0f1419">
@@ -34,7 +35,9 @@
           <span class="sr-only">Blog</span>
           <textarea id="blogBody" rows="5" maxlength="4000" placeholder="Write your blog" class="w-full resize-none bg-transparent text-[17px] leading-6 outline-none placeholder:text-x-muted"></textarea>
         </label>
-        <img id="coverPreview" alt="" class="mt-3 hidden max-h-72 w-full rounded-2xl border border-x-line object-cover">
+        <div id="coverFrame" class="relative mt-3 hidden">
+          <img id="coverPreview" alt="" class="max-h-72 w-full rounded-2xl border border-x-line bg-black object-contain">
+        </div>
         <div class="mt-3 flex items-center justify-between border-t border-x-line pt-3">
           <div class="flex items-center gap-2">
             <input id="blogCover" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
@@ -57,6 +60,7 @@
 
   <nav id="zBottom" class="z-bottom" aria-label="Mobile"></nav>
 <script src="./api.js"></script>
+  <script src="./image-file.js"></script>
   <script src="./shell.js"></script>
   <script>
     
@@ -95,22 +99,81 @@ var blogs = [];
       el.textContent = text;
     }
 
+    var coverOriginal = null;
+    var coverPrepared = null;
+    var coverUrl = "";
+    var coverJob = Promise.resolve();
+    var coverToken = 0;
+    var coverCrop = makeCropButton();
+    document.getElementById("coverFrame").appendChild(coverCrop);
+    coverCrop.addEventListener("click", function () { cropCover(); });
+
     function imageProblem(file) {
-      if (!file) return "";
-      var types = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-      if (types.indexOf(file.type) === -1 || file.size === 0 || file.size > 2 * 1024 * 1024) {
-        return "Use a jpg, png, gif, or webp under 2 MB.";
-      }
-      return "";
+      return imageFileProblem(file);
     }
 
     function syncButton() {
       var ready = document.getElementById("blogTitle").value.trim() && document.getElementById("blogBody").value.trim();
       var button = document.getElementById("blogSubmit");
-      button.disabled = !ready;
+      button.disabled = false;
       button.className = ready
         ? "x-btn-blue h-9 px-4 text-[15px]"
-        : "h-9 cursor-not-allowed rounded-full bg-x-blue/50 px-4 text-[15px] font-bold text-white";
+        : "h-9 rounded-full bg-x-blue/50 px-4 text-[15px] font-bold text-white";
+    }
+
+    function clearCover() {
+      coverOriginal = null;
+      coverPrepared = null;
+      if (coverUrl) URL.revokeObjectURL(coverUrl);
+      coverUrl = "";
+      document.getElementById("coverName").textContent = "";
+      var preview = document.getElementById("coverPreview");
+      preview.removeAttribute("src");
+      document.getElementById("coverFrame").classList.add("hidden");
+      coverCrop.classList.add("hidden");
+    }
+
+    function showCoverFile(file) {
+      coverPrepared = file;
+      if (coverUrl) URL.revokeObjectURL(coverUrl);
+      coverUrl = URL.createObjectURL(file);
+      document.getElementById("coverPreview").src = coverUrl;
+      document.getElementById("coverFrame").classList.remove("hidden");
+      coverCrop.classList.toggle("hidden", imageKind(coverOriginal) === "image/gif");
+      document.getElementById("coverName").textContent = file.name;
+    }
+
+    function cropCover() {
+      if (!coverOriginal || imageKind(coverOriginal) === "image/gif") return Promise.resolve();
+      return openImageCrop(coverOriginal, {
+        title: "Crop",
+        aspects: [
+          { id: "wide", label: "Wide", ratio: 16 / 9 },
+          { id: "original", label: "Original" },
+          { id: "square", label: "Square", ratio: 1 },
+        ],
+      }).then(function (file) {
+        if (file) showCoverFile(file);
+      });
+    }
+
+    function refreshCover() {
+      var token = coverToken + 1;
+      coverToken = token;
+      if (!coverOriginal) {
+        clearCover();
+        return Promise.resolve();
+      }
+      if (imageKind(coverOriginal) === "image/gif") {
+        coverJob = Promise.resolve();
+        showCoverFile(coverOriginal);
+        return coverJob;
+      }
+      coverJob = resizeImageFile(coverOriginal, 1600).then(function (file) {
+        if (token !== coverToken) return;
+        showCoverFile(file);
+      });
+      return coverJob;
     }
 
     function paint() {
@@ -196,27 +259,26 @@ var blogs = [];
     });
     document.getElementById("blogTitle").addEventListener("input", syncButton);
     document.getElementById("blogBody").addEventListener("input", syncButton);
+    syncButton();
     document.getElementById("blogCover").addEventListener("change", function () {
       var file = this.files[0];
       var problem = imageProblem(file);
-      var preview = document.getElementById("coverPreview");
       if (problem) {
         this.value = "";
-        document.getElementById("coverName").textContent = "";
-        preview.classList.add("hidden");
-        preview.removeAttribute("src");
+        clearCover();
         notice(problem);
         return;
       }
       notice("");
-      document.getElementById("coverName").textContent = file ? file.name : "";
-      if (file) {
-        preview.src = URL.createObjectURL(file);
-        preview.classList.remove("hidden");
-      } else {
-        preview.classList.add("hidden");
-        preview.removeAttribute("src");
+      if (!file) {
+        clearCover();
+        return;
       }
+      coverOriginal = file;
+      document.getElementById("coverName").textContent = file.name;
+      refreshCover().then(function () {
+        if (imageKind(file) !== "image/gif") return cropCover();
+      });
     });
     document.getElementById("blogForm").addEventListener("submit", function (event) {
       event.preventDefault();
@@ -232,13 +294,15 @@ var blogs = [];
         notice(problem);
         return;
       }
+      var button = document.getElementById("blogSubmit");
+      button.disabled = true;
+      coverJob.then(function () {
       var form = new FormData();
       form.append("title", title);
       form.append("body", body);
-      if (file) form.append("cover", file);
-      var button = document.getElementById("blogSubmit");
-      button.disabled = true;
-      apiForm("/blogs", form).then(function (result) {
+      if (coverPrepared) form.append("cover", coverPrepared);
+      return apiForm("/blogs", form);
+      }).then(function (result) {
         syncButton();
         if (!result.ok) {
           notice(result.data.message || "Could not publish that blog.");

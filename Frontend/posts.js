@@ -533,11 +533,7 @@ function mountPostActions(parent, post, helpers) {
 var POST_EMOJIS = ['😀', '😁', '😂', '😊', '😍', '😎', '🤔', '😭', '👍', '👏', '🙏', '🔥', '✨', '❤️', '🎉', '💯'];
 
 function postImageProblem(file) {
-  var types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-  if (!file || types.indexOf(file.type) === -1 || file.size === 0 || file.size > 2 * 1024 * 1024) {
-    return 'Use a jpg, png, gif, or webp under 2 MB.';
-  }
-  return '';
+  return imageFileProblem(file);
 }
 
 function mountPostMedia(parent, post, onVote) {
@@ -611,7 +607,11 @@ function mountPostMedia(parent, post, onVote) {
 
 function bindPostComposer(preview, tools, textarea, hooks) {
   hooks = hooks || {};
+  var sources = [];
   var files = [];
+  var edited = [];
+  var sizing = Promise.resolve();
+  var fitToken = 0;
   var pollOpen = false;
   var choiceValues = ['', ''];
   var urls = [];
@@ -693,6 +693,34 @@ function bindPostComposer(preview, tools, textarea, hooks) {
     urls = [];
   }
 
+  function fitPhotos() {
+    var token = fitToken + 1;
+    fitToken = token;
+    sizing = Promise.all(sources.map(function (file, index) {
+      if (edited[index] && files[index]) return Promise.resolve(files[index]);
+      return resizeImageFile(file, 1600);
+    })).then(function (next) {
+      if (token !== fitToken) return;
+      files = next;
+      paint();
+      notify();
+    });
+    return sizing;
+  }
+
+  function cropAt(index) {
+    var source = sources[index];
+    if (!source || imageKind(source) === 'image/gif') return;
+    openImageCrop(source, { title: 'Crop', aspects: POST_CROP_ASPECTS }).then(function (file) {
+      var still = sources.indexOf(source);
+      if (!file || still < 0) return;
+      files[still] = file;
+      edited[still] = true;
+      paint();
+      notify();
+    });
+  }
+
   function paint() {
     dropUrls();
     preview.innerHTML = '';
@@ -707,18 +735,25 @@ function bindPostComposer(preview, tools, textarea, hooks) {
         var img = document.createElement('img');
         img.src = url;
         img.alt = '';
-        img.className = files.length === 1 ? 'max-h-80 w-full object-cover' : 'h-32 w-full object-cover sm:h-40';
+        img.className = files.length === 1 ? 'max-h-[420px] w-full object-contain bg-black' : 'h-40 w-full object-cover sm:h-48';
+        tile.appendChild(img);
+        if (imageKind(sources[index]) !== 'image/gif') {
+          var crop = makeCropButton();
+          crop.addEventListener('click', function () { cropAt(index); });
+          tile.appendChild(crop);
+        }
         var remove = document.createElement('button');
         remove.type = 'button';
         remove.className = 'absolute right-2 top-2 inline-flex size-7 items-center justify-center rounded-full bg-black/70 text-sm font-bold text-white';
         remove.setAttribute('aria-label', 'Remove photo');
         remove.textContent = '×';
         remove.addEventListener('click', function () {
+          sources.splice(index, 1);
           files.splice(index, 1);
+          edited.splice(index, 1);
           paint();
           notify();
         });
-        tile.appendChild(img);
         tile.appendChild(remove);
         grid.appendChild(tile);
       });
@@ -791,13 +826,14 @@ function bindPostComposer(preview, tools, textarea, hooks) {
   fileInput.addEventListener('change', function () {
     var picked = Array.prototype.slice.call(fileInput.files || []);
     fileInput.value = '';
+    var added = [];
     picked.forEach(function (file) {
       var problem = postImageProblem(file);
       if (problem) {
         notice(problem);
         return;
       }
-      if (files.length >= 4) {
+      if (sources.length >= 4) {
         notice('A post can have 4 photos at most.');
         return;
       }
@@ -806,10 +842,13 @@ function bindPostComposer(preview, tools, textarea, hooks) {
         choiceValues = ['', ''];
         notice('The poll was cleared so these photos can be added.');
       }
-      files.push(file);
+      sources.push(file);
+      edited.push(false);
+      added.push(sources.length - 1);
     });
-    paint();
-    notify();
+    fitPhotos().then(function () {
+      if (added.length === 1 && imageKind(sources[added[0]]) !== 'image/gif') cropAt(added[0]);
+    });
   });
 
   emojiButton.addEventListener('click', function () {
@@ -820,8 +859,10 @@ function bindPostComposer(preview, tools, textarea, hooks) {
   });
 
   pollButton.addEventListener('click', function () {
-    if (files.length) {
+    if (sources.length) {
+      sources = [];
       files = [];
+      edited = [];
       notice('The photos were cleared so a poll can be added.');
     }
     pollOpen = true;
@@ -831,7 +872,10 @@ function bindPostComposer(preview, tools, textarea, hooks) {
 
   return {
     ready: function (text) {
-      return !!(String(text || '').trim() || files.length || (pollOpen && filledChoices().length >= 2));
+      return !!(String(text || '').trim() || sources.length || (pollOpen && filledChoices().length >= 2));
+    },
+    whenReady: function () {
+      return sizing;
     },
     problem: function () {
       if (!pollOpen) return '';
@@ -846,7 +890,9 @@ function bindPostComposer(preview, tools, textarea, hooks) {
       if (pollOpen && filled.length >= 2) form.append('poll', JSON.stringify(filled));
     },
     clear: function () {
+      sources = [];
       files = [];
+      edited = [];
       pollOpen = false;
       choiceValues = ['', ''];
       fileInput.value = '';

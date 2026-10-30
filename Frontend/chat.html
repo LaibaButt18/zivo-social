@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script src="./theme.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chat | Zivo</title>
   <meta name="theme-color" content="#0f1419">
@@ -59,6 +60,7 @@
 
   <nav id="zBottom" class="z-bottom" aria-label="Mobile"></nav>
 <script src="./api.js"></script>
+  <script src="./image-file.js"></script>
   <script src="./shell.js"></script>
   <script src="./posts.js"></script>
   <script>
@@ -116,12 +118,7 @@ var params = new URLSearchParams(location.search);
     }
 
     function imageProblem(file) {
-      if (!file) return '';
-      var types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-      if (types.indexOf(file.type) === -1 || file.size === 0 || file.size > 2 * 1024 * 1024) {
-        return 'Use a jpg, png, gif, or webp under 2 MB.';
-      }
-      return '';
+      return imageFileProblem(file);
     }
 
     function profileHref(username, email) {
